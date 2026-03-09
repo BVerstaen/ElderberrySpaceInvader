@@ -496,7 +496,7 @@ GameObject:
   - component: {fileID: 1671297513}
   - component: {fileID: 1671297512}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: ScoreUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,8 +542,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -551,8 +551,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -560,6 +560,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _batchSize: 20
 --- !u!114 &1671297513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -726,8 +727,8 @@ MonoBehaviour:
   _healthPalierList:
   - atWave: 0
     ennemyHasHealth: 4
-  - atWave: 1
-    ennemyHasHealth: 10
+  - atWave: 3
+    ennemyHasHealth: 5
 --- !u!4 &1833304615
 Transform:
   m_ObjectHideFlags: 0
