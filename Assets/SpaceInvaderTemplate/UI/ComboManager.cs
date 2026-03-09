@@ -42,6 +42,7 @@ public class ComboManager : MonoBehaviour
     public void AddScore()
     {
         _waitingScore += GetScoreToAdd();
+        _currentPalier++;
 
         if (_scoreCoroutine != null)
         {
@@ -57,7 +58,7 @@ public class ComboManager : MonoBehaviour
         foreach (ScorePalier scorePalier in _scorePalierList)
         {
             if (_currentPalier >= scorePalier.atPalier)
-                score += (int)(_baseScore * scorePalier.scoreMultiplier);
+                score = (int)(_baseScore * scorePalier.scoreMultiplier);
             else
                 break;
         }

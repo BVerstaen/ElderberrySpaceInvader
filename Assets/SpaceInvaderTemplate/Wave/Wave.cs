@@ -124,7 +124,7 @@ public class Wave : MonoBehaviour
         if(invaderPerColumn.Count > 0)
         {
             int columnIndex = Random.Range(0, invaderPerColumn.Count);
-            invaderPerColumn[columnIndex].invaders[0].Shoot();
+            invaderPerColumn[columnIndex].invaders[0]?.Shoot();
 
             _shootCooldown += Random.Range(shootRandom.x, shootRandom.y);
         }
