@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,22 +17,29 @@ public class Player : MonoBehaviour
     [SerializeField] private float shootCooldown = 1f;
     [SerializeField] private string collideWithTag = "Untagged";
 
+    private bool _isShooting = false;
     private float lastShootTimestamp = Mathf.NegativeInfinity;
 
     private void OnEnable()
     {
-        _shootInput.action.performed += InputShoot;
+        _shootInput.action.started += InputShootStarted;
+        _shootInput.action.canceled += InputShootCanceled;
     }
 
     private void OnDisable()
     {
-        _shootInput.action.performed -= InputShoot;
+        _shootInput.action.started -= InputShootStarted;
+        _shootInput.action.canceled -= InputShootCanceled;
     }
 
     void Update()
     {
         UpdateMovement();
+        UpdateActions();
     }
+
+    private void InputShootStarted(InputAction.CallbackContext context) => _isShooting = true;
+    private void InputShootCanceled(InputAction.CallbackContext context) => _isShooting = false;
 
     void UpdateMovement()
     {
@@ -44,7 +52,14 @@ public class Player : MonoBehaviour
         transform.position = GameManager.Instance.KeepInBounds(transform.position + Vector3.right * delta);
     }
 
-    private void InputShoot(InputAction.CallbackContext context) => Shoot();
+    void UpdateActions()
+    {
+        if (_isShooting)
+        {
+            Shoot();
+        }
+    }
+
     void Shoot()
     {
         if (Time.time <= lastShootTimestamp + shootCooldown)
