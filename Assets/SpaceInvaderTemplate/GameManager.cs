@@ -79,7 +79,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int scoreToAdd)
     {
         _playerScore += scoreToAdd;
-        OnUpdateScore?.Invoke(scoreToAdd);
+        OnUpdateScore?.Invoke(_playerScore);
     }
 
     public void PlayGameOver()

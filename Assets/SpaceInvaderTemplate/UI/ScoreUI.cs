@@ -33,9 +33,9 @@ public class ScoreUI : MonoBehaviour
         GameManager.Instance.OnUpdateScore -= AddScore;   
     }
 
-    public void AddScore(int score)
+    public void AddScore(int newScore)
     {
-        _scoreToAdd += score;
+        _scoreToAdd += newScore - _currentScore;
 
         if(_scoreAddingRoutine == null)
         {
