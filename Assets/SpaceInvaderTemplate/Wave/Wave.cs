@@ -92,10 +92,14 @@ public class Wave : MonoBehaviour
         Vector2 shootRandom = Vector2.Lerp(shootRandomMin, shootRandomMax, difficultyProgress.Evaluate(t));
 
         // One column is selected to shoot a bullet. Only the invader at the bottom of that column can shoot.
-        int columnIndex = Random.Range(0, invaderPerColumn.Count);
-        invaderPerColumn[columnIndex].invaders[0].Shoot();
 
-        shootCooldown += Random.Range(shootRandom.x, shootRandom.y);
+        if(invaderPerColumn.Count > 0)
+        {
+            int columnIndex = Random.Range(0, invaderPerColumn.Count);
+            invaderPerColumn[columnIndex].invaders[0].Shoot();
+
+            shootCooldown += Random.Range(shootRandom.x, shootRandom.y);
+        }
     }
 
     void UpdateMovement()
