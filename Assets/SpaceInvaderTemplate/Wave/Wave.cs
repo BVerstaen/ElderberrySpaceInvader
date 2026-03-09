@@ -1,10 +1,18 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class Wave : MonoBehaviour
 {
+    [Serializable]
+    private struct HealthPalier
+    {
+        public int atWave;
+        public int ennemyHasHealth;
+    }
+
     enum Move { Left = 0, Down = 1, Right = 2 }
     readonly Vector3[] directions = { Vector3.left, Vector3.down, Vector3.right };
 
@@ -33,16 +41,18 @@ public class Wave : MonoBehaviour
     // Distance moved when moving downward
     [SerializeField] private float downStep = 1f;
 
+    [Header("Health Modifier")]
+    [SerializeField] private List<HealthPalier> _healthPalierList = new List<HealthPalier>();
 
     private Vector2 _defaultLocation;
     private Move _moveDirection = Move.Right;
     private int _moveCount = 0;
     private float _distance = 0f;
     private float _shootCooldown;
-    private int _waveCount;
+    private int _currentWave;
 
     private Bounds Bounds => new Bounds(transform.position, new Vector3(bounds.x, bounds.y, 1000f));
-    public int WaveCount { get => _waveCount; }
+    public int CurrentWave { get => _currentWave; }
 
     struct Column { public int id; public List<Invader> invaders; }
     struct Row { public int id; public List<Invader> invaders; }
@@ -56,7 +66,7 @@ public class Wave : MonoBehaviour
     void Awake()
     {
         _defaultLocation = transform.position;
-        _waveCount = 1;
+        _currentWave = 0;
         CreateWave();
     }
 
@@ -85,7 +95,7 @@ public class Wave : MonoBehaviour
             for (int j = 0; j < rows; j++)
             {
                 Invader invader = GameObject.Instantiate<Invader>(invaderPrefab, GetPosition(i, j), Quaternion.identity, transform);
-                invader.Initialize(new Vector2Int(i, j));
+                invader.Initialize(new Vector2Int(i, j), GetWaveHealth());
                 invader.onDestroy += RemoveInvader;
                 invaders.Add(invader);
                 invaderPerColumn[i].invaders.Add(invader);
@@ -114,7 +124,7 @@ public class Wave : MonoBehaviour
         if(invaderPerColumn.Count > 0)
         {
             int columnIndex = Random.Range(0, invaderPerColumn.Count);
-            invaderPerColumn[columnIndex].invaders[0].Shoot();
+            invaderPerColumn[columnIndex].invaders[0]?.Shoot();
 
             _shootCooldown += Random.Range(shootRandom.x, shootRandom.y);
         }
@@ -241,6 +251,7 @@ public class Wave : MonoBehaviour
         if(invaders.Count <= 0)
         {
             OnWaveCleared?.Invoke();
+            _currentWave++;
             CreateWave();
         }
     }
@@ -261,6 +272,19 @@ public class Wave : MonoBehaviour
     float GetRowPosition(int row)
     {
         return Mathf.Lerp(Bounds.min.y, Bounds.max.y, row / (float)(rows - 1));
+    }
+
+    private int GetWaveHealth()
+    {
+        int health = _healthPalierList[0].ennemyHasHealth;
+        foreach(HealthPalier healthPalier in _healthPalierList)
+        {
+            if (_currentWave >= healthPalier.atWave)
+                health = healthPalier.ennemyHasHealth;
+            else
+                break;
+        }
+        return health;
     }
 
     public void OnDrawGizmos()

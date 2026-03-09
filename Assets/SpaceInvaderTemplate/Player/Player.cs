@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        Reset();
+        ResetLife();
     }
 
     private void Update()
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         UpdateActions();
     }
 
-    private void Reset()
+    private void ResetLife()
     {
         _currentLife = maxLifeAmount;
     }
