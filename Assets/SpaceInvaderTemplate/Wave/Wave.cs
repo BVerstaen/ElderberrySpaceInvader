@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Wave : MonoBehaviour
 {
@@ -22,7 +24,7 @@ public class Wave : MonoBehaviour
     [SerializeField] private float speedMax;
 
     // Random shoot rate min and max depending on difficulty progress
-    [SerializeField] private Vector2 shootRandomMin = new(3f,5f);
+    [SerializeField] private Vector2 shootRandomMin = new(3f, 5f);
     [SerializeField] private Vector2 shootRandomMax = new(1f, 3f);
 
     // A cozy time with no alien harm at start of the game. I guess Player shoot first.
@@ -31,14 +33,16 @@ public class Wave : MonoBehaviour
     // Distance moved when moving downward
     [SerializeField] private float downStep = 1f;
 
+
+    private Vector2 _defaultLocation;
+    private Move _moveDirection = Move.Right;
+    private int _moveCount = 0;
+    private float _distance = 0f;
+    private float _shootCooldown;
+    private int _waveCount;
+
     private Bounds Bounds => new Bounds(transform.position, new Vector3(bounds.x, bounds.y, 1000f));
-
-    Move move = Move.Right;
-    int moveCount = 0;
-
-    float distance = 0f;
-
-    float shootCooldown;
+    public int WaveCount { get => _waveCount; }
 
     struct Column { public int id; public List<Invader> invaders; }
     struct Row { public int id; public List<Invader> invaders; }
@@ -47,13 +51,28 @@ public class Wave : MonoBehaviour
     List<Column> invaderPerColumn = new(); // Keeps track of invaders per column. A column will be removed if empty.
     List<Row> invaderPerRow = new(); // Keeps track of invaders per row. A row will be removed if empty.
 
+    private Action OnWaveCleared;
+
     void Awake()
     {
-        shootCooldown = timeBeforeFirstShoot;
+        _defaultLocation = transform.position;
+        _waveCount = 1;
+        CreateWave();
+    }
 
+    private void CreateWave()
+    {
+        //Reset variables
+        transform.position = _defaultLocation;
+        _moveDirection = Move.Right;
+        _moveCount = 0;
+        _distance = 0f;
+        _shootCooldown = timeBeforeFirstShoot;
+
+        //Spawn invaders
         for (int i = 0; i < columns; i++)
         {
-            invaderPerColumn.Add(new() { id = i, invaders= new() });
+            invaderPerColumn.Add(new() { id = i, invaders = new() });
         }
         for (int i = 0; i < rows; i++)
         {
@@ -73,7 +92,6 @@ public class Wave : MonoBehaviour
                 invaderPerRow[j].invaders.Add(invader);
             }
         }
-        
     }
 
     void Update()
@@ -84,8 +102,8 @@ public class Wave : MonoBehaviour
 
     private void UpdateShoot()
     {
-        shootCooldown -= Time.deltaTime;
-        if (shootCooldown > 0) { return; }
+        _shootCooldown -= Time.deltaTime;
+        if (_shootCooldown > 0) { return; }
 
         // Shoot rate depends on remaining invaders ratio
         float t = 1f - (invaders.Count - 1) / (float)((rows * columns) - 1);
@@ -98,7 +116,7 @@ public class Wave : MonoBehaviour
             int columnIndex = Random.Range(0, invaderPerColumn.Count);
             invaderPerColumn[columnIndex].invaders[0].Shoot();
 
-            shootCooldown += Random.Range(shootRandom.x, shootRandom.y);
+            _shootCooldown += Random.Range(shootRandom.x, shootRandom.y);
         }
     }
 
@@ -110,11 +128,11 @@ public class Wave : MonoBehaviour
         float t = 1f - (invaders.Count - 1) / (float)((rows * columns) - 1);
         float speed = Mathf.Lerp(speedMin, speedMax, difficultyProgress.Evaluate(t));
 
-        Vector3 direction = directions[(int)move];
+        Vector3 direction = directions[(int)_moveDirection];
         float delta = speed * Time.deltaTime;
-        distance += delta;
+        _distance += delta;
 
-        switch (move)
+        switch (_moveDirection)
         {
             case Move.Right:
                 {
@@ -152,10 +170,10 @@ public class Wave : MonoBehaviour
                         GameManager.Instance.PlayGameOver();
                     }
 
-                    if(distance >= downStep)
+                    if(_distance >= downStep)
                     {
                         // Adjust "delta" to place invaders exactly at end of downStep
-                        delta -= (distance - downStep);
+                        delta -= (_distance - downStep);
                         BeginNextMove();
                     }
                     break;
@@ -169,17 +187,17 @@ public class Wave : MonoBehaviour
     void BeginNextMove()
     {
         // "moveCount" keep tracks on the number of move steps invaders have already made to know if we need to go left or right when finishing going downward
-        moveCount++;
-        switch (move)
+        _moveCount++;
+        switch (_moveDirection)
         {
             case Move.Down:
-                move = (moveCount / 2) % 2 == 0 ? Move.Right : Move.Left; break;
+                _moveDirection = (_moveCount / 2) % 2 == 0 ? Move.Right : Move.Left; break;
             case Move.Right:
             case Move.Left:
             default: 
-                move = Move.Down; break;
+                _moveDirection = Move.Down; break;
         }
-        distance = 0f;
+        _distance = 0f;
     }
 
     /// <summary>
@@ -217,6 +235,13 @@ public class Wave : MonoBehaviour
             {
                 invaderPerRow[indexRow] = row;
             }
+        }
+
+        //Respawn wave
+        if(invaders.Count <= 0)
+        {
+            OnWaveCleared?.Invoke();
+            CreateWave();
         }
     }
 
