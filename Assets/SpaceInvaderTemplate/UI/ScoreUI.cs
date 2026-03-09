@@ -12,14 +12,13 @@ public class ScoreUI : MonoBehaviour
     [SerializeField, Tooltip("Temps d'attente entre l'ajout progressif du score")] private float _addDuration;
     [SerializeField] private AnimationCurve _scoreAddingCurve;
 
-    private int _scoreToAdd = 0;
     private int _currentScore = 0;
     private int _scoreToReach = 0;
     private Coroutine _scoreAddingRoutine = null;
 
     private void Start()
     {
-        _scoreToAdd = 0;
+        _scoreToReach = 0;
         _currentScore = 0;
         WriteScore();
     }
@@ -37,7 +36,6 @@ public class ScoreUI : MonoBehaviour
     public void AddScore(int newScore)
     {
         _scoreToReach = newScore;
-        _scoreToAdd += _scoreToReach - _currentScore;
 
         if(_scoreAddingRoutine == null)
         {
@@ -47,18 +45,16 @@ public class ScoreUI : MonoBehaviour
 
     private IEnumerator ScoreAdd()
     {
-        while(_scoreToAdd > 0)
+        while ((_scoreToReach - _currentScore) > 0)
         {
             _currentScore++;
-            _scoreToAdd--;
             WriteScore();
-            float curveProgression = _scoreAddingCurve.Evaluate((float)_scoreToAdd / (float)(_scoreToAdd + _currentScore));
-            print(1 - curveProgression);
+
+            float curveProgression = _scoreAddingCurve.Evaluate((float)(_scoreToReach - _currentScore) / _scoreToReach);
             yield return new WaitForSeconds((1 - curveProgression) * _addDuration);
         }
 
         _scoreAddingRoutine = null;
-        _scoreToAdd = 0;
         _currentScore = _scoreToReach;
         WriteScore();
     }
