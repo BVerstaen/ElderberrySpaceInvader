@@ -401,6 +401,9 @@ MonoBehaviour:
   - IsActive: 0
     Name: Chakawaka
     ActivationKey: 95
+  - IsActive: 1
+    Name: BulletTrail
+    ActivationKey: 96
 --- !u!1 &884244689
 GameObject:
   m_ObjectHideFlags: 0
