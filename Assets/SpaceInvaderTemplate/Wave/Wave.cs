@@ -274,7 +274,7 @@ public class Wave : MonoBehaviour
         return Mathf.Lerp(Bounds.min.y, Bounds.max.y, row / (float)(rows - 1));
     }
 
-    int GetWaveHealth()
+    private int GetWaveHealth()
     {
         int health = _healthPalierList[0].ennemyHasHealth;
         foreach(HealthPalier healthPalier in _healthPalierList)

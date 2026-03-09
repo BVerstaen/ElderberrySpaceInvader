@@ -52,7 +52,7 @@ public class Invader : MonoBehaviour
 
     private void Kill()
     {
-        GameManager.Instance.AddScore(_score);
+        ComboManager.Instance.AddScore();
         Destroy(gameObject);
     }
 
