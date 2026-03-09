@@ -1,6 +1,5 @@
-using Unity.VisualScripting;
+using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [DefaultExecutionOrder(-100)]
 public class GameManager : MonoBehaviour
@@ -14,11 +13,19 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private float gameOverHeight;
 
+    private int _playerScore;
+
+    public int PlayerScore { get => _playerScore; }
+
+    public Action<int> OnUpdateScore;
+
     void Awake()
     {
+        _playerScore = 0;
         Instance = this;
     }
 
+    #region Bounds
     public Vector3 KeepInBounds(Vector3 position)
     {
         return Bounds.ClosestPoint(position);
@@ -66,6 +73,13 @@ public class GameManager : MonoBehaviour
     public bool IsBelowGameOver(float position)
     {        
         return position < transform.position.y + (gameOverHeight - bounds.y * 0.5f);
+    }
+    #endregion
+
+    public void AddScore(int scoreToAdd)
+    {
+        _playerScore += scoreToAdd;
+        OnUpdateScore?.Invoke(scoreToAdd);
     }
 
     public void PlayGameOver()

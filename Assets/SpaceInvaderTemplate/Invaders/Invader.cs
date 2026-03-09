@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class Invader : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private Bullet bulletPrefab = null;
     [SerializeField] private Transform shootAt = null;
     [SerializeField] private string collideWithTag = "Player";
+
+    [Header("Parameters")]
+    [SerializeField] private int _score;
 
     internal Action<Invader> onDestroy;
 
@@ -27,6 +31,7 @@ public class Invader : MonoBehaviour
     {
         if(collision.gameObject.tag != collideWithTag) { return; }
 
+        GameManager.Instance.AddScore(_score);
         Destroy(gameObject);
         Destroy(collision.gameObject);
     }
