@@ -24,6 +24,13 @@ public class ComboManager : MonoBehaviour
     [SerializeField] private string _comboPrefix;
     [SerializeField] private float _comboDuration;
 
+    [Header("Scale animation")]
+    [SerializeField] private float _scaleDuration;
+    [SerializeField] private float _scaleMin;
+    [SerializeField] private float _scaleMax;
+    [SerializeField] private AnimationCurve _scaleCurve;
+
+
     private int _waitingScore = 0;
     private int _currentPalier = 0;
     private Coroutine _scoreCoroutine;
@@ -74,6 +81,8 @@ public class ComboManager : MonoBehaviour
         while (timeElapsed < _comboDuration)
         {
             float progress = timeElapsed / _comboDuration;
+            float scaleProgress = _scaleCurve.Evaluate(timeElapsed / _scaleDuration);
+            SetScale(scaleProgress);
 
             timeElapsed += Time.deltaTime;
             yield return null;
@@ -83,5 +92,11 @@ public class ComboManager : MonoBehaviour
         _waitingScore = 0;
         _currentPalier = 0;
         _comboTextObject.gameObject.SetActive(false);
+    }
+
+    private void SetScale(float progression)
+    {
+        float scale = Mathf.Lerp(_scaleMin, _scaleMax, progression);
+        _comboTextObject.transform.localScale = new Vector3(scale, scale, scale);
     }
 }
