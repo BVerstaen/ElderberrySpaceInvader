@@ -723,6 +723,11 @@ MonoBehaviour:
   shootRandomMax: {x: 0.5, y: 1.5}
   timeBeforeFirstShoot: 5
   downStep: 0.3
+  _healthPalierList:
+  - atWave: 0
+    ennemyHasHealth: 4
+  - atWave: 1
+    ennemyHasHealth: 10
 --- !u!4 &1833304615
 Transform:
   m_ObjectHideFlags: 0

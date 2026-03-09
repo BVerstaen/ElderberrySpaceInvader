@@ -12,18 +12,17 @@ public class Invader : MonoBehaviour
 
     [Header("Parameters")]
     [SerializeField] private int _score;
-    [SerializeField] private int maxLifeAmount = 4;
     private int _currentLifeAmount;
     
     internal Action<Invader> onDestroy;
 
     public Vector2Int GridIndex { get; private set; }
 
-    public void Initialize(Vector2Int gridIndex)
+    public void Initialize(Vector2Int gridIndex, int health)
     {
         this.GridIndex = gridIndex;
-        //TODO: Add Multiplier for Waves
-        _currentLifeAmount =  maxLifeAmount; 
+
+        _currentLifeAmount = health;
     }
 
     public void OnDestroy()
