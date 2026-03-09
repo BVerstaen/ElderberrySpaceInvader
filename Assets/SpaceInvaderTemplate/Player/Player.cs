@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform shootAt = null;
     [SerializeField] private float shootCooldown = 1f;
     [SerializeField] private string collideWithTag = "Untagged";
+    
+    [SerializeField] private int maxLifeAmount = 4;
+    private int _currentLife = 4;
 
     private bool _isShooting = false;
     private float lastShootTimestamp = Mathf.NegativeInfinity;
@@ -32,16 +35,26 @@ public class Player : MonoBehaviour
         _shootInput.action.canceled -= InputShootCanceled;
     }
 
-    void Update()
+    private void Start()
+    {
+        Reset();
+    }
+
+    private void Update()
     {
         UpdateMovement();
         UpdateActions();
     }
 
+    private void Reset()
+    {
+        _currentLife = maxLifeAmount;
+    }
+
     private void InputShootStarted(InputAction.CallbackContext context) => _isShooting = true;
     private void InputShootCanceled(InputAction.CallbackContext context) => _isShooting = false;
 
-    void UpdateMovement()
+    private void UpdateMovement()
     {
         
         float move = _moveInput.action.ReadValue<float>();
@@ -52,7 +65,7 @@ public class Player : MonoBehaviour
         transform.position = GameManager.Instance.KeepInBounds(transform.position + Vector3.right * delta);
     }
 
-    void UpdateActions()
+    private void UpdateActions()
     {
         if (_isShooting)
         {
@@ -60,7 +73,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void Shoot()
+    private void Shoot()
     {
         if (Time.time <= lastShootTimestamp + shootCooldown)
             return;
@@ -71,8 +84,23 @@ public class Player : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != collideWithTag) { return; }
+        if (!collision.gameObject.CompareTag(collideWithTag)) { return; }
 
-        GameManager.Instance.PlayGameOver();
+        TakeDamage(); 
+    }
+    
+    public event Action OnTakeDamage;
+    public event Action OnPlayerDeath;
+
+
+    private void TakeDamage()
+    {
+        _currentLife -= 1;
+        if (_currentLife <= 0)
+        {
+            GameManager.Instance.PlayGameOver();
+            OnPlayerDeath?.Invoke();
+        }
+        OnTakeDamage?.Invoke();
     }
 }
