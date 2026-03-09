@@ -48,15 +48,20 @@ public class ComboManager : MonoBehaviour
 
     public void AddScore()
     {
-        _waitingScore += GetScoreToAdd();
-        _currentPalier++;
-
-        if (_scoreCoroutine != null)
+        if(!GameFeelManager.Instance.IsFeatureActive("Combo"))
+            GameManager.Instance.AddScore(_waitingScore);
+        else
         {
-            StopCoroutine(_scoreCoroutine);
-            _scoreCoroutine = null;
+            _waitingScore += GetScoreToAdd();
+            _currentPalier++;
+
+            if (_scoreCoroutine != null)
+            {
+                StopCoroutine(_scoreCoroutine);
+                _scoreCoroutine = null;
+            }
+            _scoreCoroutine = StartCoroutine(TimerRoutine());
         }
-        _scoreCoroutine = StartCoroutine(TimerRoutine());
     }
 
     private int GetScoreToAdd()
