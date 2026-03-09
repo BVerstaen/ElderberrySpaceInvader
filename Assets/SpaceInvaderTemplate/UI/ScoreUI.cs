@@ -14,6 +14,7 @@ public class ScoreUI : MonoBehaviour
 
     private int _scoreToAdd = 0;
     private int _currentScore = 0;
+    private int _scoreToReach = 0;
     private Coroutine _scoreAddingRoutine = null;
 
     private void Start()
@@ -35,7 +36,8 @@ public class ScoreUI : MonoBehaviour
 
     public void AddScore(int newScore)
     {
-        _scoreToAdd += newScore - _currentScore;
+        _scoreToReach = newScore;
+        _scoreToAdd += _scoreToReach - _currentScore;
 
         if(_scoreAddingRoutine == null)
         {
@@ -54,7 +56,11 @@ public class ScoreUI : MonoBehaviour
             print(1 - curveProgression);
             yield return new WaitForSeconds((1 - curveProgression) * _addDuration);
         }
+
         _scoreAddingRoutine = null;
+        _scoreToAdd = 0;
+        _currentScore = _scoreToReach;
+        WriteScore();
     }
 
     private void WriteScore() => _scoreText.text = _textPrefix + " " + _currentScore.ToString();
