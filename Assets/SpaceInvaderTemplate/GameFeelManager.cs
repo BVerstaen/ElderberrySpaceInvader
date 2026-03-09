@@ -8,6 +8,8 @@ public class GameFeelManager : MonoBehaviour
 
     [SerializeField] private GameFeelFeature[] _gamefeelFeatures;
 
+    public Action<string, bool> OnFeatureToggled;
+
     private void Awake()
     {
         if (Instance == null)
@@ -32,6 +34,7 @@ public class GameFeelManager : MonoBehaviour
             if (Keyboard.current[_gamefeelFeatures[i].ActivationKey].wasPressedThisFrame)
             {
                 _gamefeelFeatures[i].IsActive = !_gamefeelFeatures[i].IsActive;
+                OnFeatureToggled?.Invoke(_gamefeelFeatures[i].Name, _gamefeelFeatures[i].IsActive);
                 Debug.Log((_gamefeelFeatures[i].IsActive ? "Activate" : "Deactivate") + _gamefeelFeatures[i].Name);
             }
         }

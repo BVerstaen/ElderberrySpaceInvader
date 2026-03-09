@@ -59,6 +59,9 @@ public class Invader : MonoBehaviour
 
     public void Shoot()
     {
+        if (shootAt == null)
+            return;
+
         Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
     }
 }
