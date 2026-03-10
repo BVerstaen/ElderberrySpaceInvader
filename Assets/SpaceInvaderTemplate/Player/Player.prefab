@@ -135,6 +135,32 @@ MonoBehaviour:
   _fireParticles:
   - {fileID: 5543220697953188131}
   - {fileID: 1395928534357392905}
+  _leanCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _leanSpeed: 10
+  _leanMaxAngle: 10
 --- !u!58 &61714824157334343
 CircleCollider2D:
   m_ObjectHideFlags: 0
