@@ -1,6 +1,7 @@
 using PLIbox.Audio;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -52,6 +53,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float _minShellDefferedTime;
     [SerializeField] private float _maxShellDefferedTime;
 
+    [Header("VFX")]
+    [SerializeField] private List<ParticleSystem> _fireParticles;
+
+    [Header("Lean movement")]
+    [SerializeField] private AnimationCurve _leanCurve;
+    [SerializeField] private float _leanSpeed;
+    [SerializeField] private float _leanMaxAngle;
+
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/> OnRafaleTriggered;
     
@@ -60,7 +69,9 @@ public class Player : MonoBehaviour
     private bool _isRafaleRightPressed = false;
     private bool _isRafaleLeftPressed = false;
     private bool _isInRafale = false;
-    
+
+    private float currentLean = 0f;
+
     private float _lastTimeKilledEnemy = 0;
 
     private void OnEnable()
@@ -95,7 +106,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        UpdateMovement();
+        float moveSign = UpdateMovement();
         UpdateActions();
         
         //Rafale Charge update
@@ -104,6 +115,14 @@ public class Player : MonoBehaviour
             _rafaleCharge -=  lostChargePerSeconds * Time.deltaTime;
             OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
         }
+
+        //lean movement
+        float targetLean = -moveSign * _leanMaxAngle;
+        currentLean = Mathf.Lerp(currentLean, targetLean, Time.deltaTime * _leanSpeed);
+
+        Vector3 rotation = transform.localEulerAngles;
+        rotation.z = currentLean;
+        transform.localEulerAngles = rotation;
     }
 
     private void ResetPlayer()
@@ -137,14 +156,15 @@ public class Player : MonoBehaviour
     }
 #endregion
 
-    private void UpdateMovement()
+    private float UpdateMovement()
     {
         float move = _moveInput.action.ReadValue<float>();
-        if (Mathf.Abs(move) < deadzone) { return; }
+        if (Mathf.Abs(move) < deadzone) { return 0; }
 
         move = Mathf.Sign(move);
         float delta = move * speed * Time.deltaTime;
         transform.position = GameManager.Instance.KeepInBounds(transform.position + Vector3.right * delta);
+        return move;
     }
 
     private void UpdateActions()
@@ -173,9 +193,7 @@ public class Player : MonoBehaviour
         Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
         lastShootTimestamp = Time.time;
 
-        //Feedback sound
-        AudioManager.Instance.PlaySound(FIRE_SOUND);
-        StartCoroutine(DifferedShellSound());
+        PlayFireEffect();
     }
 
     private IEnumerator DifferedShellSound()
@@ -187,7 +205,20 @@ public class Player : MonoBehaviour
     private void RafaleShoot()
     {
         Bullet bullet = Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
+        PlayFireEffect();
         bullet.SetCustomStartVelocity(bullet.GetStartVelocity() + new Vector3(UnityEngine.Random.Range(-rafaleBulletXOffset,rafaleBulletXOffset), 0, 0));
+    }
+
+    private void PlayFireEffect()
+    {
+        //Feedback sound
+        AudioManager.Instance.PlaySound(FIRE_SOUND);
+        StartCoroutine(DifferedShellSound());
+
+        foreach (var fire in _fireParticles)
+        {
+            fire.Play();
+        }
     }
 
     private IEnumerator Rafale()
