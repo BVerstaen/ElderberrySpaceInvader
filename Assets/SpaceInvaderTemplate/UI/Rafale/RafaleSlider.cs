@@ -8,6 +8,7 @@ public class RafaleSlider : MonoBehaviour
     [SerializeField] private Slider slider;
     [SerializeField] private Image fillBar;
     [SerializeField] private Gradient fillBarColor;
+    [SerializeField] private Color rafaleColor;
     private bool _isInRafale = false;
     private float _rafaleTime = 0;
     private float _rafaleClock = 0;
@@ -51,7 +52,7 @@ public class RafaleSlider : MonoBehaviour
     {
         _isInRafale = true;
         _rafaleTime = rafaleTime;
-        fillBar.color = Color.white;
+        fillBar.color = rafaleColor;
         _startRafaleValue = slider.value;
         _rafaleClock = 0;
     }
