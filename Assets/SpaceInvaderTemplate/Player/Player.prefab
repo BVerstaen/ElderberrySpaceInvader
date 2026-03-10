@@ -121,8 +121,8 @@ MonoBehaviour:
   inputActivationTime: 0.2
   rafaleMinimalCharge: 25
   rafaleMaximalCharge: 100
-  rafaleTimeMultiplier: 0.2
-  rafaleMaxChargeTimeBoost: 5
+  rafaleTimeMultiplier: 0.1
+  rafaleMaxChargeTimeBoost: 2
   timeBeforeChargeLost: 3
   invaderDeathChargeAmount: 5
   lostChargePerSeconds: 5

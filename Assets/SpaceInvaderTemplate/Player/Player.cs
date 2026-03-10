@@ -199,6 +199,10 @@ public class Player : MonoBehaviour
         
         float rafaleTime = _rafaleCharge * rafaleTimeMultiplier + (_hasRafaleMaxBoost ? rafaleMaxChargeTimeBoost : 0);
         float clock = 0;
+
+        //Haptic 
+        HapticManager.Instance.StartRumble(100, 200, rafaleTime);
+        CameraShake.Instance.StartShaking(rafaleTime);
         
         //Reset Rafale Charge 
         _rafaleCharge = 0;
