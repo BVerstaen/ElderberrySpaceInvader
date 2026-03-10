@@ -84,7 +84,7 @@ public class ComboManager : MonoBehaviour
             if (_currentPalier >= scorePalier.atPalier)
             {
                 score = (int)(_baseScore * scorePalier.scoreMultiplier);
-                if (Random.Range(0, 100) <= scorePalier.probaOfVoicelineToPlay && scorePalier.voicelinesToPlay.Count <= 0)
+                if (Random.Range(0, 100) <= scorePalier.probaOfVoicelineToPlay && scorePalier.voicelinesToPlay.Count > 0)
                     currentSoundToPlay = scorePalier.voicelinesToPlay.GetRandomItem();
                 else
                     currentSoundToPlay = "";
