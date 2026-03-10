@@ -1,0 +1,128 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Shader_Djess_Water
+  m_Shader: {fileID: 4800000, guid: 3cdbd7b64d384484383fc420bff31f52, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 1
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: _HDR
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _D_Noise:
+        m_Texture: {fileID: 2800000, guid: f3d4cd967632cd247b932f2c92c28ad4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _T_Main_Text:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _T_Noise:
+        m_Texture: {fileID: 2800000, guid: db403ac1861909a44b26b58a3d7d3d0a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _T_Noise1:
+        m_Texture: {fileID: 2800000, guid: 0da9a99669516d74f82a3ac03190bd57, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: 507b7e599313ff44db6b28f3e13ecdef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample1:
+        m_Texture: {fileID: 2800000, guid: 507b7e599313ff44db6b28f3e13ecdef, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AlphaClip: 0
+    - _Alpha_Radius_Max: 2.75
+    - _Alpha_Radius_Min: 0.5
+    - _Alpha_radius: 3
+    - _Cutoff: 0.5
+    - _D_Max: 1
+    - _D_Min: 0
+    - _D_X_Pam: 0.57
+    - _D_X_Tile: 1
+    - _D_Y_Pam: 0.5
+    - _D_Y_Tile: 1
+    - _Deaph: 0
+    - _Deaph_Max: 1
+    - _Deaph_Min: 0
+    - _Dissolve: 0
+    - _Distortion_Intensity: 1
+    - _Distortion_Intensity1: 0
+    - _F_Bias: 1
+    - _F_Power: 5
+    - _F_Scale: 1
+    - _Float0: 0
+    - _HDR: 3
+    - _Hue_Shift: 0
+    - _N_Max: 1
+    - _N_Min: 0.7
+    - _N_X_Pam: 0
+    - _N_X_Tile: 3
+    - _N_X_Tile1: 0
+    - _N_X_Tile2: 1.8
+    - _N_X_Tile3: 3
+    - _N_Y_Pam: 0.5
+    - _N_Y_Tile: 3
+    - _N_Y_Tile1: -0.66
+    - _Noise_Dissolve_Offset: 0.668
+    - _Noise_Dissolve_Scale: 1
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Saturation_Shift: 0
+    - _Smoosth_Max: 1
+    - _Smoosth_Min: 0
+    - _Step_Amount: 0.25
+    - _Step_Difference: -0.05
+    - _Value_Shift: 1
+    - _VertexOffset_Height: 0
+    - _VertexOffset_Max: 0
+    - _VertexOffset_Min: 0
+    - _Vertex_Offset: 0
+    - __dirty: 0
+    m_Colors:
+    - _Color: {r: 0.031358607, g: 0.31045696, b: 0.5537672, a: 1}
+    - _Color1: {r: 0, g: 0.7567787, b: 1, a: 1}
+    - _Color_A: {r: 0, g: 0.36804116, b: 0.5396226, a: 0}
+    - _Color_A1: {r: 0, g: 0.76249933, b: 1, a: 1}
+    - _Color_B: {r: 0.5494838, g: 0.7620817, b: 0.7924528, a: 0}
+    - _Color_B1: {r: 0.9716981, g: 0.9716981, b: 0.9716981, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Water_base_color: {r: 0.00091058103, g: 0.42326775, b: 1, a: 1}
+    - _Water_fludie: {r: 0.6743273, g: 1.2479211, b: 2, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

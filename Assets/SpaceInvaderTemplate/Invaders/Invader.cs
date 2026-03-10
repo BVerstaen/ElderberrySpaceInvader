@@ -57,7 +57,9 @@ public class Invader : MonoBehaviour
     public void OnDeath()
     {
         onDestroy?.Invoke(this);
-        Instantiate(_eyeParticlesPrefab, transform.position, Quaternion.identity);
+        Destroy(Instantiate(_eyeParticlesPrefab, transform.position, Quaternion.identity), 2.0f);
+
+
         Destroy(gameObject);
     }
 
