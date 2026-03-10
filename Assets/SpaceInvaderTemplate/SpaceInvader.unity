@@ -1255,6 +1255,12 @@ MonoBehaviour:
   - atWave: 0
     ennemyHasHealth: 1
   - atWave: 3
+    ennemyHasHealth: 2
+  - atWave: 5
+    ennemyHasHealth: 3
+  - atWave: 7
+    ennemyHasHealth: 4
+  - atWave: 9
     ennemyHasHealth: 5
   _minNextWaveWaiting: 1
   _maxNextWaveWaiting: 2

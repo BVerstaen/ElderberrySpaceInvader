@@ -1,5 +1,6 @@
 using PLIbox.Audio;
 using System;
+using System.Collections;
 using System.Reflection;
 using UnityEngine;
 
@@ -12,6 +13,7 @@ public class Invader : MonoBehaviour
     [SerializeField] private Transform shootAt = null;
     [SerializeField] private string collideWithTag = "Player";
     [SerializeField] private GameObject _eyeParticlesPrefab;
+    [SerializeField] private SpriteRenderer[] _invaderSprites;
 
     [Header("Parameters")]
     [SerializeField] private int _score;
@@ -77,9 +79,29 @@ public class Invader : MonoBehaviour
     {
         _currentLifeAmount--;
         OnTakeDamage?.Invoke();
+        StartCoroutine(DamageColorFeedback());
         if (_currentLifeAmount <= 0)
         {
             Kill();
+        }
+    }
+
+    private IEnumerator DamageColorFeedback()
+    {
+        SwitchSpritesColor(Color.darkRed);
+        yield return new WaitForSeconds(0.1f);
+        SwitchSpritesColor(Color.white);
+        yield return new WaitForSeconds(0.1f);
+        SwitchSpritesColor(Color.darkRed);
+        yield return new WaitForSeconds(0.1f);
+        SwitchSpritesColor(Color.white);
+    }
+
+    private void SwitchSpritesColor(Color color)
+    {
+        foreach (SpriteRenderer sprite in _invaderSprites)
+        {
+            sprite.color = color;
         }
     }
 
