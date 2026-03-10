@@ -1,9 +1,12 @@
+using PLIbox.Audio;
 using System;
 using System.Reflection;
 using UnityEngine;
 
 public class Invader : MonoBehaviour
 {
+    private const string INVADER_KILL_SOUND = "InvaderDeath";
+
     [Header("References")]
     [SerializeField] private Bullet bulletPrefab = null;
     [SerializeField] private Transform shootAt = null;
@@ -79,6 +82,7 @@ public class Invader : MonoBehaviour
     private void Kill()
     {
         ComboManager.Instance.AddScore();
+        AudioManager.Instance.PlaySound(INVADER_KILL_SOUND);
         OnDeath();
     }
 

@@ -1,11 +1,15 @@
+using PLIbox.Audio;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 public class Wave : MonoBehaviour
 {
+    private const string NEW_WAVE_SOUND = "NewWaveAlarm";
+
     [Serializable]
     private struct HealthPalier
     {
@@ -61,6 +65,7 @@ public class Wave : MonoBehaviour
     List<Column> invaderPerColumn = new(); // Keeps track of invaders per column. A column will be removed if empty.
     List<Row> invaderPerRow = new(); // Keeps track of invaders per row. A row will be removed if empty.
 
+
     private Action OnWaveCleared;
 
     void Awake()
@@ -102,6 +107,9 @@ public class Wave : MonoBehaviour
                 invaderPerRow[j].invaders.Add(invader);
             }
         }
+
+        //Feedback
+        AudioManager.Instance.PlaySound(NEW_WAVE_SOUND);
     }
 
     void Update()
