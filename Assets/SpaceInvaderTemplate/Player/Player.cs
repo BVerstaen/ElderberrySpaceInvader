@@ -1,9 +1,12 @@
+using PLIbox.Audio;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
+    private const string FIRE_SOUND = "PlayerFire";
+
     [Header("Inputs")]
     [SerializeField] private InputActionReference _moveInput;
     [SerializeField] private InputActionReference _shootInput;
@@ -80,6 +83,9 @@ public class Player : MonoBehaviour
 
         Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
         lastShootTimestamp = Time.time;
+
+        //Feedback sound
+        AudioManager.Instance.PlaySound(FIRE_SOUND);
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
