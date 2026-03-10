@@ -11,17 +11,25 @@ public class Bullet : MonoBehaviour
     [Header("Trail")]
     [SerializeField] private string _featureName;
     [SerializeField] private TrailRenderer _trail;
+    private Rigidbody2D _rb;
 
     // Start is called before the first frame update
     void Awake()
     {
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-        rb.linearVelocity = startVelocity;
+        _rb= GetComponent<Rigidbody2D>();
+        _rb.linearVelocity = startVelocity;
     }
 
     private void Start()
     {
         Destroy(gameObject, _lifeTime);
+    }
+    public Vector3 GetStartVelocity() => startVelocity;
+
+    public void SetCustomStartVelocity(Vector3 velocity)
+    {
+        startVelocity = velocity;
+        _rb.linearVelocity = startVelocity;
     }
 
     private void OnEnable()

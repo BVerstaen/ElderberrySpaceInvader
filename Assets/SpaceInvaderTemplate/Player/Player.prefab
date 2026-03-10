@@ -109,12 +109,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveInput: {fileID: -7252819961044648463, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
   _shootInput: {fileID: 8806388586919487790, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
+  _rafaleRightInput: {fileID: -7437062661355851099, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
+  _rafaleLeftInput: {fileID: -8697255473906523832, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
   deadzone: 0.2
   speed: 4
   bulletPrefab: {fileID: 7369880722360228486, guid: 42269f87d33f3eb4898473401db125ae, type: 3}
   shootAt: {fileID: 9182519034774482932}
   shootCooldown: 0.3
   collideWithTag: Untagged
+  maxLifeAmount: 4
 --- !u!58 &61714824157334343
 CircleCollider2D:
   m_ObjectHideFlags: 0

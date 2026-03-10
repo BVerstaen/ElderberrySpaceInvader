@@ -860,7 +860,7 @@ MonoBehaviour:
   rows: 5
   columns: 11
   invaderPrefab: {fileID: 9109969425864263349, guid: 7ab41d612eaa4c040b94ebea77be05a2, type: 3}
-  bounds: {x: 10, y: 4}
+  bounds: {x: 14, y: 5}
   difficultyProgress:
     serializedVersion: 2
     m_Curve:
@@ -962,6 +962,10 @@ PrefabInstance:
     - target: {fileID: 5793567614893588974, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _rafaleCharge
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
