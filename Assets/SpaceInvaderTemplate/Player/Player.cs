@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,6 +8,8 @@ public class Player : MonoBehaviour
     [Header("Inputs")]
     [SerializeField] private InputActionReference _moveInput;
     [SerializeField] private InputActionReference _shootInput;
+    [SerializeField] private InputActionReference _rafaleRightInput;
+    [SerializeField] private InputActionReference _rafaleLeftInput;
 
     [Header("Properties")]
     [SerializeField] private float deadzone = 0.3f;
@@ -20,13 +23,29 @@ public class Player : MonoBehaviour
     [SerializeField] private int maxLifeAmount = 4;
     private int _currentLife = 4;
 
+    [Header("Rafale")]
+    //Time before input is reinitialize
+    [SerializeField] private float inputActivationTime = 0.2f;
+    [SerializeField] private float rafaleMinimalCharge = 25f;
+    [SerializeField] private float rafaleMaximalCharge = 100f;
+    [SerializeField] private float rafaleTimeMultiplier = 0.5f;
+    [SerializeField] private float invaderDeathChargeAmount = 5f;
+    [SerializeField] private float _rafaleCharge = 0f;
+    
     private bool _isShooting = false;
     private float lastShootTimestamp = Mathf.NegativeInfinity;
+    private bool _isRafaleRightPressed = false;
+    private bool _isRafaleLeftPressed = false;
+    private bool _isInRafale = false;
 
     private void OnEnable()
     {
         _shootInput.action.started += InputShootStarted;
         _shootInput.action.canceled += InputShootCanceled;
+        _rafaleLeftInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, false)); };
+        _rafaleLeftInput.action.canceled += context => { InputRafaleCanceled(context, false); };
+        _rafaleRightInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, true)); };
+        _rafaleRightInput.action.canceled += context => { InputRafaleCanceled(context, true); };
     }
 
     private void OnDisable()
@@ -37,7 +56,13 @@ public class Player : MonoBehaviour
 
     private void Start()
     {
-        ResetLife();
+        ResetPlayer();
+        Wave.OnInvaderDeath += OnInvaderDeath;
+    }
+
+    private void OnInvaderDeath()
+    {
+        _rafaleCharge = Mathf.Clamp(_rafaleCharge + invaderDeathChargeAmount, 0f, rafaleMaximalCharge);
     }
 
     private void Update()
@@ -46,17 +71,39 @@ public class Player : MonoBehaviour
         UpdateActions();
     }
 
-    private void ResetLife()
+    private void ResetPlayer()
     {
         _currentLife = maxLifeAmount;
+        _isRafaleLeftPressed = false;
+        _isRafaleRightPressed = false;
+        _rafaleCharge = 0;
     }
 
+#region Inputs
+    
     private void InputShootStarted(InputAction.CallbackContext context) => _isShooting = true;
     private void InputShootCanceled(InputAction.CallbackContext context) => _isShooting = false;
 
+    private IEnumerator InputRafaleStarted(InputAction.CallbackContext context, bool bIsRight)
+    {
+        if (bIsRight) _isRafaleRightPressed = true;
+        else _isRafaleLeftPressed = true;
+
+        yield return new WaitForSeconds(inputActivationTime);
+            
+        if (bIsRight) _isRafaleRightPressed = false;
+        else _isRafaleLeftPressed = false;
+    }
+
+    private void InputRafaleCanceled(InputAction.CallbackContext context, bool bIsRight)
+    {
+        if (bIsRight) _isRafaleRightPressed = false;
+        else _isRafaleLeftPressed = false;
+    }
+#endregion
+
     private void UpdateMovement()
     {
-        
         float move = _moveInput.action.ReadValue<float>();
         if (Mathf.Abs(move) < deadzone) { return; }
 
@@ -67,10 +114,20 @@ public class Player : MonoBehaviour
 
     private void UpdateActions()
     {
-        if (_isShooting)
+        if (_isShooting && !_isInRafale)
         {
             Shoot();
         }
+
+        if (_isRafaleLeftPressed && _isRafaleRightPressed && CanRafale())
+        {
+            StartCoroutine(Rafale());
+        }
+    }
+
+    private bool CanRafale()
+    {
+        return !_isInRafale && _rafaleCharge > rafaleMinimalCharge;
     }
 
     private void Shoot()
@@ -82,11 +139,20 @@ public class Player : MonoBehaviour
         lastShootTimestamp = Time.time;
     }
 
+    private IEnumerator Rafale()
+    {
+        _isInRafale = true;
+        _isRafaleLeftPressed = false;
+        _isRafaleRightPressed = false;
+        yield return new WaitForSeconds(_rafaleCharge * rafaleTimeMultiplier);
+        Debug.Log("Rafale");
+    }
+
     public void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag(collideWithTag)) { return; }
 
-        TakeDamage(); 
+        TakeDamage();
     }
     
     public event Action OnTakeDamage;

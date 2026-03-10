@@ -25,9 +25,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Rafale",
+                    "name": "RafaleRight",
                     "type": "Button",
                     "id": "bcb71d57-dfde-4965-a8af-e24237e2cd7f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "RafaleLeft",
+                    "type": "Button",
+                    "id": "2703947c-9a90-4fdc-9ed0-44afa8811ec0",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -148,11 +157,22 @@
                 {
                     "name": "",
                     "id": "a68edfa1-5aab-4bb1-9dcb-2dc2bfd0334d",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RafaleRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8ce0968-0067-446b-8604-0bf46a6caed4",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Rafale",
+                    "action": "RafaleLeft",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

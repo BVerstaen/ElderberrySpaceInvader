@@ -13,6 +13,8 @@ public class Wave : MonoBehaviour
         public int ennemyHasHealth;
     }
 
+    public static event Action OnInvaderDeath;
+
     enum Move { Left = 0, Down = 1, Right = 2 }
     readonly Vector3[] directions = { Vector3.left, Vector3.down, Vector3.right };
 
@@ -215,6 +217,9 @@ public class Wave : MonoBehaviour
     /// </summary>
     void RemoveInvader(Invader invader)
     {
+        OnInvaderDeath?.Invoke();
+        Debug.Log("Bah si ça marche");
+        
         invaders.Remove(invader);
 
         int indexColumn = invaderPerColumn.FindIndex(x => x.id == invader.GridIndex.x);
