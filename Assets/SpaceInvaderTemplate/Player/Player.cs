@@ -36,16 +36,19 @@ public class Player : MonoBehaviour
     [SerializeField] private float rafaleMaximalCharge = 100f;
     [SerializeField] private float rafaleTimeMultiplier = 0.2f;
     [SerializeField] private float rafaleMaxChargeTimeBoost = 5f;
+    // Time after which Enemy Death 
+    [SerializeField] private float timeBeforeChargeLost = 3f;
     //Amount of Charge won by killing an Invader
     [SerializeField] private float invaderDeathChargeAmount = 5f;
     [SerializeField] private float lostChargePerSeconds = 5f;
     //Time between each bullets during rafale
     [SerializeField] private float rafaleBulletCooldown = 0.05f;
     //X Offset of bullets velocity
-    [SerializeField] private float rafaleBulletXOffset = 0.5f;
+    [SerializeField] private float rafaleBulletXOffset = 1f;
     private float _rafaleCharge = 0f;
     private bool _hasRafaleMaxBoost = false;
 
+    public static event Action<float /*RafalePercentage*/> OnRafaleChargeChanged;
     [Header("Sound")]
     [SerializeField] private float _minShellDefferedTime;
     [SerializeField] private float _maxShellDefferedTime;
@@ -58,6 +61,8 @@ public class Player : MonoBehaviour
     private bool _isRafaleRightPressed = false;
     private bool _isRafaleLeftPressed = false;
     private bool _isInRafale = false;
+    
+    private float _lastTimeKilledEnemy = 0;
 
     private void OnEnable()
     {
@@ -83,9 +88,10 @@ public class Player : MonoBehaviour
 
     private void OnInvaderDeath()
     {
+        _lastTimeKilledEnemy = Time.time;
         if (_isInRafale) return;
         _rafaleCharge = Mathf.Clamp(_rafaleCharge + invaderDeathChargeAmount, 0f, rafaleMaximalCharge);
-        OnRafaleChargeChanged?.Invoke(_rafaleCharge);
+        OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
     }
 
     private void Update()
@@ -94,10 +100,10 @@ public class Player : MonoBehaviour
         UpdateActions();
         
         //Rafale Charge update
-        if (_rafaleCharge > 1)
+        if (_rafaleCharge > 1 && _lastTimeKilledEnemy + timeBeforeChargeLost < Time.time)
         {
             _rafaleCharge -=  lostChargePerSeconds * Time.deltaTime;
-            OnRafaleChargeChanged?.Invoke(_rafaleCharge);
+            OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
         }
     }
 
@@ -197,7 +203,7 @@ public class Player : MonoBehaviour
         
         //Reset Rafale Charge 
         _rafaleCharge = 0;
-        OnRafaleChargeChanged?.Invoke(_rafaleCharge);
+        OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
         
         OnRafaleTriggered?.Invoke(rafaleTime);
         Debug.Log("Start Rafale");
