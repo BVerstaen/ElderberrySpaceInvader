@@ -51,7 +51,7 @@ Material:
     m_Floats:
     - _Dissolve: 0
     - _Dissolve1: 1
-    - _Float0: 0.37
+    - _Float0: 3
     - _Noise_Dissolve_Offset: 0.184
     - _Noise_Dissolve_Scale: 0
     - _QueueControl: 0
