@@ -6,7 +6,7 @@ public class ScoreUI : MonoBehaviour
 {
     [Header("Reference")]
     [SerializeField] private TMP_Text _scoreText;
-    
+
     [Header("Parameters")]
     [SerializeField] private string _textPrefix;
     [SerializeField, Tooltip("Temps d'attente entre l'ajout progressif du score")] private float _addDuration;
