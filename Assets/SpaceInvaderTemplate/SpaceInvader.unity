@@ -920,8 +920,8 @@ MonoBehaviour:
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
   _comboTextPrefab: {fileID: 1497979094715916706, guid: 32b835e7ec4efc44fbabdf4fc032df0b, type: 3}
-  _comboTextStartPos: {x: 100, y: -50}
-  _comboTextEndPos: {x: 150, y: 0}
+  _comboTextStartPos: {x: 200, y: -75}
+  _comboTextEndPos: {x: 120, y: 0}
   _comboDuration: 1
   _scaleDuration: 0.5
   _scaleMin: 1
