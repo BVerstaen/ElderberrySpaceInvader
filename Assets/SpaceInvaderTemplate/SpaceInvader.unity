@@ -896,6 +896,8 @@ MonoBehaviour:
     ennemyHasHealth: 1
   - atWave: 3
     ennemyHasHealth: 5
+  _minNextWaveWaiting: 2
+  _maxNextWaveWaiting: 3
 --- !u!4 &1833304615
 Transform:
   m_ObjectHideFlags: 0

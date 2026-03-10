@@ -1,5 +1,6 @@
 using PLIbox.Audio;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -50,6 +51,10 @@ public class Wave : MonoBehaviour
     [Header("Health Modifier")]
     [SerializeField] private List<HealthPalier> _healthPalierList = new List<HealthPalier>();
 
+    [Header("Next wave")]
+    [SerializeField] private float _minNextWaveWaiting;
+    [SerializeField] private float _maxNextWaveWaiting;
+
     private Vector2 _defaultLocation;
     private Move _moveDirection = Move.Right;
     private int _moveCount = 0;
@@ -58,6 +63,8 @@ public class Wave : MonoBehaviour
     private int _currentWave;
 
     private Bounds Bounds => new Bounds(transform.position, new Vector3(bounds.x, bounds.y, 1000f));
+    private Coroutine _nextWaveWaiting;
+
     public int CurrentWave { get => _currentWave; }
 
     struct Column { public int id; public List<Invader> invaders; }
@@ -265,8 +272,15 @@ public class Wave : MonoBehaviour
         {
             OnWaveCleared?.Invoke();
             _currentWave++;
-            CreateWave();
+
+            _nextWaveWaiting = StartCoroutine(WaitForNextWave());
         }
+    }
+
+    private IEnumerator WaitForNextWave()
+    {
+        yield return new WaitForSeconds(Random.Range(_minNextWaveWaiting, _maxNextWaveWaiting));
+        CreateWave();
     }
 
     // Get position of an invader in the bounding box according to it's index
