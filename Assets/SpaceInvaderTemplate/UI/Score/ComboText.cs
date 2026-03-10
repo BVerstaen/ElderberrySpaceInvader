@@ -1,10 +1,12 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class ComboText : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private RectTransform _rect;
+    [SerializeField] private TMP_Text _scoreText;
 
     [Header("Movement animation")]
     [SerializeField] private AnimationCurve _animationCurve;
@@ -20,6 +22,16 @@ public class ComboText : MonoBehaviour
         _startPosition = startPos;
         _endPosition = endPos;
         _rect.anchoredPosition = _startPosition;
+    }
+
+    public void UpdateScoreText(string scoreText)
+    {
+        _scoreText.text = scoreText;
+    }
+
+    public void SetScoreTextScale(float scale)
+    {
+        transform.localScale = new Vector3(scale, scale, scale);
     }
 
     public void StartAnimation()

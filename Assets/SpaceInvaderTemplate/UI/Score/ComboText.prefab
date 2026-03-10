@@ -151,6 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboText
   _rect: {fileID: 6780752981874838908}
+  _scoreText: {fileID: 1957467312042382802}
   _animationCurve:
     serializedVersion: 2
     m_Curve:
