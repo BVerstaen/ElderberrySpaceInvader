@@ -659,11 +659,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFeelManager
   _gamefeelFeatures:
-  - IsActive: 0
+  - IsActive: 1
     Name: ScreenShake
     ActivationKey: 94
-  - IsActive: 0
-    Name: Chakawaka
+  - IsActive: 1
+    Name: Haptics
     ActivationKey: 95
   - IsActive: 1
     Name: BulletTrail
