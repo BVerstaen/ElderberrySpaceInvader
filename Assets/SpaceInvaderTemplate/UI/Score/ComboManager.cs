@@ -21,6 +21,10 @@ public class ComboManager : MonoBehaviour
         public float scoreMultiplier;
         
         [Space(5)]
+        [Header("Scale")]
+        public float scoreScaleMultiplier;
+
+        [Space(5)]
         [Header("Color")]
         public Material newTextMaterial;
 
@@ -73,7 +77,7 @@ public class ComboManager : MonoBehaviour
             GameManager.Instance.AddScore(_baseScore);
         else
         {
-            _waitingScore += GetScoreToAdd(out _currentColor);
+            _waitingScore += GetScoreToAdd(out _currentColor, out float scaleMultiplier);
             _currentPalier++;
 
             if (_scoreCoroutine != null)
@@ -81,14 +85,15 @@ public class ComboManager : MonoBehaviour
                 StopCoroutine(_scoreCoroutine);
                 _scoreCoroutine = null;
             }
-            _scoreCoroutine = StartCoroutine(TimerRoutine());
+            _scoreCoroutine = StartCoroutine(TimerRoutine(scaleMultiplier));
         }
     }
 
-    private int GetScoreToAdd(out Material scoreColor)
+    private int GetScoreToAdd(out Material scoreColor, out float scaleMultiplier)
     {
         int score = _baseScore;
         scoreColor = _baseColorMaterial;
+        scaleMultiplier = 1f;
         string currentSoundToPlay = "";
         foreach (ScorePalier scorePalier in _scorePalierList)
         {
@@ -96,6 +101,7 @@ public class ComboManager : MonoBehaviour
             {
                 score = (int)(_baseScore * scorePalier.scoreMultiplier);
                 scoreColor = scorePalier.newTextMaterial;
+                scaleMultiplier = scorePalier.scoreScaleMultiplier;
 
                 if (Random.Range(0, 100) <= scorePalier.probaOfVoicelineToPlay && scorePalier.voicelinesToPlay.Count > 0)
                     currentSoundToPlay = scorePalier.voicelinesToPlay.GetRandomItem();
@@ -113,7 +119,7 @@ public class ComboManager : MonoBehaviour
         return score;
     }
 
-    private IEnumerator TimerRoutine()
+    private IEnumerator TimerRoutine(float _scaleMultiplier)
     {
         if (_currentComboText == null)
         {
@@ -128,7 +134,7 @@ public class ComboManager : MonoBehaviour
         {
             float progress = timeElapsed / _comboDuration;
             float scaleProgress = _scaleCurve.Evaluate(timeElapsed / _scaleDuration);
-            _currentComboText.SetScoreTextScale(Mathf.Lerp(_scaleMin, _scaleMax, scaleProgress));
+            _currentComboText.SetScoreTextScale(_scaleMultiplier * Mathf.Lerp(_scaleMin, _scaleMax, scaleProgress));
 
             timeElapsed += Time.deltaTime;
             yield return null;
