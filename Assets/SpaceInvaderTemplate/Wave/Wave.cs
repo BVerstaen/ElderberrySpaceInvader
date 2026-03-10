@@ -95,7 +95,7 @@ public class Wave : MonoBehaviour
             for (int j = 0; j < rows; j++)
             {
                 Invader invader = GameObject.Instantiate<Invader>(invaderPrefab, GetPosition(i, j), Quaternion.identity, transform);
-                invader.Initialize(new Vector2Int(i, j), GetWaveHealth());
+                invader.Initialize(new Vector2Int(i, j), GetWaveHealth(), i + j * columns);
                 invader.onDestroy += RemoveInvader;
                 invaders.Add(invader);
                 invaderPerColumn[i].invaders.Add(invader);
