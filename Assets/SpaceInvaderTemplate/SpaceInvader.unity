@@ -405,7 +405,7 @@ MonoBehaviour:
     Name: BulletTrail
     ActivationKey: 96
   - IsActive: 1
-    Name: Combo
+    Name: ScoreFeature
     ActivationKey: 97
 --- !u!1 &884244689
 GameObject:
@@ -587,7 +587,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _batchSize: 20
+  _batchSize: 2
 --- !u!114 &1671297513
 MonoBehaviour:
   m_ObjectHideFlags: 0

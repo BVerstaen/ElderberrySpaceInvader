@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ScoreUI : MonoBehaviour
 {
+    const string SCORE_FEATURE = "ScoreFeature";
+
     [Header("Reference")]
     [SerializeField] private TMP_Text _scoreText;
 
@@ -37,11 +39,26 @@ public class ScoreUI : MonoBehaviour
 
     public void AddScore(int newScore)
     {
-        _scoreToReach = newScore;
-
-        if(_scoreAddingRoutine == null)
+        if(GameFeelManager.Instance.IsFeatureActive(SCORE_FEATURE))
         {
-            _scoreAddingRoutine = StartCoroutine(ScoreAdd());
+            _scoreToReach = newScore;
+
+            if (_scoreAddingRoutine == null)
+            {
+                _scoreAddingRoutine = StartCoroutine(ScoreAdd());
+            }
+        }
+        else
+        {
+            if (_scoreAddingRoutine != null)
+            {
+                StopCoroutine(_scoreAddingRoutine);
+                _scoreAddingRoutine = null;
+            }
+
+            _scoreToReach = newScore;
+            _currentScore = newScore;
+            WriteScore();
         }
     }
 
