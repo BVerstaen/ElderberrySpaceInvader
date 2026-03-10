@@ -110,7 +110,9 @@ MonoBehaviour:
   shootAt: {fileID: 8808591723042360307}
   collideWithTag: Player
   _score: 100
-  maxLifeAmount: 4
+  _angleSpeed: 3
+  _radiusVariation: 0.5
+  _noiseScale: 2
 --- !u!61 &1286698669282929100
 BoxCollider2D:
   m_ObjectHideFlags: 0
