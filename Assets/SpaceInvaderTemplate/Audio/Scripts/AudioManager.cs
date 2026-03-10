@@ -10,6 +10,9 @@ namespace PLIbox.Audio
     {
         public AudioClip Clip;
         [Range(0, 1)] public float Volume;
+        [Space(20)]
+        [Range(-4, 2)] public float MinPitchModifier;
+        [Range(-4, 2)] public float MaxPitchModifier;
     }
 
     [Serializable]
@@ -116,7 +119,7 @@ namespace PLIbox.Audio
         public AudioSource PlaySound(string soundName, int soundIndex = -1, bool isLooping = false) // -1 == random
         {
             //Find the sound to play
-            GetAudioDataFromSoundName(soundName, soundIndex, out AudioClip soundToPlay, out float soundVolume);
+            GetAudioDataFromSoundName(soundName, soundIndex, out AudioClip soundToPlay, out float soundVolume, out Vector2 randomPitch);
 
             //Find an unused sound object
             AudioSource sourceToPlay = FindUnusedAudioSource();
@@ -125,7 +128,7 @@ namespace PLIbox.Audio
             if (!AssertSound(soundName, soundToPlay, sourceToPlay))
                 return null;
 
-            SetupNewSound(sourceToPlay, soundToPlay, soundVolume, isLooping);
+            SetupNewSound(sourceToPlay, soundToPlay, soundVolume, randomPitch, isLooping);
 
             return sourceToPlay;
         }
@@ -157,7 +160,7 @@ namespace PLIbox.Audio
             return null;
         }
 
-        private void GetAudioDataFromSoundName(string name, int audioDataIndex, out AudioClip clip, out float volume)
+        private void GetAudioDataFromSoundName(string name, int audioDataIndex, out AudioClip clip, out float volume, out Vector2 randomPitch)
         {
             //Get AudioData
             AudioData foundAudioData = new AudioData();
@@ -177,6 +180,7 @@ namespace PLIbox.Audio
                         {
                             clip = null;
                             volume = 0.0f;
+                            randomPitch = Vector2.zero;
                             Debug.LogError("Didn't find " + name);
                             return;
                         }
@@ -202,17 +206,23 @@ namespace PLIbox.Audio
                 //Setup clip and volume
                 clip = foundAudioData.Clip;
                 volume = foundAudioData.Volume;
+                randomPitch = new Vector2
+                    (
+                        foundAudioData.MinPitchModifier,
+                        foundAudioData.MaxPitchModifier
+                    );
             }
             else
             {
                 clip = null;
                 volume = 0.0f;
+                randomPitch = Vector2.zero;
                 Debug.LogError("Didn't find " + name);
             }
 
         }
 
-        private void SetupNewSound(AudioSource source, AudioClip clip, float clipVolume, bool isLooping = false)
+        private void SetupNewSound(AudioSource source, AudioClip clip, float clipVolume, Vector2 randomPitch, bool isLooping = false)
         {
             if (!clip || !source)
                 return;
@@ -220,6 +230,7 @@ namespace PLIbox.Audio
             source.clip = clip;
             source.volume = clipVolume * _soundVolume;
             source.loop = isLooping;
+            source.pitch = Random.Range(randomPitch.x, randomPitch.y) + 1;
             source.Play();
 
         }

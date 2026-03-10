@@ -155,12 +155,22 @@ MonoBehaviour:
     Clips:
     - Clip: {fileID: 8300000, guid: 8faa4ef5ad0d0d3428a7d8d6af2a218e, type: 3}
       Volume: 0.5
+      MinPitchModifier: 0
+      MaxPitchModifier: 0
   - Name: InvaderDeath
     Clips:
     - Clip: {fileID: 8300000, guid: 0b6e4f5521fff5040b5280280aa3e67b, type: 3}
       Volume: 1
+      MinPitchModifier: 0.5
+      MaxPitchModifier: -0.5
     - Clip: {fileID: 8300000, guid: 8fcd076eaf1ea734791a41ca80b72f64, type: 3}
       Volume: 1
+      MinPitchModifier: 0.5
+      MaxPitchModifier: -0.5
+    - Clip: {fileID: 8300000, guid: 423783bce1c930949b5a3c1d4e164cf2, type: 3}
+      Volume: 1
+      MinPitchModifier: 0.5
+      MaxPitchModifier: -0.5
 --- !u!4 &309365224
 Transform:
   m_ObjectHideFlags: 0
