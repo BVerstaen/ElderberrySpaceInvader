@@ -50,10 +50,10 @@ public class Invader : MonoBehaviour
         transform.localPosition = new Vector3(x, y, transform.localPosition.z);
     }
 
-    public void OnDestroy()
+    public void OnDeath()
     {
-        if(!Application.isPlaying)
-            onDestroy?.Invoke(this);
+        onDestroy?.Invoke(this);
+        Destroy(gameObject);
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -79,7 +79,7 @@ public class Invader : MonoBehaviour
     private void Kill()
     {
         ComboManager.Instance.AddScore();
-        Destroy(gameObject);
+        OnDeath();
     }
 
     public void Shoot()
