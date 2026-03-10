@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = System.Random;
 
 public class Player : MonoBehaviour
 {
@@ -28,9 +29,20 @@ public class Player : MonoBehaviour
     [SerializeField] private float inputActivationTime = 0.2f;
     [SerializeField] private float rafaleMinimalCharge = 25f;
     [SerializeField] private float rafaleMaximalCharge = 100f;
-    [SerializeField] private float rafaleTimeMultiplier = 0.5f;
+    [SerializeField] private float rafaleTimeMultiplier = 0.2f;
+    [SerializeField] private float rafaleMaxChargeTimeBoost = 5f;
+    //Amount of Charge won by killing an Invader
     [SerializeField] private float invaderDeathChargeAmount = 5f;
-    [SerializeField] private float _rafaleCharge = 0f;
+    [SerializeField] private float lostChargePerSeconds = 5f;
+    //Time between each bullets during rafale
+    [SerializeField] private float rafaleBulletCooldown = 0.05f;
+    //X Offset of bullets velocity
+    [SerializeField] private float rafaleBulletXOffset = 0.5f;
+    private float _rafaleCharge = 0f;
+    private bool _hasRafaleMaxBoost = false;
+
+    public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
+    public static event Action<float /*RafaleDuration*/> OnRafaleTriggered;
     
     private bool _isShooting = false;
     private float lastShootTimestamp = Mathf.NegativeInfinity;
@@ -62,13 +74,22 @@ public class Player : MonoBehaviour
 
     private void OnInvaderDeath()
     {
+        if (_isInRafale) return;
         _rafaleCharge = Mathf.Clamp(_rafaleCharge + invaderDeathChargeAmount, 0f, rafaleMaximalCharge);
+        OnRafaleChargeChanged?.Invoke(_rafaleCharge);
     }
 
     private void Update()
     {
         UpdateMovement();
         UpdateActions();
+        
+        //Rafale Charge update
+        if (_rafaleCharge > 1)
+        {
+            _rafaleCharge -=  lostChargePerSeconds * Time.deltaTime;
+            OnRafaleChargeChanged?.Invoke(_rafaleCharge);
+        }
     }
 
     private void ResetPlayer()
@@ -138,14 +159,36 @@ public class Player : MonoBehaviour
         Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
         lastShootTimestamp = Time.time;
     }
+    private void RafaleShoot()
+    {
+        Bullet bullet = Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
+        bullet.SetCustomStartVelocity(bullet.GetStartVelocity() + new Vector3(UnityEngine.Random.Range(-rafaleBulletXOffset,rafaleBulletXOffset), 0, 0));
+    }
 
     private IEnumerator Rafale()
     {
         _isInRafale = true;
         _isRafaleLeftPressed = false;
         _isRafaleRightPressed = false;
-        yield return new WaitForSeconds(_rafaleCharge * rafaleTimeMultiplier);
-        Debug.Log("Rafale");
+        _hasRafaleMaxBoost = Mathf.Approximately(_rafaleCharge, rafaleMaximalCharge);
+        
+        float rafaleTime = _rafaleCharge * rafaleTimeMultiplier + (_hasRafaleMaxBoost ? rafaleMaxChargeTimeBoost : 0);
+        float clock = 0;
+        
+        //Reset Rafale Charge 
+        _rafaleCharge = 0;
+        OnRafaleChargeChanged?.Invoke(_rafaleCharge);
+        
+        OnRafaleTriggered?.Invoke(rafaleTime);
+        Debug.Log("Start Rafale");
+        while (clock < rafaleTime)
+        {
+            RafaleShoot();
+            yield return new WaitForSeconds(rafaleBulletCooldown);
+            clock += rafaleBulletCooldown;
+        }
+        Debug.Log("Stop Rafale");
+        _isInRafale = false;
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
