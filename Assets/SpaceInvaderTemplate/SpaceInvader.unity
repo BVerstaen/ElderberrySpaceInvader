@@ -207,10 +207,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
       objectReference: {fileID: 0}
-    - target: {fileID: 3090861071531454591, guid: b3405aba000337d4e8a50f280d465925, type: 3}
-      propertyPath: sliderValueSpeed
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 4185726809008210589, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -565,6 +561,9 @@ MonoBehaviour:
   - IsActive: 1
     Name: EnnemyExplosion
     ActivationKey: 99
+  - IsActive: 1
+    Name: RafaleChargeSliderAnimation
+    ActivationKey: 100
 --- !u!1 &884244689
 GameObject:
   m_ObjectHideFlags: 0

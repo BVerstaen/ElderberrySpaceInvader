@@ -38,15 +38,22 @@ public class RafaleSlider : MonoBehaviour
         }
         else if (!Mathf.Approximately(_rafaleValueTarget, slider.value))
         {
-            if (_rafaleValueTarget > slider.value)
+            if (!GameFeelManager.Instance.IsFeatureActive("RafaleChargeSliderAnimation"))
             {
-                slider.value += _sliderSpeed * Time.deltaTime;
-                slider.value = Mathf.Min(slider.value, _rafaleValueTarget);
+                slider.value = _rafaleValueTarget;
             }
             else
             {
-                slider.value -= _sliderSpeed * Time.deltaTime;
-                slider.value = Mathf.Max(slider.value, _rafaleValueTarget);
+                if (_rafaleValueTarget > slider.value)
+                {
+                    slider.value += _sliderSpeed * Time.deltaTime;
+                    slider.value = Mathf.Min(slider.value, _rafaleValueTarget);
+                }
+                else
+                {
+                    slider.value -= _sliderSpeed * Time.deltaTime;
+                    slider.value = Mathf.Max(slider.value, _rafaleValueTarget);
+                }
             }
         }
     }
@@ -68,6 +75,7 @@ public class RafaleSlider : MonoBehaviour
 
     private void RafaleTriggered(float rafaleTime)
     {
+        if (!GameFeelManager.Instance.IsFeatureActive("RafaleChargeSliderAnimation")) return;
         _isInRafale = true;
         _rafaleTime = rafaleTime;
         fillBar.color = rafaleColor;
