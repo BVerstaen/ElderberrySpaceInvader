@@ -123,10 +123,11 @@ MonoBehaviour:
   rafaleMaximalCharge: 100
   rafaleTimeMultiplier: 0.2
   rafaleMaxChargeTimeBoost: 5
+  timeBeforeChargeLost: 3
   invaderDeathChargeAmount: 5
   lostChargePerSeconds: 5
   rafaleBulletCooldown: 0.05
-  rafaleBulletXOffset: 0.5
+  rafaleBulletXOffset: 1
   _minShellDefferedTime: 0.1
   _maxShellDefferedTime: 0.5
 --- !u!58 &61714824157334343

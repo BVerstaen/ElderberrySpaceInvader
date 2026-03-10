@@ -48,7 +48,6 @@ public class Player : MonoBehaviour
     private float _rafaleCharge = 0f;
     private bool _hasRafaleMaxBoost = false;
 
-    public static event Action<float /*RafalePercentage*/> OnRafaleChargeChanged;
     [Header("Sound")]
     [SerializeField] private float _minShellDefferedTime;
     [SerializeField] private float _maxShellDefferedTime;
