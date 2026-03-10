@@ -16,18 +16,23 @@ public class ComboManager : MonoBehaviour
     [Serializable]
     private struct ScorePalier
     {
+        [Header("Score")]
         public int atPalier;
         public float scoreMultiplier;
+        
         [Space(5)]
-        public Color newTextColor;
+        [Header("Color")]
+        public Material newTextMaterial;
+
         [Space(5)]
+        [Header("Voicelines")]
         public float probaOfVoicelineToPlay;
         public List<string> voicelinesToPlay;
     }
 
     [Header("Score")]
     [SerializeField] private int _baseScore;
-    [SerializeField] private Color _baseColor;
+    [SerializeField] private Material _baseColorMaterial;
     [SerializeField] private List<ScorePalier> _scorePalierList;
 
     [Header("UI")]
@@ -45,7 +50,7 @@ public class ComboManager : MonoBehaviour
     private ComboText _currentComboText = null;
 
     private int _waitingScore = 0;
-    private Color _currentColor;
+    private Material _currentColor;
     private int _currentPalier = 0;
     private Coroutine _scoreCoroutine;
 
@@ -59,7 +64,7 @@ public class ComboManager : MonoBehaviour
         else
             Instance = this;
 
-        _currentColor = _baseColor;
+        _currentColor = _baseColorMaterial;
     }
 
     public void AddScore()
@@ -80,17 +85,17 @@ public class ComboManager : MonoBehaviour
         }
     }
 
-    private int GetScoreToAdd(out Color scoreColor)
+    private int GetScoreToAdd(out Material scoreColor)
     {
         int score = _baseScore;
-        scoreColor = _baseColor;
+        scoreColor = _baseColorMaterial;
         string currentSoundToPlay = "";
         foreach (ScorePalier scorePalier in _scorePalierList)
         {
             if (_currentPalier >= scorePalier.atPalier)
             {
                 score = (int)(_baseScore * scorePalier.scoreMultiplier);
-                scoreColor = scorePalier.newTextColor;
+                scoreColor = scorePalier.newTextMaterial;
 
                 if (Random.Range(0, 100) <= scorePalier.probaOfVoicelineToPlay && scorePalier.voicelinesToPlay.Count > 0)
                     currentSoundToPlay = scorePalier.voicelinesToPlay.GetRandomItem();

@@ -85,7 +85,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 11400000, guid: 2cd4423331100ef4b92052aca722df5f, type: 2}
+  m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ComboText
   _rect: {fileID: 6780752981874838908}
   _scoreText: {fileID: 1957467312042382802}
+  _scoreSpriteAsset: {fileID: 11400000, guid: 2cd4423331100ef4b92052aca722df5f, type: 2}
   _animationCurve:
     serializedVersion: 2
     m_Curve:

@@ -1011,6 +1011,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreUI
   _scoreText: {fileID: 1671297513}
+  _scoreSpriteAsset: {fileID: 11400000, guid: 2cd4423331100ef4b92052aca722df5f, type: 2}
+  _scoreSpriteMat: {fileID: 2100000, guid: 1908c0e6a5069344fb87e908c736c65d, type: 2}
   _textPrefix: 'Score :'
   _addDuration: 0.07
   _scoreAddingCurve:
@@ -1151,16 +1153,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboText
   _baseScore: 100
-  _baseColor: {r: 0.09880018, g: 0, b: 1, a: 1}
+  _baseColorMaterial: {fileID: 2100000, guid: 43ca41636c69db94786b35d29bd72d93, type: 2}
   _scorePalierList:
   - atPalier: 1
     scoreMultiplier: 1.5
-    newTextColor: {r: 1, g: 0.7088834, b: 0, a: 1}
+    newTextMaterial: {fileID: 2100000, guid: b07616391b1eeba428a5c399bf2b4d55, type: 2}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
   - atPalier: 2
     scoreMultiplier: 2
-    newTextColor: {r: 1, g: 0.12639256, b: 0, a: 1}
+    newTextMaterial: {fileID: 2100000, guid: c57ed3ae18870a84ca1226e1b413ef9d, type: 2}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
   _comboTextPrefab: {fileID: 1497979094715916706, guid: 32b835e7ec4efc44fbabdf4fc032df0b, type: 3}

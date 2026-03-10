@@ -9,6 +9,8 @@ public class ScoreUI : MonoBehaviour
 
     [Header("Reference")]
     [SerializeField] private TMP_Text _scoreText;
+    [SerializeField] private TMP_SpriteAsset _scoreSpriteAsset;
+    [SerializeField] private Material _scoreSpriteMat;
 
     [Header("Parameters")]
     [SerializeField] private string _textPrefix;
@@ -85,6 +87,10 @@ public class ScoreUI : MonoBehaviour
 
     private void WriteScore()
     {
+        _scoreSpriteAsset.material = _scoreSpriteMat;
+        _scoreText.fontMaterial = _scoreSpriteMat;
+        _scoreText.spriteAsset = _scoreSpriteAsset;
+
         string scoreText = "";
         for (int i = 0; i < _currentScore.ToString().Length; i++)
         {
