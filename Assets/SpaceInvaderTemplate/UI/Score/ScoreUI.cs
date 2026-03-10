@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -82,5 +83,16 @@ public class ScoreUI : MonoBehaviour
         WriteScore();
     }
 
-    private void WriteScore() => _scoreText.text = _textPrefix + " " + _currentScore.ToString();
+    private void WriteScore()
+    {
+        string scoreText = "";
+        for (int i = 0; i < _currentScore.ToString().Length; i++)
+        {
+            char number = _currentScore.ToString()[i];
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"<sprite={number}>");
+            scoreText += sb.ToString();
+        }
+        _scoreText.text = scoreText.ToString();
+    }
 }

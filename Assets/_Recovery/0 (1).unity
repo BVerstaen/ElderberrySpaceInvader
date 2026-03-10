@@ -989,8 +989,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -50}
-  m_SizeDelta: {x: 750, y: 100}
+  m_AnchoredPosition: {x: 520, y: -25}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671297512
 MonoBehaviour:
@@ -1052,7 +1052,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color=#FFD700><sprite=0>
+  m_text: 'Score : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1079,8 +1079,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1145,21 +1145,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboText
   _baseScore: 100
-  _baseColor: {r: 0.09880018, g: 0, b: 1, a: 1}
   _scorePalierList:
   - atPalier: 1
     scoreMultiplier: 1.5
-    newTextColor: {r: 1, g: 0.7088834, b: 0, a: 1}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
   - atPalier: 2
     scoreMultiplier: 2
-    newTextColor: {r: 1, g: 0.12639256, b: 0, a: 1}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
   _comboTextPrefab: {fileID: 1497979094715916706, guid: 32b835e7ec4efc44fbabdf4fc032df0b, type: 3}
   _comboTextStartPos: {x: 100, y: -50}
   _comboTextEndPos: {x: 150, y: 0}
+  _comboPrefix: +
   _comboDuration: 1
   _scaleDuration: 0.5
   _scaleMin: 1

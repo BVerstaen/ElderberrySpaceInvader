@@ -19,19 +19,21 @@ public class ComboManager : MonoBehaviour
         public int atPalier;
         public float scoreMultiplier;
         [Space(5)]
+        public Color newTextColor;
+        [Space(5)]
         public float probaOfVoicelineToPlay;
         public List<string> voicelinesToPlay;
     }
 
     [Header("Score")]
     [SerializeField] private int _baseScore;
+    [SerializeField] private Color _baseColor;
     [SerializeField] private List<ScorePalier> _scorePalierList;
 
     [Header("UI")]
     [SerializeField] private ComboText _comboTextPrefab;
     [SerializeField] private Vector2 _comboTextStartPos;
     [SerializeField] private Vector2 _comboTextEndPos;
-    [SerializeField] private string _comboPrefix;
     [SerializeField] private float _comboDuration;
 
     [Header("Scale animation")]
@@ -43,6 +45,7 @@ public class ComboManager : MonoBehaviour
     private ComboText _currentComboText = null;
 
     private int _waitingScore = 0;
+    private Color _currentColor;
     private int _currentPalier = 0;
     private Coroutine _scoreCoroutine;
 
@@ -55,6 +58,8 @@ public class ComboManager : MonoBehaviour
         }
         else
             Instance = this;
+
+        _currentColor = _baseColor;
     }
 
     public void AddScore()
@@ -63,7 +68,7 @@ public class ComboManager : MonoBehaviour
             GameManager.Instance.AddScore(_baseScore);
         else
         {
-            _waitingScore += GetScoreToAdd();
+            _waitingScore += GetScoreToAdd(out _currentColor);
             _currentPalier++;
 
             if (_scoreCoroutine != null)
@@ -75,15 +80,18 @@ public class ComboManager : MonoBehaviour
         }
     }
 
-    private int GetScoreToAdd()
+    private int GetScoreToAdd(out Color scoreColor)
     {
         int score = _baseScore;
+        scoreColor = _baseColor;
         string currentSoundToPlay = "";
         foreach (ScorePalier scorePalier in _scorePalierList)
         {
             if (_currentPalier >= scorePalier.atPalier)
             {
                 score = (int)(_baseScore * scorePalier.scoreMultiplier);
+                scoreColor = scorePalier.newTextColor;
+
                 if (Random.Range(0, 100) <= scorePalier.probaOfVoicelineToPlay && scorePalier.voicelinesToPlay.Count > 0)
                     currentSoundToPlay = scorePalier.voicelinesToPlay.GetRandomItem();
                 else
@@ -108,7 +116,7 @@ public class ComboManager : MonoBehaviour
             _currentComboText.Init(_comboTextStartPos, _comboTextEndPos);
         }
 
-        _currentComboText.UpdateScoreText(_comboPrefix + _waitingScore);
+        _currentComboText.UpdateScoreText(_waitingScore.ToString(), _currentColor);
 
         float timeElapsed = 0.0f;
         while (timeElapsed < _comboDuration)

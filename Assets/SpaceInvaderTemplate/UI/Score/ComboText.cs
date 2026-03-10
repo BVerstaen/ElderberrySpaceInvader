@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Globalization;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -24,9 +26,18 @@ public class ComboText : MonoBehaviour
         _rect.anchoredPosition = _startPosition;
     }
 
-    public void UpdateScoreText(string scoreText)
+    public void UpdateScoreText(string scoreText, Color scoreColor)
     {
-        _scoreText.text = scoreText;
+        string convertedScoreText = $"<color=#{ColorUtility.ToHtmlStringRGB(scoreColor)}>";
+
+        for (int i = 0; i < scoreText.Length; i++)
+        {
+            char number = scoreText[i];
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"<sprite={number}>");
+            convertedScoreText += sb.ToString();
+        }
+        _scoreText.text = convertedScoreText;
     }
 
     public void SetScoreTextScale(float scale)
