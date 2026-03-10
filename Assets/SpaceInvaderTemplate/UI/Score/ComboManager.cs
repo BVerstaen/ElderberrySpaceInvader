@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class ComboManager : MonoBehaviour
 {
+    const string SCORE_FEATURE = "ScoreFeature";
+
     public static ComboManager Instance;
 
     [Serializable]
@@ -51,7 +53,7 @@ public class ComboManager : MonoBehaviour
 
     public void AddScore()
     {
-        if(!GameFeelManager.Instance.IsFeatureActive("Combo"))
+        if(!GameFeelManager.Instance.IsFeatureActive(SCORE_FEATURE))
             GameManager.Instance.AddScore(_baseScore);
         else
         {
