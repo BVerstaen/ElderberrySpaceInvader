@@ -23,15 +23,9 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         Destroy(gameObject, _lifeTime);
+        _trail.enabled = GameFeelManager.Instance.IsFeatureActive(_featureName);
     }
-    public Vector3 GetStartVelocity() => startVelocity;
-
-    public void SetCustomStartVelocity(Vector3 velocity)
-    {
-        startVelocity = velocity;
-        _rb.linearVelocity = startVelocity;
-    }
-
+    
     private void OnEnable()
     {
         GameFeelManager.Instance.OnFeatureToggled += ToggleTrail;
@@ -42,8 +36,17 @@ public class Bullet : MonoBehaviour
         GameFeelManager.Instance.OnFeatureToggled -= ToggleTrail;
     }
 
+    public Vector3 GetStartVelocity() => startVelocity;
+
+    public void SetCustomStartVelocity(Vector3 velocity)
+    {
+        startVelocity = velocity;
+        _rb.linearVelocity = startVelocity;
+    }
+
     private void ToggleTrail(string name, bool toggle)
     {
+        print("got it");
         if(_featureName == name)
         {
             _trail.enabled = toggle;
