@@ -321,7 +321,8 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
-  rafaleColor: {r: 1, g: 0, b: 0.93375015, a: 0}
+  rafaleColor: {r: 1, g: 0, b: 0.93375015, a: 1}
+  sliderValueSpeed: 1
 --- !u!1 &6137798016082057440
 GameObject:
   m_ObjectHideFlags: 0

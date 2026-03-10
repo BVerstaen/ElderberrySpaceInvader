@@ -9,10 +9,13 @@ public class RafaleSlider : MonoBehaviour
     [SerializeField] private Image fillBar;
     [SerializeField] private Gradient fillBarColor;
     [SerializeField] private Color rafaleColor;
+    [SerializeField] private float sliderValueSpeed = 1f;
     private bool _isInRafale = false;
     private float _rafaleTime = 0;
     private float _rafaleClock = 0;
     private float _startRafaleValue = 0;
+    private float _rafaleValueTarget = 0;
+    private float _sliderSpeed = 0;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -33,6 +36,19 @@ public class RafaleSlider : MonoBehaviour
                 RafaleChargedChanged(0);
             }
         }
+        else if (!Mathf.Approximately(_rafaleValueTarget, slider.value))
+        {
+            if (_rafaleValueTarget > slider.value)
+            {
+                slider.value += _sliderSpeed * Time.deltaTime;
+                slider.value = Mathf.Min(slider.value, _rafaleValueTarget);
+            }
+            else
+            {
+                slider.value -= _sliderSpeed * Time.deltaTime;
+                slider.value = Mathf.Max(slider.value, _rafaleValueTarget);
+            }
+        }
     }
 
     void OnDestroy()
@@ -44,8 +60,10 @@ public class RafaleSlider : MonoBehaviour
     private void RafaleChargedChanged(float value)
     {
         if (_isInRafale) return;
-        slider.value = value;
+        _rafaleValueTarget = value;
         fillBar.color = fillBarColor.Evaluate(value);
+        //Calculate sliderSpeed according to difference of value
+        _sliderSpeed = sliderValueSpeed * Mathf.Max(Mathf.Abs(value - slider.value), 0.2f);
     }
 
     private void RafaleTriggered(float rafaleTime)

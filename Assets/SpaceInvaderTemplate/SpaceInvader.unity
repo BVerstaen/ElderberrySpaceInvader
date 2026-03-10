@@ -208,8 +208,8 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 3090861071531454591, guid: b3405aba000337d4e8a50f280d465925, type: 3}
-      propertyPath: rafaleColor.a
-      value: 1
+      propertyPath: sliderValueSpeed
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4185726809008210589, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_AnchorMax.y
