@@ -11,6 +11,7 @@ public class Invader : MonoBehaviour
     [SerializeField] private Bullet bulletPrefab = null;
     [SerializeField] private Transform shootAt = null;
     [SerializeField] private string collideWithTag = "Player";
+    [SerializeField] private GameObject _eyeParticlesPrefab;
 
     [Header("Parameters")]
     [SerializeField] private int _score;
@@ -56,6 +57,7 @@ public class Invader : MonoBehaviour
     public void OnDeath()
     {
         onDestroy?.Invoke(this);
+        Instantiate(_eyeParticlesPrefab, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 
