@@ -159,6 +159,8 @@ MonoBehaviour:
     Clips:
     - Clip: {fileID: 8300000, guid: 0b6e4f5521fff5040b5280280aa3e67b, type: 3}
       Volume: 1
+    - Clip: {fileID: 8300000, guid: 8fcd076eaf1ea734791a41ca80b72f64, type: 3}
+      Volume: 1
 --- !u!4 &309365224
 Transform:
   m_ObjectHideFlags: 0
@@ -845,8 +847,12 @@ MonoBehaviour:
   _scorePalierList:
   - atPalier: 1
     scoreMultiplier: 1.5
+    probaOfVoicelineToPlay: 0
+    voicelinesToPlay: []
   - atPalier: 2
     scoreMultiplier: 2
+    probaOfVoicelineToPlay: 0
+    voicelinesToPlay: []
   _comboTextPrefab: {fileID: 1497979094715916706, guid: 32b835e7ec4efc44fbabdf4fc032df0b, type: 3}
   _comboTextStartPos: {x: 100, y: -50}
   _comboTextEndPos: {x: 150, y: 0}

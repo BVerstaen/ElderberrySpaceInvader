@@ -1,8 +1,11 @@
+using PLIbox.Audio;
+using PLIbox.ListExtensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class ComboManager : MonoBehaviour
 {
@@ -15,6 +18,9 @@ public class ComboManager : MonoBehaviour
     {
         public int atPalier;
         public float scoreMultiplier;
+        [Space(5)]
+        public float probaOfVoicelineToPlay;
+        public List<string> voicelinesToPlay;
     }
 
     [Header("Score")]
@@ -72,13 +78,25 @@ public class ComboManager : MonoBehaviour
     private int GetScoreToAdd()
     {
         int score = _baseScore;
+        string currentSoundToPlay = "";
         foreach (ScorePalier scorePalier in _scorePalierList)
         {
             if (_currentPalier >= scorePalier.atPalier)
+            {
                 score = (int)(_baseScore * scorePalier.scoreMultiplier);
+                if (Random.Range(0, 100) <= scorePalier.probaOfVoicelineToPlay && scorePalier.voicelinesToPlay.Count <= 0)
+                    currentSoundToPlay = scorePalier.voicelinesToPlay.GetRandomItem();
+                else
+                    currentSoundToPlay = "";
+            }
             else
                 break;
         }
+
+        //Feedback
+        if(currentSoundToPlay != "")
+            AudioManager.Instance.PlaySound(currentSoundToPlay);
+
         return score;
     }
 
