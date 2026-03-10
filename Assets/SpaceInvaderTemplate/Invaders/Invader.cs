@@ -8,6 +8,9 @@ public class Invader : MonoBehaviour
 {
     private const string INVADER_KILL_SOUND = "InvaderDeath";
 
+    private const string INVADER_DESTROY_FEATURE = "EnnemyExplosion";
+
+
     [Header("References")]
     [SerializeField] private Bullet bulletPrefab = null;
     [SerializeField] private Transform shootAt = null;
@@ -59,8 +62,11 @@ public class Invader : MonoBehaviour
     public void OnDeath()
     {
         onDestroy?.Invoke(this);
-        Destroy(Instantiate(_eyeParticlesPrefab, transform.position, Quaternion.identity), 2.0f);
 
+        if(GameFeelManager.Instance.IsFeatureActive(INVADER_DESTROY_FEATURE))
+        {
+            Destroy(Instantiate(_eyeParticlesPrefab, transform.position, Quaternion.identity), 2.0f);
+        }
 
         Destroy(gameObject);
     }

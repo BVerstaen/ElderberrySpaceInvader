@@ -671,6 +671,12 @@ MonoBehaviour:
   - IsActive: 1
     Name: ScoreFeature
     ActivationKey: 97
+  - IsActive: 1
+    Name: FireEffect
+    ActivationKey: 98
+  - IsActive: 1
+    Name: EnnemyExplosion
+    ActivationKey: 99
 --- !u!1 &884244689
 GameObject:
   m_ObjectHideFlags: 0
