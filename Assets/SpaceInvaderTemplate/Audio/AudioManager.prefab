@@ -82,6 +82,30 @@ MonoBehaviour:
   - Name: PlayerFire
     Clips:
     - Clip: {fileID: 8300000, guid: 799772959790f6641b9af756b80b8040, type: 3}
+      Volume: 0
+      MinPitchModifier: 0
+      MaxPitchModifier: 0
+  - Name: PlayerHit
+    Clips: []
+  - Name: ShellSound
+    Clips:
+    - Clip: {fileID: 8300000, guid: 8f669b0545a7a6644ab7937bc898def6, type: 3}
       Volume: 1
-      MinPitchModifier: 0.5
-      MaxPitchModifier: -0.4
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+    - Clip: {fileID: 8300000, guid: 7a53d028a89bf944ea04e4e873e0c73e, type: 3}
+      Volume: 1
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+    - Clip: {fileID: 8300000, guid: ce8d945a8b6cb8d479b7525c7d415b45, type: 3}
+      Volume: 1
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+    - Clip: {fileID: 8300000, guid: d874eb54f45a1184c80bd41169c36dc7, type: 3}
+      Volume: 1
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+    - Clip: {fileID: 8300000, guid: 1b97935e46772424da615bbedd65a9af, type: 3}
+      Volume: 1
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1

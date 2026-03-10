@@ -3,11 +3,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Random = System.Random;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
     private const string FIRE_SOUND = "PlayerFire";
+    private const string HIT_SOUND = "PlayerHit";
+    private const string SHELL_SOUND = "ShellSound";
 
     [Header("Inputs")]
     [SerializeField] private InputActionReference _moveInput;
@@ -43,6 +45,10 @@ public class Player : MonoBehaviour
     [SerializeField] private float rafaleBulletXOffset = 0.5f;
     private float _rafaleCharge = 0f;
     private bool _hasRafaleMaxBoost = false;
+
+    [Header("Sound")]
+    [SerializeField] private float _minShellDefferedTime;
+    [SerializeField] private float _maxShellDefferedTime;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/> OnRafaleTriggered;
@@ -164,7 +170,15 @@ public class Player : MonoBehaviour
 
         //Feedback sound
         AudioManager.Instance.PlaySound(FIRE_SOUND);
+        StartCoroutine(DifferedShellSound());
     }
+
+    private IEnumerator DifferedShellSound()
+    {
+        yield return new WaitForSeconds(Random.Range(_minShellDefferedTime, _maxShellDefferedTime));
+        AudioManager.Instance.PlaySound(SHELL_SOUND);
+    }
+
     private void RafaleShoot()
     {
         Bullet bullet = Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
@@ -215,7 +229,11 @@ public class Player : MonoBehaviour
         {
             GameManager.Instance.PlayGameOver();
             OnPlayerDeath?.Invoke();
+            return;
         }
+
         OnTakeDamage?.Invoke();
+        //Feedback son
+        AudioManager.Instance.PlaySound(HIT_SOUND);
     }
 }
