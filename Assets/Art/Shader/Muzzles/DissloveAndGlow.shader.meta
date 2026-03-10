@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: 03b4c270c4e54844da25b159b2b742d4
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures:
+  - _VFX_BulletLines: {fileID: 2800000, guid: 358741e2b15384e41a8dbdc559417beb, type: 3}
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
