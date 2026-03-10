@@ -659,11 +659,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameFeelManager
   _gamefeelFeatures:
-  - IsActive: 1
+  - IsActive: 0
     Name: ScreenShake
     ActivationKey: 94
-  - IsActive: 1
-    Name: Haptics
+  - IsActive: 0
+    Name: Chakawaka
     ActivationKey: 95
   - IsActive: 1
     Name: BulletTrail
@@ -671,12 +671,6 @@ MonoBehaviour:
   - IsActive: 1
     Name: ScoreFeature
     ActivationKey: 97
-  - IsActive: 1
-    Name: FireEffect
-    ActivationKey: 98
-  - IsActive: 1
-    Name: EnnemyExplosion
-    ActivationKey: 99
 --- !u!1 &884244689
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,8 +989,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 450, y: -50}
-  m_SizeDelta: {x: 750, y: 100}
+  m_AnchoredPosition: {x: 520, y: -25}
+  m_SizeDelta: {x: 1000, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1671297512
 MonoBehaviour:
@@ -1011,8 +1005,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ScoreUI
   _scoreText: {fileID: 1671297513}
-  _scoreSpriteAsset: {fileID: 11400000, guid: 2cd4423331100ef4b92052aca722df5f, type: 2}
-  _scoreSpriteMat: {fileID: 2100000, guid: 1908c0e6a5069344fb87e908c736c65d, type: 2}
   _textPrefix: 'Score :'
   _addDuration: 0.07
   _scoreAddingCurve:
@@ -1060,7 +1052,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <color=#FFD700><sprite=0>
+  m_text: 'Score : '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1087,8 +1079,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 80
-  m_fontSizeBase: 80
+  m_fontSize: 36
+  m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1153,23 +1145,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ComboText
   _baseScore: 100
-  _baseColorMaterial: {fileID: 2100000, guid: 43ca41636c69db94786b35d29bd72d93, type: 2}
   _scorePalierList:
   - atPalier: 1
     scoreMultiplier: 1.5
-    scoreScaleMultiplier: 1.1
-    newTextMaterial: {fileID: 2100000, guid: b07616391b1eeba428a5c399bf2b4d55, type: 2}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
   - atPalier: 2
     scoreMultiplier: 2
-    scoreScaleMultiplier: 1.3
-    newTextMaterial: {fileID: 2100000, guid: c57ed3ae18870a84ca1226e1b413ef9d, type: 2}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
   _comboTextPrefab: {fileID: 1497979094715916706, guid: 32b835e7ec4efc44fbabdf4fc032df0b, type: 3}
   _comboTextStartPos: {x: 100, y: -50}
   _comboTextEndPos: {x: 150, y: 0}
+  _comboPrefix: +
   _comboDuration: 1
   _scaleDuration: 0.5
   _scaleMin: 1
@@ -1265,12 +1253,6 @@ MonoBehaviour:
   - atWave: 0
     ennemyHasHealth: 1
   - atWave: 3
-    ennemyHasHealth: 2
-  - atWave: 5
-    ennemyHasHealth: 3
-  - atWave: 7
-    ennemyHasHealth: 4
-  - atWave: 9
     ennemyHasHealth: 5
   _minNextWaveWaiting: 1
   _maxNextWaveWaiting: 2

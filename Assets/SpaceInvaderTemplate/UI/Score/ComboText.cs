@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Globalization;
+using System.Text;
 using TMPro;
 using UnityEngine;
 
@@ -7,6 +9,7 @@ public class ComboText : MonoBehaviour
     [Header("References")]
     [SerializeField] private RectTransform _rect;
     [SerializeField] private TMP_Text _scoreText;
+    [SerializeField] private TMP_SpriteAsset _scoreSpriteAsset;
 
     [Header("Movement animation")]
     [SerializeField] private AnimationCurve _animationCurve;
@@ -24,9 +27,21 @@ public class ComboText : MonoBehaviour
         _rect.anchoredPosition = _startPosition;
     }
 
-    public void UpdateScoreText(string scoreText)
+    public void UpdateScoreText(string scoreText, Material scoreColorMaterial)
     {
-        _scoreText.text = scoreText;
+        _scoreSpriteAsset.material = scoreColorMaterial;
+        _scoreText.fontMaterial = scoreColorMaterial;
+        _scoreText.spriteAsset = _scoreSpriteAsset;
+
+        string convertedScoreText = "";
+        for (int i = 0; i < scoreText.Length; i++)
+        {
+            char number = scoreText[i];
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"<sprite={number}>");
+            convertedScoreText += sb.ToString();
+        }
+        _scoreText.text = convertedScoreText;
     }
 
     public void SetScoreTextScale(float scale)

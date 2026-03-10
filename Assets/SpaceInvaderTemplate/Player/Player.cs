@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
     private const string HIT_SOUND = "PlayerHit";
     private const string SHELL_SOUND = "ShellSound";
 
+    private const string FIRE_EFFECT_FEATURE = "FireEffect";
+
     [Header("Inputs")]
     [SerializeField] private InputActionReference _moveInput;
     [SerializeField] private InputActionReference _shootInput;
@@ -211,6 +213,9 @@ public class Player : MonoBehaviour
 
     private void PlayFireEffect()
     {
+        if (!GameFeelManager.Instance.IsFeatureActive(FIRE_EFFECT_FEATURE))
+            return;
+
         //Feedback sound
         AudioManager.Instance.PlaySound(FIRE_SOUND);
         StartCoroutine(DifferedShellSound());

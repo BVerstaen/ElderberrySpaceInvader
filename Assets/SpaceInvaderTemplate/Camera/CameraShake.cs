@@ -32,6 +32,7 @@ public class CameraShake : MonoBehaviour
     public void TestShake() => StartShaking(2);
     public void StartShaking(float duration)
     {
+        if (!GameFeelManager.Instance.IsFeatureActive("ScreenShake")) return;
         if(_shakeCoroutine != null)
         {
             Debug.LogWarning("a shake is already starting");
@@ -57,7 +58,6 @@ public class CameraShake : MonoBehaviour
                                      _camDepth);
                 reachedOffset = false;
             }
-
             transform.position = Vector3.Lerp(transform.position, offset, Time.deltaTime * _shakeSpeedLerp);
             reachedOffset = Vector3.Distance(transform.position, offset) <= _shakeDistanceThreshold;
 
