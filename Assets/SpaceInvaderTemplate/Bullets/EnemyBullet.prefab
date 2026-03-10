@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e251aa7e0b6e62e49a24748fdef08eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startVelocity: {x: 0, y: -4, z: 0}
+  startVelocity: {x: 0, y: -5, z: 0}
   _lifeTime: 3
   _featureName: BulletTrail
   _trail: {fileID: -8048497018052343528}
