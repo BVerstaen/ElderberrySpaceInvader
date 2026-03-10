@@ -190,7 +190,16 @@ namespace PLIbox.Audio
                     //Else get a random audiodata from sound info
                     else
                     {
-                        foundAudioData = audio.Clips[Random.Range(0,audio.Clips.Count)];
+                        if(audio.Clips.Count <= 0)
+                        {
+                            clip = null;
+                            volume = 0.0f;
+                            randomPitch = Vector2.zero;
+                            Debug.LogError("No clips for " + name);
+                            return;
+                        }
+
+                        foundAudioData = audio.Clips[Random.Range(0,audio.Clips.Count - 1)];
                     }
                 }
             }

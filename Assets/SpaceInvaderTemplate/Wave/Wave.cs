@@ -226,7 +226,7 @@ public class Wave : MonoBehaviour
     void RemoveInvader(Invader invader)
     {
         OnInvaderDeath?.Invoke();
-        Debug.Log("Bah si ça marche");
+        //Debug.Log("Bah si ça marche");
         
         invaders.Remove(invader);
 

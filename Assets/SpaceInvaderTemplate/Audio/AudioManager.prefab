@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PLIbox.Audio.AudioManager
   _soundPrefab: {fileID: 228958404722708413, guid: 25e8a8a185352a64488b862257246b59, type: 3}
-  _maxNumberOfSounds: 10
+  _maxNumberOfSounds: 20
   _soundList:
   - Name: NewWaveAlarm
     Clips:
