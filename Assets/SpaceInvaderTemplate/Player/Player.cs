@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
         UpdateActions();
         
         //Rafale Charge update
-        if (_rafaleCharge > 1 && _lastTimeKilledEnemy + timeBeforeChargeLost < Time.time)
+        if (_rafaleCharge > 0.1f && _lastTimeKilledEnemy + timeBeforeChargeLost < Time.time)
         {
             _rafaleCharge -=  lostChargePerSeconds * Time.deltaTime;
             OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
@@ -235,11 +235,12 @@ public class Player : MonoBehaviour
         HapticManager.Instance.StartRumble(100, 200, rafaleTime);
         CameraShake.Instance.StartShaking(rafaleTime);
         
+        OnRafaleTriggered?.Invoke(rafaleTime);
+        
         //Reset Rafale Charge 
         _rafaleCharge = 0;
         OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
         
-        OnRafaleTriggered?.Invoke(rafaleTime);
         Debug.Log("Start Rafale");
         while (clock < rafaleTime)
         {
