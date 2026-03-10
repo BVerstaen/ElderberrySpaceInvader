@@ -326,6 +326,11 @@ MonoBehaviour:
   shootAt: {fileID: 8808591723042360307}
   collideWithTag: Player
   _eyeParticlesPrefab: {fileID: 8580916035640684435, guid: 5a160a5aae3908548a74c472a4525fc1, type: 3}
+  _invaderSprites:
+  - {fileID: 3685982124939516052}
+  - {fileID: 8578846643400102174}
+  - {fileID: 8872312974689525264}
+  - {fileID: 4518462495614033408}
   _score: 100
   _angleSpeed: 3
   _radiusVariation: 0.5
