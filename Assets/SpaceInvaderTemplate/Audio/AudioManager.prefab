@@ -82,7 +82,7 @@ MonoBehaviour:
   - Name: PlayerFire
     Clips:
     - Clip: {fileID: 8300000, guid: 799772959790f6641b9af756b80b8040, type: 3}
-      Volume: 0
+      Volume: 1
       MinPitchModifier: 0
       MaxPitchModifier: 0
   - Name: PlayerHit

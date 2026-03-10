@@ -118,6 +118,17 @@ MonoBehaviour:
   shootCooldown: 0.3
   collideWithTag: Untagged
   maxLifeAmount: 4
+  inputActivationTime: 0.2
+  rafaleMinimalCharge: 25
+  rafaleMaximalCharge: 100
+  rafaleTimeMultiplier: 0.2
+  rafaleMaxChargeTimeBoost: 5
+  invaderDeathChargeAmount: 5
+  lostChargePerSeconds: 5
+  rafaleBulletCooldown: 0.05
+  rafaleBulletXOffset: 0.5
+  _minShellDefferedTime: 0.1
+  _maxShellDefferedTime: 0.5
 --- !u!58 &61714824157334343
 CircleCollider2D:
   m_ObjectHideFlags: 0
