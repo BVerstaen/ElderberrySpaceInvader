@@ -1,6 +1,7 @@
 using PLIbox.Audio;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -51,6 +52,9 @@ public class Player : MonoBehaviour
     [Header("Sound")]
     [SerializeField] private float _minShellDefferedTime;
     [SerializeField] private float _maxShellDefferedTime;
+
+    [Header("VFX")]
+    [SerializeField] private List<ParticleSystem> _fireParticles;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/> OnRafaleTriggered;
@@ -173,9 +177,7 @@ public class Player : MonoBehaviour
         Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
         lastShootTimestamp = Time.time;
 
-        //Feedback sound
-        AudioManager.Instance.PlaySound(FIRE_SOUND);
-        StartCoroutine(DifferedShellSound());
+        PlayFireEffect();
     }
 
     private IEnumerator DifferedShellSound()
@@ -187,7 +189,20 @@ public class Player : MonoBehaviour
     private void RafaleShoot()
     {
         Bullet bullet = Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
+        PlayFireEffect();
         bullet.SetCustomStartVelocity(bullet.GetStartVelocity() + new Vector3(UnityEngine.Random.Range(-rafaleBulletXOffset,rafaleBulletXOffset), 0, 0));
+    }
+
+    private void PlayFireEffect()
+    {
+        //Feedback sound
+        AudioManager.Instance.PlaySound(FIRE_SOUND);
+        StartCoroutine(DifferedShellSound());
+
+        foreach (var fire in _fireParticles)
+        {
+            fire.Play();
+        }
     }
 
     private IEnumerator Rafale()
