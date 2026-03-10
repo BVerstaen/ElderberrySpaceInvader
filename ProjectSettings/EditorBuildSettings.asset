@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/SpaceInvaderTemplate/SpaceInvader.unity
+    guid: fc324f3cc292a4346a3810158adaa363
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
   m_UseUCBPForAssetBundles: 0
