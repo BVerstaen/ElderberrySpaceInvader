@@ -927,7 +927,7 @@ MonoBehaviour:
   rows: 5
   columns: 11
   invaderPrefab: {fileID: 9109969425864263349, guid: 7ab41d612eaa4c040b94ebea77be05a2, type: 3}
-  bounds: {x: 10, y: 4}
+  bounds: {x: 14, y: 5}
   difficultyProgress:
     serializedVersion: 2
     m_Curve:
