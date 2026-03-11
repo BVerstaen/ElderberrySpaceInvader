@@ -2,6 +2,7 @@ using PLIbox.Audio;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -15,7 +16,7 @@ public class Invader : MonoBehaviour
     [Header("References")]
     [SerializeField] private Bullet bulletPrefab = null;
     [SerializeField] private Transform shootAt = null;
-    [SerializeField] private string collideWithTag = "Player";
+    [SerializeField] private string[] collideWithTag = {"Player", "Bullet", "RafaleBullet"};
     [SerializeField] private GameObject _eyeParticlesPrefab;
     [SerializeField] private SpriteRenderer[] _invaderSprites;
 
@@ -131,20 +132,20 @@ public class Invader : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != collideWithTag) { return; }
+        if (collideWithTag.Contains(collision.gameObject.tag)) { return; }
 
-        TakeDamage();
+        TakeDamage(collision.gameObject.CompareTag("RafaleBullet"));
         Destroy(collision.gameObject);
     }
 
     public event Action OnTakeDamage;
-    public static event Action OnInvaderTookDamage;
+    public static event Action<bool /*HitByRafaleBullet*/> OnInvaderTookDamage;
 
-    private void TakeDamage()
+    private void TakeDamage(bool bIsRafaleBullet)
     {
         _currentLifeAmount--;
         OnTakeDamage?.Invoke();
-        OnInvaderTookDamage?.Invoke();
+        OnInvaderTookDamage?.Invoke(bIsRafaleBullet);
         StartCoroutine(DamageColorFeedback());
         if (_currentLifeAmount <= 0)
         {
