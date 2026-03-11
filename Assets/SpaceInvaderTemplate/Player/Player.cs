@@ -16,6 +16,15 @@ public class Player : MonoBehaviour
     private const string FIRE_EFFECT_FEATURE = "FireEffect";
     private const string MOVE_EFFECT_FEATURE = "PlayerMovement";
 
+    [Serializable]
+    private struct SmokeEffect
+    {
+        public ParticleSystem particle;
+        public Vector2 leftPosition;
+        public Vector2 centerPosition;
+        public Vector2 rightPosition;
+    }
+
     [Header("References")]
     [SerializeField] private SpriteRenderer _planeSpriteRenderer;
 
@@ -88,7 +97,7 @@ public class Player : MonoBehaviour
     [SerializeField] private string _exposedBullet;
 
     [Header("VFX")]
-    [SerializeField] private List<GameObject> _smokeParticles;
+    [SerializeField] private List<SmokeEffect> _smokeParticles;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
@@ -190,6 +199,7 @@ public class Player : MonoBehaviour
         transform.localEulerAngles = rotation;
 
         ChangeSprite(moveSign);
+        ChangeSmokePosition(moveSign);
     }
 
     private void ResetPlayer()
@@ -244,6 +254,14 @@ public class Player : MonoBehaviour
             _planeSpriteRenderer.sprite = _leftSprite;
         else if (dir > 0)
             _planeSpriteRenderer.sprite = _rightSprite;
+    }
+
+    private void ChangeSmokePosition(float dir)
+    {
+        foreach(var smoke in _smokeParticles)
+        {
+            smoke.particle.gameObject.transform.localPosition = dir > 0 ? smoke.rightPosition : dir < 0 ? smoke.leftPosition : smoke.centerPosition;
+        }
     }
 
     private void UpdateActions()
@@ -377,6 +395,6 @@ public class Player : MonoBehaviour
 
         //Feedback smoke
         if(_currentLife > 0)
-            _smokeParticles[_currentLife - 1].SetActive(true);
+            _smokeParticles[_currentLife - 1].particle.gameObject.SetActive(true);
     }
 }
