@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-100)]
 public class GameManager : MonoBehaviour
@@ -9,13 +11,15 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance = null;
 
+    [SerializeField] private Vector2 bounds;
     [Header("Game references")]
     [SerializeField] private GameObject _gameCanvasObject;
     [SerializeField] private Player _playerObject;
     [SerializeField] private Wave _waveObject;
-    [Space(10)]
+
+    [Header("Game over")]
     [SerializeField] private float gameOverHeight;
-    [SerializeField] private Vector2 bounds;
+    [SerializeField] private float _gameOverDuration;
     private Bounds Bounds => new Bounds(transform.position, new Vector3(bounds.x, bounds.y, 1000f));
 
     private int _playerScore;
@@ -112,6 +116,13 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt(PLAYER_SCORE_PREF_KEY, PlayerScore);
             PlayerPrefs.Save();
         }
+
+        StartCoroutine(WaitGameOver());
+    }
+    private IEnumerator WaitGameOver()
+    {
+        yield return new WaitForSeconds(_gameOverDuration);
+        SceneManager.LoadScene(0);
     }
 
     public void OnDrawGizmos()
