@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sky
-  m_Shader: {fileID: 4800000, guid: e2a1db5912c5e984292532e6c0954ccb, type: 3}
+  m_Name: Sky_V2
+  m_Shader: {fileID: 4800000, guid: abed147e83449d84dbf354e93bfc0353, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -27,12 +27,8 @@ Material:
         m_Texture: {fileID: 2800000, guid: 85cb9d31fe3e6bc4f8d515609bc89ab2, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _T_Noise1:
-        m_Texture: {fileID: 2800000, guid: b179de8320580cf4b8eea92087848b34, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _Texture_2__Noise:
-        m_Texture: {fileID: 2800000, guid: 98cd36bd0ad2fac4186a90718ab6bbf8, type: 3}
+        m_Texture: {fileID: 2800000, guid: b179de8320580cf4b8eea92087848b34, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -49,42 +45,36 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Divide: 0.23
-    - _Edge_Intensity: 0
-    - _Edge_size: 1
+    - _Divide: 0.94
+    - _Edge_Intensity: 0.926
+    - _Edge_size: 0.321
+    - _Float1: 1
+    - _Float2: -0.73
     - _Generator_N_X_Pam: 0.1
-    - _Generator_N_X_Tile_: 1
+    - _Generator_N_X_Tile_: 5
     - _Generator_N_Y_Pam: 0
-    - _Generator_N_Y_Tile: 1
-    - _HDR: 1
-    - _N_Max: 0.49
-    - _N_Min: -0.74
+    - _Generator_N_Y_Tile: 5
+    - _HDR: 0.93
+    - _N_Max: 2.36
+    - _N_Min: -0.39
     - _N_X_Pam: 0.1
-    - _N_X_Pam1: 0.05
-    - _N_X_Pam2: 0.1
     - _N_X_Tile: 2
-    - _N_X_Tile1: 2
-    - _N_X_Tile2: 1
     - _N_Y_Pam: 0
-    - _N_Y_Pam1: 0.05
-    - _N_Y_Pam2: 0
     - _N_Y_Tile: 2
-    - _N_Y_Tile1: 2
-    - _N_Y_Tile2: 1
-    - _Noise_Generator: -0.06
+    - _Noise_Generator: 0.1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Texture_2_N_X_Pam: 0.2
-    - _Texture_2_N_X_Tile: 0.5
+    - _Texture_2_N_X_Pam: 0.1
+    - _Texture_2_N_X_Tile: 2
     - _Texture_2_N_Y_Pam: 0
-    - _Texture_2_N_Y_Tile: 0.5
-    - _stylized: 0.12
-    - _stylized_Max: 0.19
-    - _stylized_Min: 0.89
+    - _Texture_2_N_Y_Tile: 2
+    - _Transparence: 1
+    - _stylized_Max: 1.17
+    - _stylized_Min: -0.57
     m_Colors:
-    - _Cloud_Color: {r: 0.9009434, g: 0.94953716, b: 1, a: 1}
+    - _Cloud_Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Water_base_color: {r: 0, g: 0.364486, b: 1, a: 1}
+    - _Water_base_color: {r: 0.0283464, g: 0.18794839, b: 0.46226418, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
