@@ -563,6 +563,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleScreenUI
   _highscoreText: {fileID: 975354551}
+  _highTextSpeed: 1
+  _highTextAmplitude: 10
 --- !u!1 &651903194
 GameObject:
   m_ObjectHideFlags: 0

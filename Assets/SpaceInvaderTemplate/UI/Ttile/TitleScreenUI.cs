@@ -9,6 +9,11 @@ public class TitleScreenUI : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private TMP_Text _highscoreText;
 
+    [Header("Feedback")]
+    [SerializeField] private float _highTextSpeed;
+    [SerializeField] private float _highTextAmplitude;
+    [SerializeField] private float _highTextMinimumScale;
+
     private void Start()
     {
         if (PlayerPrefs.HasKey(PLAYER_SCORE_PREF_KEY))
@@ -26,6 +31,13 @@ public class TitleScreenUI : MonoBehaviour
         }
         else
             _highscoreText.text = "";
+    }
+
+    private void Update()
+    {
+        //highscore scale text
+        float highScoreScale = (Mathf.Sin(Time.time * _highTextSpeed) + 1 + _highTextMinimumScale) * _highTextAmplitude;
+        _highscoreText.rectTransform.localScale = new Vector3(highScoreScale, highScoreScale, highScoreScale);
     }
 
     public void StartGame()
