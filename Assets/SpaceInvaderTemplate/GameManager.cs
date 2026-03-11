@@ -100,7 +100,6 @@ public class GameManager : MonoBehaviour
     public void PlayGameOver()
     {
         Debug.Log("Game Over");
-        Time.timeScale = 0f;
 
         //Save highscore
         if(PlayerPrefs.HasKey(PLAYER_SCORE_PREF_KEY))
