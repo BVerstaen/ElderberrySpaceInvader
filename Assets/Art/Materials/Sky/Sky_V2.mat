@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Sky_V2
+  m_Shader: {fileID: 4800000, guid: abed147e83449d84dbf354e93bfc0353, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _T_Noise:
+        m_Texture: {fileID: 2800000, guid: 85cb9d31fe3e6bc4f8d515609bc89ab2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture_2__Noise:
+        m_Texture: {fileID: 2800000, guid: b179de8320580cf4b8eea92087848b34, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Divide: 0.94
+    - _Edge_Intensity: 0.926
+    - _Edge_size: 0.321
+    - _Float1: 1
+    - _Float2: -0.73
+    - _Generator_N_X_Pam: 0.1
+    - _Generator_N_X_Tile_: 5
+    - _Generator_N_Y_Pam: 0
+    - _Generator_N_Y_Tile: 5
+    - _HDR: 0.93
+    - _N_Max: 2.36
+    - _N_Min: -0.39
+    - _N_X_Pam: 0.1
+    - _N_X_Tile: 2
+    - _N_Y_Pam: 0
+    - _N_Y_Tile: 2
+    - _Noise_Generator: 0.1
+    - _QueueControl: 0
+    - _QueueOffset: 0
+    - _ReceiveShadows: 1
+    - _Texture_2_N_X_Pam: 0.1
+    - _Texture_2_N_X_Tile: 2
+    - _Texture_2_N_Y_Pam: 0
+    - _Texture_2_N_Y_Tile: 2
+    - _Transparence: 1
+    - _stylized_Max: 1.17
+    - _stylized_Min: -0.57
+    m_Colors:
+    - _Cloud_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Water_base_color: {r: 0.0283464, g: 0.18794839, b: 0.46226418, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

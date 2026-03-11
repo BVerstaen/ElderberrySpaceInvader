@@ -20,6 +20,7 @@ Shader "Shader_Djess/Water"
 		_Noise_Dissolve_Scale( "Noise_Dissolve_Scale", Range( 0, 1 ) ) = 0
 		_Alpha_Radius_Min( "Alpha_Radius_Min", Float ) = 0
 		_Alpha_Radius_Max( "Alpha_Radius_Max", Float ) = 0
+		_TextureSample0( "Texture Sample 0", 2D ) = "white" {}
 
 
 		//_TessPhongStrength( "Tess Phong Strength", Range( 0, 1 ) ) = 0.5
@@ -314,46 +315,14 @@ Shader "Shader_Djess/Water"
 			CBUFFER_END
 
 			sampler2D _T_Noise;
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
 			UNITY_INSTANCING_BUFFER_END(Shader_DjessWater)
 
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			PackedVaryings VertexFunction( Attributes input  )
 			{
 				PackedVaryings output = (PackedVaryings)0;
@@ -527,15 +496,9 @@ Shader "Shader_Djess/Water"
 				float smoothstepResult30 = smoothstep( _N_Min , _N_Max , tex2D( _T_Noise, ( float2( 0,0 ) + panner16 ) ).r);
 				float4 lerpResult129 = lerp( _Water_base_color , _Water_fludie , smoothstepResult30);
 				
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord3.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
@@ -543,7 +506,7 @@ Shader "Shader_Djess/Water"
 				float3 BakedAlbedo = 0;
 				float3 BakedEmission = 0;
 				float3 Color = ( (lerpResult129).rgb * _HDR );
-				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					float AlphaClipThreshold = _Cutoff;
 					float AlphaClipThresholdShadow = 0.5;
@@ -707,46 +670,14 @@ Shader "Shader_Djess/Water"
 			#endif
 			CBUFFER_END
 
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
 			UNITY_INSTANCING_BUFFER_END(Shader_DjessWater)
 
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			float3 _LightDirection;
 			float3 _LightPosition;
 
@@ -889,21 +820,15 @@ Shader "Shader_Djess/Water"
 				float4 ClipPos = ComputeClipSpacePosition( ScreenPosNorm.xy, input.positionCS.z ) * input.positionCS.w;
 				float4 ScreenPos = ComputeScreenPos( ClipPos );
 
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
 				
 
-				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					float AlphaClipThreshold = _Cutoff;
 					float AlphaClipThresholdShadow = 0.5;
@@ -1029,46 +954,14 @@ Shader "Shader_Djess/Water"
 			#endif
 			CBUFFER_END
 
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
 			UNITY_INSTANCING_BUFFER_END(Shader_DjessWater)
 
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			PackedVaryings VertexFunction( Attributes input  )
 			{
 				PackedVaryings output = (PackedVaryings)0;
@@ -1191,21 +1084,15 @@ Shader "Shader_Djess/Water"
 				float4 ClipPos = ComputeClipSpacePosition( ScreenPosNorm.xy, input.positionCS.z ) * input.positionCS.w;
 				float4 ScreenPos = ComputeScreenPos( ClipPos );
 
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
 				
 
-				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					float AlphaClipThreshold = _Cutoff;
 				#endif
@@ -1317,46 +1204,14 @@ Shader "Shader_Djess/Water"
 			#endif
 			CBUFFER_END
 
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
 			UNITY_INSTANCING_BUFFER_END(Shader_DjessWater)
 
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			int _ObjectId;
 			int _PassValue;
 
@@ -1481,21 +1336,15 @@ Shader "Shader_Djess/Water"
 			{
 				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
 
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
 				
 
-				surfaceDescription.Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				surfaceDescription.Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					surfaceDescription.AlphaClipThreshold = _Cutoff;
 				#endif
@@ -1600,46 +1449,14 @@ Shader "Shader_Djess/Water"
 			#endif
 			CBUFFER_END
 
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
 			UNITY_INSTANCING_BUFFER_END(Shader_DjessWater)
 
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			float4 _SelectionID;
 
 			struct SurfaceDescription
@@ -1763,21 +1580,15 @@ Shader "Shader_Djess/Water"
 			{
 				SurfaceDescription surfaceDescription = (SurfaceDescription)0;
 
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
 				
 
-				surfaceDescription.Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				surfaceDescription.Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					surfaceDescription.AlphaClipThreshold = _Cutoff;
 				#endif
@@ -1898,46 +1709,14 @@ Shader "Shader_Djess/Water"
 			#endif
 			CBUFFER_END
 
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
 			UNITY_INSTANCING_BUFFER_END(Shader_DjessWater)
 
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			struct SurfaceDescription
 			{
 				float Alpha;
@@ -2077,21 +1856,15 @@ Shader "Shader_Djess/Water"
 				float4 ClipPos = ComputeClipSpacePosition( ScreenPosNorm.xy, input.positionCS.z ) * input.positionCS.w;
 				float4 ScreenPos = ComputeScreenPos( ClipPos );
 
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord1.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
 				
 
-				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord1.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord1.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					float AlphaClipThreshold = _Cutoff;
 				#endif
@@ -2242,46 +2015,14 @@ Shader "Shader_Djess/Water"
 				int _PassValue;
 			#endif
 
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
 			UNITY_INSTANCING_BUFFER_END(Shader_DjessWater)
 
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			PackedVaryings VertexFunction( Attributes input  )
 			{
 				PackedVaryings output = (PackedVaryings)0;
@@ -2345,21 +2086,15 @@ Shader "Shader_Djess/Water"
 				float4 ScreenPosNorm = float4( GetNormalizedScreenSpaceUV( input.positionCS ), input.positionCS.zw );
 				float4 ClipPos = ComputeClipSpacePosition( ScreenPosNorm.xy, input.positionCS.z ) * input.positionCS.w;
 
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord3.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
 				
 
-				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					float AlphaClipThreshold = _Cutoff;
 				#endif
@@ -2527,6 +2262,7 @@ Shader "Shader_Djess/Water"
 			#endif
 
 			sampler2D _T_Noise;
+			sampler2D _TextureSample0;
 			UNITY_INSTANCING_BUFFER_START(Shader_DjessWater)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Scale)
 				UNITY_DEFINE_INSTANCED_PROP(float, _Noise_Dissolve_Offset)
@@ -2535,40 +2271,7 @@ Shader "Shader_Djess/Water"
 
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/GBufferOutput.hlsl"
 
-					float2 voronoihash172( float2 p )
-					{
-						
-						p = float2( dot( p, float2( 127.1, 311.7 ) ), dot( p, float2( 269.5, 183.3 ) ) );
-						return frac( sin( p ) *43758.5453);
-					}
 			
-					float voronoi172( float2 v, float time, inout float2 id, inout float2 mr, float smoothness, inout float2 smoothId )
-					{
-						float2 n = floor( v );
-						float2 f = frac( v );
-						float F1 = 8.0;
-						float F2 = 8.0; float2 mg = 0; int i, j;
-						for ( j = -1; j <= 1; j++ )
-						{
-							for ( i = -1; i <= 1; i++ )
-						 	{
-						 		float2 g = float2( i, j );
-						 		float2 o = voronoihash172( n + g );
-								o = ( sin( time + o * 6.2831 ) * 0.5 + 0.5 ); float2 r = f - g - o;
-								float d = 0.5 * dot( r, r );
-						 		if( d<F1 ) {
-						 			F2 = F1;
-						 			F1 = d; mg = g; mr = r; id = o;
-						 		} else if( d<F2 ) {
-						 			F2 = d;
-						
-						 		}
-						 	}
-						}
-						return F1;
-					}
-			
-
 			PackedVaryings VertexFunction( Attributes input  )
 			{
 				PackedVaryings output = (PackedVaryings)0;
@@ -2720,22 +2423,16 @@ Shader "Shader_Djess/Water"
 				float smoothstepResult30 = smoothstep( _N_Min , _N_Max , tex2D( _T_Noise, ( float2( 0,0 ) + panner16 ) ).r);
 				float4 lerpResult129 = lerp( _Water_base_color , _Water_fludie , smoothstepResult30);
 				
-				float time172 = 0.0;
-				float2 voronoiSmoothId172 = 0;
 				float2 texCoord162 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(Shader_DjessWater,_Noise_Dissolve_Offset);
-				float2 coords172 = (texCoord162* (5.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 7.0 - 5.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) * 1.0;
-				float2 id172 = 0;
-				float2 uv172 = 0;
-				float voroi172 = voronoi172( coords172, time172, id172, uv172, 0, voronoiSmoothId172 );
 				float4 appendResult205 = (float4(0.0 , 3.0 , 0.0 , 0.0));
 				float2 texCoord180 = input.ase_texcoord3.xy * appendResult205.xy + float2( 0,0 );
 				float smoothstepResult209 = smoothstep( _Alpha_Radius_Min , _Alpha_Radius_Max , ( texCoord180.y + 0.0 ));
 				
 
 				float3 Color = ( (lerpResult129).rgb * _HDR );
-				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , voroi172 ) * smoothstepResult209 );
+				float Alpha = ( step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample0, (texCoord162* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 10.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r ) * smoothstepResult209 );
 				#if defined( _ALPHATEST_ON )
 					float AlphaClipThreshold = _Cutoff;
 					float AlphaClipThresholdShadow = 0.5;
@@ -2795,7 +2492,7 @@ Node;AmplifyShaderEditor.CommentaryNode, AmplifyShaderEditor, Version=0.0.0.0, C
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;20;-4784,-272;Inherit;False;Property;_N_Y_Tile;N_Y_Tile;2;0;Create;True;0;0;0;False;0;False;1;3;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;17;-4784,-368;Inherit;False;Property;_N_X_Tile;N_X_Tile;1;0;Create;True;0;0;0;False;0;False;1;3;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;26;-4784,-144;Inherit;False;Property;_N_X_Pam;N_X_Pam;3;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;25;-4784,-48;Inherit;False;Property;_N_Y_Pam;N_Y_Pam;4;0;Create;True;0;0;0;False;0;False;1;0.5;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;25;-4784,-48;Inherit;False;Property;_N_Y_Pam;N_Y_Pam;4;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;14;-4656,-528;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.DynamicAppendNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;22;-4544,-368;Inherit;False;FLOAT4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.DynamicAppendNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;27;-4560,-176;Inherit;False;FLOAT4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
@@ -2804,30 +2501,30 @@ Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Cultu
 Node;AmplifyShaderEditor.CommentaryNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;90;-3056,-736;Inherit;False;926.704;672.4321;Variation de l'eau;3;30;31;32;;1,1,1,1;0;0
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;85;-3824,-688;Inherit;True;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;208;-2032,-1280;Inherit;False;Constant;_Alpha_radius;Alpha_radius;13;0;Create;True;0;0;0;False;0;False;3;3;0;3;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;163;-3536,-1568;Inherit;False;InstancedProperty;_Noise_Dissolve_Scale;Noise_Dissolve_Scale;12;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;164;-3392,-1344;Inherit;False;InstancedProperty;_Noise_Dissolve_Offset;Noise_Dissolve_Offset;11;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;163;-3536,-1568;Inherit;False;InstancedProperty;_Noise_Dissolve_Scale;Noise_Dissolve_Scale;12;0;Create;True;0;0;0;False;0;False;0;0.003903803;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;164;-3392,-1344;Inherit;False;InstancedProperty;_Noise_Dissolve_Offset;Noise_Dissolve_Offset;11;0;Create;True;0;0;0;False;0;False;0.5;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TexCoordVertexDataNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;168;-2720,-1952;Inherit;False;0;4;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;169;-2800,-2080;Inherit;False;Property;_Dissolve;Dissolve;10;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;31;-2992,-432;Inherit;False;Property;_N_Max;N_Max;6;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;32;-2992,-560;Inherit;False;Property;_N_Min;N_Min;5;0;Create;True;0;0;0;False;0;False;0;0.7;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;13;-3584,-688;Inherit;True;Property;_T_Noise;T_Noise;0;0;Create;True;0;0;0;False;0;False;-1;f3d4cd967632cd247b932f2c92c28ad4;db403ac1861909a44b26b58a3d7d3d0a;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.DynamicAppendNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;205;-1664,-1328;Inherit;False;FLOAT4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;162;-3488,-1936;Inherit;True;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;165;-3216,-1584;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;5;False;4;FLOAT;7;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;166;-2976,-1440;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;15;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;13;-3584,-688;Inherit;True;Property;_T_Noise;T_Noise;0;0;Create;True;0;0;0;False;0;False;-1;None;db403ac1861909a44b26b58a3d7d3d0a;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;165;-3216,-1584;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;1;False;4;FLOAT;10;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;170;-2384,-2080;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;30;-2720,-688;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;126;-1760,-688;Inherit;False;Property;_Water_base_color;Water_base_color;7;1;[HDR];Create;True;0;0;0;False;0;False;0.08437622,0.4232678,1,1;0.000910581,0.4232678,1,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;131;-1856,-352;Inherit;False;Property;_Water_fludie;Water_fludie;8;1;[HDR];Create;True;0;0;0;False;0;False;0.08437622,0.4232678,1,1;0.6743273,1.247921,2,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;126;-1760,-688;Inherit;False;Property;_Water_base_color;Water_base_color;7;1;[HDR];Create;True;0;0;0;False;0;False;0.08437622,0.4232678,1,1;0,1,0.1144984,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;131;-1856,-352;Inherit;False;Property;_Water_fludie;Water_fludie;8;1;[HDR];Create;True;0;0;0;False;0;False;0.08437622,0.4232678,1,1;0.5795835,1,0.5518868,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;180;-1408,-1456;Inherit;True;0;-1;2;3;2;OBJECT;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ScaleAndOffsetNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;167;-2752,-1552;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT;1;False;2;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;171;-2256,-2080;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;0.6;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;129;-1344,-352;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;181;-1136,-1328;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;211;-1104,-1008;Inherit;False;Property;_Alpha_Radius_Max;Alpha_Radius_Max;14;0;Create;True;0;0;0;False;0;False;0;2.69;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;210;-1117.866,-1104.421;Inherit;False;Property;_Alpha_Radius_Min;Alpha_Radius_Min;13;0;Create;True;0;0;0;False;0;False;0;0.32;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.VoronoiNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;172;-2368,-1696;Inherit;True;0;0;1;0;1;False;1;False;False;False;4;0;FLOAT2;0,0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;3;FLOAT;0;FLOAT2;1;FLOAT2;2
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;128;-1088,-256;Inherit;False;Property;_HDR;HDR;9;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;211;-1104,-1008;Inherit;False;Property;_Alpha_Radius_Max;Alpha_Radius_Max;14;0;Create;True;0;0;0;False;0;False;0;2.75;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;210;-1117.866,-1104.421;Inherit;False;Property;_Alpha_Radius_Min;Alpha_Radius_Min;13;0;Create;True;0;0;0;False;0;False;0;0.5;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;215;-2432,-1680;Inherit;True;Property;_TextureSample0;Texture Sample 0;15;0;Create;True;0;0;0;False;0;False;-1;None;98cd36bd0ad2fac4186a90718ab6bbf8;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;128;-1088,-256;Inherit;False;Property;_HDR;HDR;9;0;Create;True;0;0;0;False;0;False;1;3;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.ComponentMaskNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;176;-1088,-496;Inherit;True;True;True;True;False;1;0;COLOR;0,0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;209;-848,-1280;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0.3;False;2;FLOAT;3;False;1;FLOAT;0
 Node;AmplifyShaderEditor.StepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;214;-1920,-1760;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
@@ -2845,7 +2542,7 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Versi
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;157;528,-1184;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;MotionVectors;0;10;MotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;False;False;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;158;528,-1184;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;XRMotionVectors;0;11;XRMotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;True;1;False;;255;False;;1;False;;7;False;;3;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;1;LightMode=XRMotionVectors;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;159;528,-1184;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;GBuffer;0;12;GBuffer;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalGBuffer;False;True;12;d3d11;gles;metal;vulkan;xboxone;xboxseries;playstation;ps4;ps5;switch;switch2;webgpu;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;148;528,-1184;Float;False;True;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;4;Shader_Djess/Water;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;10;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalForwardOnly;False;False;0;;0;0;Standard;30;Surface;1;639069596699159105;  Keep Alpha;0;0;  Blend;0;639069611154370523;Two Sided;1;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Forward Only;0;0;Cast Shadows;1;0;Receive Shadows;2;0;Receive SSAO;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;0;13;False;True;True;True;False;False;True;True;True;False;True;False;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;148;528,-1184;Float;False;True;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;6;Shader_Djess/Water;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;10;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalForwardOnly;False;False;0;;0;0;Standard;30;Surface;1;639069596699159105;  Keep Alpha;0;0;  Blend;0;639069611154370523;Two Sided;1;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Forward Only;0;0;Cast Shadows;1;0;Receive Shadows;2;0;Receive SSAO;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;0;13;False;True;True;True;False;False;True;True;True;False;True;False;True;False;;False;0
 WireConnection;22;0;17;0
 WireConnection;22;1;20;0
 WireConnection;27;0;26;0
@@ -2855,10 +2552,10 @@ WireConnection;15;1;22;0
 WireConnection;16;0;15;0
 WireConnection;16;2;27;0
 WireConnection;85;1;16;0
-WireConnection;13;1;85;0
 WireConnection;205;1;208;0
-WireConnection;165;0;163;0
 WireConnection;166;0;164;0
+WireConnection;13;1;85;0
+WireConnection;165;0;163;0
 WireConnection;170;0;169;0
 WireConnection;170;1;168;3
 WireConnection;30;0;13;1
@@ -2873,13 +2570,13 @@ WireConnection;129;0;126;0
 WireConnection;129;1;131;0
 WireConnection;129;2;30;0
 WireConnection;181;0;180;2
-WireConnection;172;0;167;0
+WireConnection;215;1;167;0
 WireConnection;176;0;129;0
 WireConnection;209;0;181;0
 WireConnection;209;1;210;0
 WireConnection;209;2;211;0
 WireConnection;214;0;171;0
-WireConnection;214;1;172;0
+WireConnection;214;1;215;1
 WireConnection;130;0;176;0
 WireConnection;130;1;128;0
 WireConnection;184;0;214;0
@@ -2887,4 +2584,4 @@ WireConnection;184;1;209;0
 WireConnection;148;2;130;0
 WireConnection;148;3;184;0
 ASEEND*/
-//CHKSM=A67A24B929240A02B08D9249F36067DE13BA0166
+//CHKSM=702705A37DB27647B4A4EABD7B73A44D2F9C3306
