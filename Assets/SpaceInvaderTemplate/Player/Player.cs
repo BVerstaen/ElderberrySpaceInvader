@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private const string SHELL_SOUND = "ShellSound";
 
     private const string FIRE_EFFECT_FEATURE = "FireEffect";
+    private const string MOVE_EFFECT_FEATURE = "PlayerMovement";
 
     [Header("References")]
     [SerializeField] private SpriteRenderer _planeSpriteRenderer;
@@ -232,6 +233,9 @@ public class Player : MonoBehaviour
     private void ChangeSprite(float dir)
     {
         _planeSpriteRenderer.sprite = _normalSprite;
+        if (!GameFeelManager.Instance.IsFeatureActive(MOVE_EFFECT_FEATURE))
+            return;
+
         if (dir < 0)
             _planeSpriteRenderer.sprite = _leftSprite;
         else if (dir > 0)
