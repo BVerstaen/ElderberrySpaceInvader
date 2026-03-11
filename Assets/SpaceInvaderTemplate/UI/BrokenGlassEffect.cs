@@ -9,6 +9,12 @@ public class BrokenGlassEffect : MonoBehaviour
     {
         public Texture2D Tex;
         public float Power;
+
+        public BrokenGlassHealth(Texture2D texture, float power)
+        {
+            Tex = texture;
+            Power = power;
+        }
     }
 
     [SerializeField] private Material _brokenGlassMat;
@@ -21,6 +27,7 @@ public class BrokenGlassEffect : MonoBehaviour
 
     private void Awake()
     {
+        _brokenGlassPalier.Add(new BrokenGlassHealth(_baseTex, _basePower));
         SetTobaseEffect();
     }
 
