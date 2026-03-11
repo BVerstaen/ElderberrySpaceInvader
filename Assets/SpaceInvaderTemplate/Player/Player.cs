@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private List<ParticleSystem> _fireParticles;
     [SerializeField] private List<ParticleSystem> _rafaleFireParticles;
+    [SerializeField] private GameObject _bulletShellPrefab;
 
     [Header("Lean movement")]
     [SerializeField] private AnimationCurve _leanCurve;
@@ -293,6 +294,8 @@ public class Player : MonoBehaviour
         {
             fire.Play();
         }
+
+        Destroy(Instantiate(_bulletShellPrefab, transform.position + new Vector3(0, 0, -10f), Quaternion.identity), 2);
     }
 
     private IEnumerator Rafale()
