@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 1f;
 
     [SerializeField] private Bullet bulletPrefab = null;
+    [SerializeField] private Bullet rafaleBulletPrefab = null;
     [SerializeField] private Transform shootAt = null;
     [SerializeField] private float shootCooldown = 1f;
     [SerializeField] private string collideWithTag = "Untagged";
@@ -83,7 +84,7 @@ public class Player : MonoBehaviour
 
     private float currentLean = 0f;
 
-    private float _lastTimeKilledEnemy = 0;
+    private float _lastTimeEnemyHit = 0;
 
     private void OnEnable()
     {
@@ -109,7 +110,7 @@ public class Player : MonoBehaviour
 
     private void OnInvaderHit()
     {
-        _lastTimeKilledEnemy = Time.time;
+        _lastTimeEnemyHit = Time.time;
         if (_isInRafale) return;
         _rafaleCharge = Mathf.Clamp(_rafaleCharge + invaderDeathChargeAmount, 0f, rafaleMaximalCharge);
         OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
@@ -121,7 +122,7 @@ public class Player : MonoBehaviour
         UpdateActions();
         
         //Rafale Charge update
-        if (_rafaleCharge > 0.1f && _lastTimeKilledEnemy + timeBeforeChargeLost < Time.time)
+        if (_rafaleCharge > 0.1f && _lastTimeEnemyHit + timeBeforeChargeLost < Time.time)
         {
             _rafaleCharge -=  lostChargePerSeconds * Time.deltaTime;
             OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
@@ -226,9 +227,9 @@ public class Player : MonoBehaviour
 
     private void RafaleShoot()
     {
-        Bullet bullet = Instantiate(bulletPrefab, shootAt.position, Quaternion.identity);
+        Bullet bullet = Instantiate(rafaleBulletPrefab, shootAt.position, Quaternion.identity);
         PlayFireEffect();
-        bullet.SetCustomStartVelocity(bullet.GetStartVelocity() + new Vector3(UnityEngine.Random.Range(-rafaleBulletXOffset,rafaleBulletXOffset), 0, 0));
+        bullet.SetCustomStartVelocity(bullet.GetStartVelocity() + new Vector3(Random.Range(-rafaleBulletXOffset,rafaleBulletXOffset), 0, 0));
     }
 
     private void PlayFireEffect()
