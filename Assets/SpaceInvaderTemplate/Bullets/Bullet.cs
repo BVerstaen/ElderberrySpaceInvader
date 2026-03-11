@@ -23,7 +23,9 @@ public class Bullet : MonoBehaviour
     private void Start()
     {
         Destroy(gameObject, _lifeTime);
-        _trail.enabled = GameFeelManager.Instance.IsFeatureActive(_featureName);
+
+        if(_trail)
+            _trail.enabled = GameFeelManager.Instance.IsFeatureActive(_featureName);
     }
     
     private void OnEnable()
@@ -46,8 +48,7 @@ public class Bullet : MonoBehaviour
 
     private void ToggleTrail(string name, bool toggle)
     {
-        print("got it");
-        if(_featureName == name)
+        if(_featureName == name && _trail)
         {
             _trail.enabled = toggle;
         }
