@@ -57,7 +57,7 @@ public class NextWaveUI : MonoBehaviour
         while (timeElapsed < _redScreenDuration)
         {
             Color redScreenColor = _redScreenColor;
-            redScreenColor.a = Mathf.Sin(_redScreenSpeed * timeElapsed);
+            redScreenColor.a = _redScreenColor.a * Mathf.Sin(_redScreenSpeed * timeElapsed);
             _redScreen.color = redScreenColor;
                 
             timeElapsed += Time.deltaTime;
