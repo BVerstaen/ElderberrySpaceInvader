@@ -9,6 +9,12 @@ public class BrokenGlassEffect : MonoBehaviour
     {
         public Texture2D Tex;
         public float Power;
+
+        public BrokenGlassHealth(Texture2D texture, float power)
+        {
+            Tex = texture;
+            Power = power;
+        }
     }
 
     [SerializeField] private Material _brokenGlassMat;
@@ -17,24 +23,45 @@ public class BrokenGlassEffect : MonoBehaviour
 
     [SerializeField] private List<BrokenGlassHealth> _brokenGlassPalier;
 
+    private int _currentHealth = 4;
+
     private void Awake()
     {
-        _brokenGlassMat.SetTexture("_BrokenGlass", _baseTex);
-        _brokenGlassMat.SetFloat("_Power", _basePower);
+        _brokenGlassPalier.Add(new BrokenGlassHealth(_baseTex, _basePower));
+        SetTobaseEffect();
     }
 
     private void OnEnable()
     {
         Player.OnUpdateHealth += CheckNewGlass;
+        GameFeelManager.Instance.OnFeatureToggled += ToggleBrokenGlass;
     }
 
     private void OnDisable()
     {
         Player.OnUpdateHealth -= CheckNewGlass;
+        if (GameFeelManager.Instance)
+            GameFeelManager.Instance.OnFeatureToggled -= ToggleBrokenGlass;
 
+        SetTobaseEffect();
+    }
+
+    private void SetTobaseEffect()
+    {
         //Reset
         _brokenGlassMat.SetTexture("_BrokenGlass", _baseTex);
         _brokenGlassMat.SetFloat("_Power", _basePower);
+    }
+
+    private void ToggleBrokenGlass(string feature, bool toggle)
+    {
+        if(feature == "PlayerHit")
+        {
+            if (toggle)
+                ChangeMaterial(_brokenGlassPalier[_currentHealth]);
+            else
+                SetTobaseEffect();
+        }
     }
 
     private void CheckNewGlass(int health)
@@ -42,6 +69,7 @@ public class BrokenGlassEffect : MonoBehaviour
         if (health >= _brokenGlassPalier.Count)
             throw new Exception("Error health");
 
+        _currentHealth = health;
         ChangeMaterial(_brokenGlassPalier[health]);
     }
 
