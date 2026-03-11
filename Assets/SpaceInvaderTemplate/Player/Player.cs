@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
@@ -77,6 +78,11 @@ public class Player : MonoBehaviour
     [SerializeField] private AnimationCurve _playerAscendingCurve;
     [SerializeField] private Vector2 _startAscendingPosition;
     [SerializeField] private float _playerAscendingDuration;
+
+    [Header("Audio")]
+    [SerializeField] private AudioMixerGroup _musicMixer;
+    [SerializeField] private AudioMixerGroup _bulletMixer;
+    [SerializeField] private float _rafaleVolume;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
@@ -298,8 +304,10 @@ public class Player : MonoBehaviour
         float rafaleTime = _rafaleCharge * rafaleTimeMultiplier + (_hasRafaleMaxBoost ? rafaleMaxChargeTimeBoost : 0);
         float clock = 0;
 
+        //Sound
+
         //Haptic 
-        if(GameFeelManager.Instance.IsFeatureActive("RafaleEffect"))
+        if (GameFeelManager.Instance.IsFeatureActive("RafaleEffect"))
         {
             HapticManager.Instance.StartRumble(100, 200, rafaleTime);
             CameraShake.Instance.StartShaking(rafaleTime);

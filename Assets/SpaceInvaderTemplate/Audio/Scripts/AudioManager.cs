@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using Random = UnityEngine.Random;
 
 namespace PLIbox.Audio
@@ -9,6 +10,7 @@ namespace PLIbox.Audio
     public struct AudioData //Data for one audio clip
     {
         public AudioClip Clip;
+        public AudioMixerGroup MixerGroup;
         [Range(0, 1)] public float Volume;
         [Space(20)]
         [Range(-4, 2)] public float MinPitchModifier;
