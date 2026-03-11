@@ -19,6 +19,7 @@ public class Wave : MonoBehaviour
     }
 
     public static event Action OnInvaderDeath;
+    public static event Action OnNextWave;
 
     enum Move { Left = 0, Down = 1, Right = 2 }
     readonly Vector3[] directions = { Vector3.left, Vector3.down, Vector3.right };
@@ -75,7 +76,7 @@ public class Wave : MonoBehaviour
     List<Row> invaderPerRow = new(); // Keeps track of invaders per row. A row will be removed if empty.
 
 
-    private Action OnWaveCleared;
+    private static Action OnWaveCleared;
 
     void Awake()
     {
@@ -273,6 +274,7 @@ public class Wave : MonoBehaviour
         if(invaders.Count <= 0)
         {
             OnWaveCleared?.Invoke();
+            OnNextWave?.Invoke();
             _currentWave++;
 
             _nextWaveWaiting = StartCoroutine(WaitForNextWave());
