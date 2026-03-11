@@ -97,8 +97,14 @@ public class Wave : MonoBehaviour
 
     private void CreateWave()
     {
-        //Reset variables
-        transform.position = _defaultLocation;
+        if(invaders.Count > 0)
+        {
+            Debug.LogWarning("A wave is already running");
+            return;
+        }
+
+            //Reset variables
+            transform.position = _defaultLocation;
         _moveDirection = Move.Right;
         _moveCount = 0;
         _distance = 0f;
