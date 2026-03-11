@@ -39,11 +39,13 @@ public class NextWaveUI : MonoBehaviour
         Wave.OnNextWave -= StartWaveEffect;
     }
 
-    [ContextMenu("Feur")]
     public void StartWaveEffect()
     {
-        AudioManager.Instance.PlaySound(NEW_WAVE_SOUND);
-        _redScreenCoroutine = StartCoroutine(RedScreenWave());
+        if(GameFeelManager.Instance.IsFeatureActive("NextWaveEffect"))
+        {
+            AudioManager.Instance.PlaySound(NEW_WAVE_SOUND);
+            _redScreenCoroutine = StartCoroutine(RedScreenWave());
+        }
     }
 
     private IEnumerator RedScreenWave()
