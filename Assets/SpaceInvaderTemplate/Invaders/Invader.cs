@@ -114,7 +114,7 @@ public class Invader : MonoBehaviour
             }
         }
         else
-            transform.localPosition = Vector3.zero;
+            transform.localPosition = _centerPoint;
     }
 
     public void OnDeath()
