@@ -45,36 +45,36 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Divide: 0.94
-    - _Edge_Intensity: 0.926
-    - _Edge_size: 0.321
-    - _Float1: 1
-    - _Float2: -0.73
+    - _Divide: 0.96
+    - _Edge_Intensity: 0
+    - _Edge_size: 0.473
+    - _Float1: 0.36
+    - _Float2: -0.11
     - _Generator_N_X_Pam: 0.1
     - _Generator_N_X_Tile_: 5
     - _Generator_N_Y_Pam: 0
     - _Generator_N_Y_Tile: 5
     - _HDR: 0.93
-    - _N_Max: 2.36
+    - _N_Max: 2.27
     - _N_Min: -0.39
-    - _N_X_Pam: 0.1
+    - _N_X_Pam: 0.5
     - _N_X_Tile: 2
     - _N_Y_Pam: 0
     - _N_Y_Tile: 2
-    - _Noise_Generator: 0.1
+    - _Noise_Generator: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Texture_2_N_X_Pam: 0.1
-    - _Texture_2_N_X_Tile: 2
+    - _Texture_2_N_X_Pam: 0.6
+    - _Texture_2_N_X_Tile: 1.42
     - _Texture_2_N_Y_Pam: 0
-    - _Texture_2_N_Y_Tile: 2
+    - _Texture_2_N_Y_Tile: 1.47
     - _Transparence: 1
-    - _stylized_Max: 1.17
-    - _stylized_Min: -0.57
+    - _stylized_Max: 1.16
+    - _stylized_Min: -0.67
     m_Colors:
-    - _Cloud_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Cloud_Color: {r: 0.43747774, g: 0.6465379, b: 0.8207547, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Water_base_color: {r: 0.0283464, g: 0.18794839, b: 0.46226418, a: 1}
+    - _Water_base_color: {r: 0.055802763, g: 0.28537622, b: 0.6226415, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

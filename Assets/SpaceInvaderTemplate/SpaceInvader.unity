@@ -1294,9 +1294,9 @@ MonoBehaviour:
     Power: 0.01
   - Tex: {fileID: 2800000, guid: 76cbed5342037bb44983ed64086f06b3, type: 3}
     Power: 0.01
-  - Tex: {fileID: 2800000, guid: b0caa0b5b3dd3794e8457c89b0eab71a, type: 3}
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
     Power: 0.01
-  - Tex: {fileID: 2800000, guid: 8c4a7fca2884fab419769ccc0355c0c1, type: 3}
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
     Power: 0.01
 --- !u!1 &975354549
 GameObject:
