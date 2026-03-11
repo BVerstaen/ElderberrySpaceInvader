@@ -1,14 +1,15 @@
 using PLIbox.Audio;
 using System;
 using System.Collections;
-using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Invader : MonoBehaviour
 {
     private const string INVADER_KILL_SOUND = "InvaderDeath";
-
     private const string INVADER_DESTROY_FEATURE = "EnnemyExplosion";
+    private const string BLOB_FEATURE = "EnnemyBlobAnimation";
 
 
     [Header("References")]
@@ -17,6 +18,11 @@ public class Invader : MonoBehaviour
     [SerializeField] private string collideWithTag = "Player";
     [SerializeField] private GameObject _eyeParticlesPrefab;
     [SerializeField] private SpriteRenderer[] _invaderSprites;
+
+    [Header("Eye rotation")]
+    [SerializeField] private List<Transform> _invaderEye;
+    [SerializeField] private float _eyeAmplitude;
+    [SerializeField] private float _eyeSpeed;
 
     [Header("Parameters")]
     [SerializeField] private int _score;
@@ -27,6 +33,13 @@ public class Invader : MonoBehaviour
     [Space(10)]
     [SerializeField] private float _noiseScale = 1f;
 
+    [Header("Ennemy blob Effect")]
+    [SerializeField] private SpriteRenderer _blobSprite;
+    [SerializeField] private Material _spriteMat;
+    [SerializeField] private Material _blobMat;
+
+    private List<float> _eyeOffset = new List<float>();
+
     private int _currentLifeAmount;
 
     private int _waveIndex;
@@ -36,6 +49,37 @@ public class Invader : MonoBehaviour
     internal Action<Invader> onDestroy;
 
     public Vector2Int GridIndex { get; private set; }
+
+    private void Awake()
+    {
+        foreach (Transform t in _invaderEye)
+            _eyeOffset.Add(Random.Range(-100, 100));
+    }
+
+    private void Start()
+    {
+        _blobSprite.material = _spriteMat;
+        if (GameFeelManager.Instance.IsFeatureActive("EnnemyBlobAnimation"))
+            _blobSprite.material = _blobMat;
+    }
+
+    private void OnEnable()
+    {
+        GameFeelManager.Instance.OnFeatureToggled += CheckChangeBlobAnim;
+    }
+
+    private void OnDisable()
+    {
+        GameFeelManager.Instance.OnFeatureToggled -= CheckChangeBlobAnim;
+    }
+
+    private void CheckChangeBlobAnim(string name, bool active)
+    {
+        if (name == BLOB_FEATURE)
+        {
+            _blobSprite.material = active ? _blobMat : _spriteMat;
+        }
+    }
 
     public void Initialize(Vector2Int gridIndex, int health, int index)
     {
@@ -48,22 +92,36 @@ public class Invader : MonoBehaviour
 
     private void Update()
     {
-        _angle += _angleSpeed * Time.deltaTime;
+        if (GameFeelManager.Instance.IsFeatureActive("EnnemyBlobAnimation"))
+        {
+            //Ennemy random movement
+            _angle += _angleSpeed * Time.deltaTime;
 
-        float noiseTime = Time.time * _noiseScale + _waveIndex;
-        float noisyRadius = Mathf.PerlinNoise(noiseTime, 0f) * _radiusVariation;
+            float noiseTime = Time.time * _noiseScale + _waveIndex;
+            float noisyRadius = Mathf.PerlinNoise(noiseTime, 0f) * _radiusVariation;
 
-        float x = _centerPoint.x + Mathf.Cos(_angle) * noisyRadius;
-        float y = _centerPoint.y + Mathf.Sin(_angle) * noisyRadius;
+            float x = _centerPoint.x + Mathf.Cos(_angle) * noisyRadius;
+            float y = _centerPoint.y + Mathf.Sin(_angle) * noisyRadius;
 
-        transform.localPosition = new Vector3(x, y, transform.localPosition.z);
+            transform.localPosition = new Vector3(x, y, transform.localPosition.z);
+
+            //Eye rotation
+            for (int i = 0; i < _invaderEye.Count; i++)
+            {
+                Vector3 newRotation = _invaderEye[i].localEulerAngles;
+                newRotation.z = Mathf.Sin((Time.time + _eyeOffset[i]) * _eyeSpeed) * _eyeAmplitude;
+                _invaderEye[i].localEulerAngles = newRotation;
+            }
+        }
+        else
+            transform.localPosition = Vector3.zero;
     }
 
     public void OnDeath()
     {
         onDestroy?.Invoke(this);
 
-        if(GameFeelManager.Instance.IsFeatureActive(INVADER_DESTROY_FEATURE))
+        if (GameFeelManager.Instance.IsFeatureActive(INVADER_DESTROY_FEATURE))
         {
             Destroy(Instantiate(_eyeParticlesPrefab, transform.position, Quaternion.identity), 2.0f);
         }
@@ -73,12 +131,12 @@ public class Invader : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag != collideWithTag) { return; }
+        if (collision.gameObject.tag != collideWithTag) { return; }
 
         TakeDamage();
         Destroy(collision.gameObject);
     }
-    
+
     public event Action OnTakeDamage;
 
     private void TakeDamage()

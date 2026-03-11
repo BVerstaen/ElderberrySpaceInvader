@@ -544,10 +544,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameFeelManager
   _gamefeelFeatures:
   - IsActive: 1
-    Name: ScreenShake
+    Name: RafaleEffect
     ActivationKey: 94
   - IsActive: 1
-    Name: Haptics
+    Name: EnnemyBlobAnimation
     ActivationKey: 95
   - IsActive: 1
     Name: BulletTrail
@@ -991,10 +991,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e4bd5f2beb340842a367b7538126110, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rows: 4
-  columns: 10
+  rows: 3
+  columns: 9
   invaderPrefab: {fileID: 9109969425864263349, guid: 7ab41d612eaa4c040b94ebea77be05a2, type: 3}
-  bounds: {x: 10, y: 4}
+  bounds: {x: 11, y: 4}
   difficultyProgress:
     serializedVersion: 2
     m_Curve:
@@ -1221,6 +1221,14 @@ PrefabInstance:
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _rafaleCharge
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: rafaleTimeMultiplier
+      value: 0.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: rafaleMaxChargeTimeBoost
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
