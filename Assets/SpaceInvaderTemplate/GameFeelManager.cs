@@ -7,6 +7,7 @@ public class GameFeelManager : MonoBehaviour
     public static GameFeelManager Instance = null;
 
     [SerializeField] private GameFeelFeature[] _gamefeelFeatures;
+    [SerializeField] private Key toggleAllKey;
 
     public Action<string, bool> OnFeatureToggled;
 
@@ -38,6 +39,33 @@ public class GameFeelManager : MonoBehaviour
                 Debug.Log((_gamefeelFeatures[i].IsActive ? "Activate" : "Deactivate") + _gamefeelFeatures[i].Name);
             }
         }
+
+        if (Keyboard.current[toggleAllKey].wasPressedThisFrame)
+        {
+            ToggleAll();
+        }
+    }
+    
+    private void ToggleAll()
+    {
+        bool bActive = !IsOneFeatureActive();
+        for (int i = 0; i < _gamefeelFeatures.Length; i++)
+        {
+            if (bActive != _gamefeelFeatures[i].IsActive)
+            { 
+                _gamefeelFeatures[i].IsActive = bActive;
+                OnFeatureToggled?.Invoke(_gamefeelFeatures[i].Name, _gamefeelFeatures[i].IsActive);
+            }
+        }
+    }
+
+    private bool IsOneFeatureActive()
+    {
+        foreach (var feature in _gamefeelFeatures)
+        {
+            if (feature.IsActive) return true;
+        }
+        return false;
     }
 
     public bool IsFeatureActive(string name)

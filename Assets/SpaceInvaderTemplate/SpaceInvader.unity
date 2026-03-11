@@ -780,6 +780,7 @@ MonoBehaviour:
   - IsActive: 1
     Name: MainMenuAnimation
     ActivationKey: 102
+  toggleAllKey: 3
 --- !u!1 &884244689
 GameObject:
   m_ObjectHideFlags: 0
