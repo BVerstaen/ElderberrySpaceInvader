@@ -30,6 +30,9 @@ public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if (!GameFeelManager.Instance.IsFeatureActive("MainMenuAnimation"))
+            return;
+
         if(degrowRoutine != null)
             StopCoroutine(degrowRoutine);
         growRoutine = StartCoroutine(Grow());
