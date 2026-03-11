@@ -79,7 +79,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _playerAscendingDuration;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
-    public static event Action<float /*RafaleDuration*/> OnRafaleTriggered;
+    public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
     public static event Action<int> OnUpdateHealth;
 
     private bool _isShooting = false;
@@ -305,7 +305,7 @@ public class Player : MonoBehaviour
             CameraShake.Instance.StartShaking(rafaleTime);
         }
         
-        OnRafaleTriggered?.Invoke(rafaleTime);
+        OnRafaleTriggered?.Invoke(rafaleTime, _rafaleCharge / rafaleMaximalCharge);
         
         //Reset Rafale Charge 
         _rafaleCharge = 0;
