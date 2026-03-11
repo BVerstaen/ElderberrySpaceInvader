@@ -907,15 +907,27 @@ MonoBehaviour:
   _baseScore: 100
   _baseColorMaterial: {fileID: 2100000, guid: 43ca41636c69db94786b35d29bd72d93, type: 2}
   _scorePalierList:
-  - atPalier: 1
+  - atPalier: 2
     scoreMultiplier: 1.5
     scoreScaleMultiplier: 1.1
+    newTextMaterial: {fileID: 2100000, guid: 50795168b4faa8b46a88e0d4818a21f4, type: 2}
+    probaOfVoicelineToPlay: 0
+    voicelinesToPlay: []
+  - atPalier: 4
+    scoreMultiplier: 1.7
+    scoreScaleMultiplier: 1.2
+    newTextMaterial: {fileID: 2100000, guid: 8351229bcf275d34db61dccae15f0e33, type: 2}
+    probaOfVoicelineToPlay: 0
+    voicelinesToPlay: []
+  - atPalier: 6
+    scoreMultiplier: 2
+    scoreScaleMultiplier: 1.3
     newTextMaterial: {fileID: 2100000, guid: b07616391b1eeba428a5c399bf2b4d55, type: 2}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
-  - atPalier: 2
-    scoreMultiplier: 2
-    scoreScaleMultiplier: 1.3
+  - atPalier: 8
+    scoreMultiplier: 2.5
+    scoreScaleMultiplier: 1.4
     newTextMaterial: {fileID: 2100000, guid: c57ed3ae18870a84ca1226e1b413ef9d, type: 2}
     probaOfVoicelineToPlay: 0
     voicelinesToPlay: []
