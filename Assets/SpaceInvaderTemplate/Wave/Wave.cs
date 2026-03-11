@@ -54,6 +54,11 @@ public class Wave : MonoBehaviour
     [SerializeField] private float _minNextWaveWaiting;
     [SerializeField] private float _maxNextWaveWaiting;
 
+    [Header("Wave Descending")]
+    [SerializeField] private Vector2 _startDescendingPosition;
+    [SerializeField] private AnimationCurve _waveDescendingCurve;
+    [SerializeField] private float _waveDescendingDuration;
+
     private Vector2 _defaultLocation;
     private Move _moveDirection = Move.Right;
     private int _moveCount = 0;
@@ -63,6 +68,7 @@ public class Wave : MonoBehaviour
 
     private Bounds Bounds => new Bounds(transform.position, new Vector3(bounds.x, bounds.y, 1000f));
     private Coroutine _nextWaveWaiting;
+    private Coroutine _waveDescendingCoroutine;
 
     public int CurrentWave { get => _currentWave; }
 
@@ -119,6 +125,28 @@ public class Wave : MonoBehaviour
                 invaderPerColumn[i].invaders.Add(invader);
                 invaderPerRow[j].invaders.Add(invader);
             }
+        }
+
+
+        if(_waveDescendingCoroutine != null)
+        {
+            StopCoroutine(_waveDescendingCoroutine);
+            _waveDescendingCoroutine = null;
+        }
+        _waveDescendingCoroutine = StartCoroutine(WaveDescending());
+    }
+
+    private IEnumerator WaveDescending()
+    {
+        float timeElasped = 0.0f;
+        while (timeElasped < _waveDescendingDuration)
+        {
+            float progression = _waveDescendingCurve.Evaluate(timeElasped / _waveDescendingDuration);
+            Vector2 newWavePosition = Vector2.Lerp(_startDescendingPosition, _defaultLocation, progression);
+            transform.position = new Vector3(newWavePosition.x, newWavePosition.y, transform.position.z);
+
+            timeElasped += Time.deltaTime;
+            yield return null;
         }
     }
 
