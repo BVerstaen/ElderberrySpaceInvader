@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5818508615540186248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1691826822913498574}
+  m_Layer: 0
+  m_Name: EnemySplashPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1691826822913498574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5818508615540186248}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.3, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4724970415690683995}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5919691350210891374
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +339,7 @@ Transform:
   m_Children:
   - {fileID: 8808591723042360307}
   - {fileID: 2792557106913924442}
+  - {fileID: 1691826822913498574}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9109969425864263349
@@ -324,8 +356,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7369880722360228486, guid: 47d2029f071079c4a98ac35325b21f24, type: 3}
   shootAt: {fileID: 8808591723042360307}
-  collideWithTag: Player
+  collideWithTag: []
   _eyeParticlesPrefab: {fileID: 8580916035640684435, guid: 5a160a5aae3908548a74c472a4525fc1, type: 3}
+  _splashFXPrefab: {fileID: 4218853187458582951, guid: 9f1d376462f12fe42b825381923fc351, type: 3}
+  _splashFXPositon: {fileID: 1691826822913498574}
   _invaderSprites:
   - {fileID: 3685982124939516052}
   - {fileID: 8578846643400102174}
