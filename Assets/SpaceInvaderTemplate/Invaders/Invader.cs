@@ -18,6 +18,8 @@ public class Invader : MonoBehaviour
     [SerializeField] private Transform shootAt = null;
     [SerializeField] private string[] collideWithTag = {"Player", "Bullet", "RafaleBullet"};
     [SerializeField] private GameObject _eyeParticlesPrefab;
+    [SerializeField] private GameObject _splashFXPrefab;
+    [SerializeField] private Transform _splashFXPositon;
     [SerializeField] private SpriteRenderer[] _invaderSprites;
 
     [Header("Eye rotation")]
@@ -125,6 +127,7 @@ public class Invader : MonoBehaviour
         if (GameFeelManager.Instance.IsFeatureActive(INVADER_DESTROY_FEATURE))
         {
             Destroy(Instantiate(_eyeParticlesPrefab, transform.position, Quaternion.identity), 2.0f);
+            Destroy(Instantiate(_splashFXPrefab, _splashFXPositon.position, Quaternion.identity), 2.0f);
         }
 
         Destroy(gameObject);
