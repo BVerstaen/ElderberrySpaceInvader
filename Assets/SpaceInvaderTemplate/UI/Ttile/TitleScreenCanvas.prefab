@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5544ab8b61a938142b9607b00ca49d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PLIbox.TransitionObject.TransitionAnimation
-  _animationDuration: 0.5
+  _animationDuration: 0.2
   _DEBUGPrintPositionAtStartup: 0
   _bypassPlayingGuard: 0
   _objectToAnimate:
