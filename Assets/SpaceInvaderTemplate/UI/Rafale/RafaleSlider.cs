@@ -73,13 +73,14 @@ public class RafaleSlider : MonoBehaviour
         _sliderSpeed = sliderValueSpeed * Mathf.Max(Mathf.Abs(value - slider.value), 0.2f);
     }
 
-    private void RafaleTriggered(float rafaleTime)
+    private void RafaleTriggered(float rafaleTime, float rafaleIntensity)
     {
         if (!GameFeelManager.Instance.IsFeatureActive("RafaleChargeSliderAnimation")) return;
         _isInRafale = true;
         _rafaleTime = rafaleTime;
         fillBar.color = rafaleColor;
-        _startRafaleValue = slider.value;
+        slider.value = rafaleIntensity;
+        _startRafaleValue = rafaleIntensity;
         _rafaleClock = 0;
     }
 }
