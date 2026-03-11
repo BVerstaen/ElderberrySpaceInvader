@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,8 @@ public class TitleScreenUI : MonoBehaviour
     [SerializeField] private float _highTextSpeed;
     [SerializeField] private float _highTextAmplitude;
     [SerializeField] private float _highTextMinimumScale;
+
+    public static Action OnStartGame; 
 
     private void Start()
     {
