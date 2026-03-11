@@ -109,7 +109,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startVelocity: {x: 0, y: 10, z: 0}
   _lifeTime: 3
-  _featureName: BulletTrail
+  _featureName: RafaleEffect
   _trail: {fileID: 1844121203717192961}
 --- !u!58 &7187537139655989992
 CircleCollider2D:

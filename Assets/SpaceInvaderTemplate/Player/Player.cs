@@ -66,6 +66,7 @@ public class Player : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] private List<ParticleSystem> _fireParticles;
+    [SerializeField] private List<ParticleSystem> _rafaleFireParticles;
 
     [Header("Lean movement")]
     [SerializeField] private AnimationCurve _leanCurve;
@@ -228,20 +229,20 @@ public class Player : MonoBehaviour
     private void RafaleShoot()
     {
         Bullet bullet = Instantiate(rafaleBulletPrefab, shootAt.position, Quaternion.identity);
-        PlayFireEffect();
+        PlayFireEffect(true);
         bullet.SetCustomStartVelocity(bullet.GetStartVelocity() + new Vector3(Random.Range(-rafaleBulletXOffset,rafaleBulletXOffset), 0, 0));
     }
 
-    private void PlayFireEffect()
+    private void PlayFireEffect(bool bIsRafale = false)
     {
-        if (!GameFeelManager.Instance.IsFeatureActive(FIRE_EFFECT_FEATURE))
+        if (!GameFeelManager.Instance.IsFeatureActive(bIsRafale ? "RafaleEffect" : FIRE_EFFECT_FEATURE))
             return;
 
         //Feedback sound
         AudioManager.Instance.PlaySound(FIRE_SOUND);
         StartCoroutine(DifferedShellSound());
 
-        foreach (var fire in _fireParticles)
+        foreach (var fire in bIsRafale ? _rafaleFireParticles : _fireParticles)
         {
             fire.Play();
         }
