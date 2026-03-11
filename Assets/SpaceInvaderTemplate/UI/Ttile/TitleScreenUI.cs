@@ -36,8 +36,11 @@ public class TitleScreenUI : MonoBehaviour
     private void Update()
     {
         //highscore scale text
-        float highScoreScale = (Mathf.Sin(Time.time * _highTextSpeed) + 1 + _highTextMinimumScale) * _highTextAmplitude;
-        _highscoreText.rectTransform.localScale = new Vector3(highScoreScale, highScoreScale, highScoreScale);
+        if(GameFeelManager.Instance.IsFeatureActive("MainMenuAnimation"))
+        {
+            float highScoreScale = ((Mathf.Sin(Time.time * _highTextSpeed) + 1) * _highTextAmplitude) + _highTextMinimumScale;
+            _highscoreText.rectTransform.localScale = new Vector3(highScoreScale, highScoreScale, highScoreScale);
+        }
     }
 
     public void StartGame()

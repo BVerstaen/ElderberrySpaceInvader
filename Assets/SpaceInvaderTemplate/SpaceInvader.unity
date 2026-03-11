@@ -777,6 +777,9 @@ MonoBehaviour:
   - IsActive: 1
     Name: PlayerHit
     ActivationKey: 101
+  - IsActive: 1
+    Name: MainMenuAnimation
+    ActivationKey: 102
 --- !u!1 &884244689
 GameObject:
   m_ObjectHideFlags: 0
