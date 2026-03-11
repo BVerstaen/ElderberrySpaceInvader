@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private int _playerScore;
     public int PlayerScore { get => _playerScore; }
 
+    public Action OnStartGame;
     public Action<int> OnUpdateScore;
 
     void Awake()
@@ -89,6 +90,8 @@ public class GameManager : MonoBehaviour
         _gameCanvasObject.SetActive(true);
         _playerObject.gameObject.SetActive(true);
         _waveObject.StartGame();
+
+        OnStartGame?.Invoke();
     }
 
     public void AddScore(int scoreToAdd)

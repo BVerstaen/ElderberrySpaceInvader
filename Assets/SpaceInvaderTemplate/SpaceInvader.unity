@@ -320,6 +320,7 @@ GameObject:
   - component: {fileID: 651903197}
   - component: {fileID: 651903196}
   - component: {fileID: 651903195}
+  - component: {fileID: 651903199}
   m_Layer: 0
   m_Name: SkyBackground
   m_TagString: Untagged
@@ -421,6 +422,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -180, y: -90, z: 90}
+--- !u!114 &651903199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651903194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a3bbbc3da1dc29448f4ab920cc5b9f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkyBackgroundSpeed
+  _skyBackgroundMat: {fileID: 2100000, guid: 79fba98155c7a3d4f97fa14f65c61eb1, type: 2}
+  _N_X_Pam_Menu: 0.1
+  _Texture2_N_X_Pam_Menu: 0.2
+  _N_X_Pam_Game: 0.5
+  _Texture2_N_X_Pam_Game: 0.6
 --- !u!1 &805531689
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,12 +921,12 @@ MonoBehaviour:
   _brokenGlassPalier:
   - Tex: {fileID: 2800000, guid: db403ac1861909a44b26b58a3d7d3d0a, type: 3}
     Power: 0.01
-  - Tex: {fileID: 2800000, guid: 76cbed5342037bb44983ed64086f06b3, type: 3}
-    Power: 0.01
-  - Tex: {fileID: 2800000, guid: b0caa0b5b3dd3794e8457c89b0eab71a, type: 3}
-    Power: 0.01
-  - Tex: {fileID: 2800000, guid: 8c4a7fca2884fab419769ccc0355c0c1, type: 3}
-    Power: 0.01
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
+    Power: 0.2
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
+    Power: 0.15
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
+    Power: 0.1
 --- !u!1 &1262483787
 GameObject:
   m_ObjectHideFlags: 0
@@ -1016,7 +1034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NextWaveUI
   _redScreen: {fileID: 826675227}
   _warningText: {fileID: 2078366191}
-  _redScreenColor: {r: 0.5647059, g: 0, b: 0, a: 1}
+  _redScreenColor: {r: 0.5647059, g: 0, b: 0, a: 0.7058824}
   _redScreenSpeed: 10
   _redScreenDuration: 3
   _fadeoutCurve:
