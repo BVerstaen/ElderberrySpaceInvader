@@ -121,10 +121,12 @@ namespace PLIbox.Audio
         public AudioSource PlaySound(string soundName, int soundIndex = -1, bool isLooping = false) // -1 == random
         {
             //Find the sound to play
-            GetAudioDataFromSoundName(soundName, soundIndex, out AudioClip soundToPlay, out float soundVolume, out Vector2 randomPitch);
+            GetAudioDataFromSoundName(soundName, soundIndex, out AudioClip soundToPlay, out float soundVolume, out Vector2 randomPitch, out AudioMixerGroup group);
 
             //Find an unused sound object
             AudioSource sourceToPlay = FindUnusedAudioSource();
+            if (group != null)
+                sourceToPlay.outputAudioMixerGroup = group;
 
             //Check if found object are correct
             if (!AssertSound(soundName, soundToPlay, sourceToPlay))
@@ -162,7 +164,7 @@ namespace PLIbox.Audio
             return null;
         }
 
-        private void GetAudioDataFromSoundName(string name, int audioDataIndex, out AudioClip clip, out float volume, out Vector2 randomPitch)
+        private void GetAudioDataFromSoundName(string name, int audioDataIndex, out AudioClip clip, out float volume, out Vector2 randomPitch, out AudioMixerGroup group)
         {
             //Get AudioData
             AudioData foundAudioData = new AudioData();
@@ -183,7 +185,9 @@ namespace PLIbox.Audio
                             clip = null;
                             volume = 0.0f;
                             randomPitch = Vector2.zero;
+                            group = null;
                             Debug.LogError("Didn't find " + name);
+                            group = null;
                             return;
                         }
                         else
@@ -198,6 +202,7 @@ namespace PLIbox.Audio
                             volume = 0.0f;
                             randomPitch = Vector2.zero;
                             Debug.LogError("No clips for " + name);
+                            group = null;
                             return;
                         }
 
@@ -222,12 +227,14 @@ namespace PLIbox.Audio
                         foundAudioData.MinPitchModifier,
                         foundAudioData.MaxPitchModifier
                     );
+                group = foundAudioData.MixerGroup;
             }
             else
             {
                 clip = null;
                 volume = 0.0f;
                 randomPitch = Vector2.zero;
+                group = null;
                 Debug.LogError("Didn't find " + name);
             }
 

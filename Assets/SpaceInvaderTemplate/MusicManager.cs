@@ -10,6 +10,7 @@ public class MusicManager : MonoBehaviour
     [SerializeField] private AudioClip _menuMusic;
     [SerializeField] private AudioClip _gameMusic;
 
+
     private void Awake()
     {
         _musicSource.clip = _menuMusic;
