@@ -83,8 +83,8 @@ MonoBehaviour:
     Clips:
     - Clip: {fileID: 8300000, guid: 799772959790f6641b9af756b80b8040, type: 3}
       Volume: 0.55
-      MinPitchModifier: 0
-      MaxPitchModifier: 0
+      MinPitchModifier: -0.5
+      MaxPitchModifier: 0.5
   - Name: PlayerHit
     Clips: []
   - Name: ShellSound
