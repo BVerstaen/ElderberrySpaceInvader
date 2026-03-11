@@ -544,10 +544,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameFeelManager
   _gamefeelFeatures:
   - IsActive: 1
-    Name: ScreenShake
+    Name: RafaleEffect
     ActivationKey: 94
   - IsActive: 1
-    Name: Haptics
+    Name: EnnemyBlobAnimation
     ActivationKey: 95
   - IsActive: 1
     Name: BulletTrail

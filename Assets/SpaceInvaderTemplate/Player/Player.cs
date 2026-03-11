@@ -237,8 +237,11 @@ public class Player : MonoBehaviour
         float clock = 0;
 
         //Haptic 
-        HapticManager.Instance.StartRumble(100, 200, rafaleTime);
-        CameraShake.Instance.StartShaking(rafaleTime);
+        if(GameFeelManager.Instance.IsFeatureActive("RaffaleEffect"))
+        {
+            HapticManager.Instance.StartRumble(100, 200, rafaleTime);
+            CameraShake.Instance.StartShaking(rafaleTime);
+        }
         
         OnRafaleTriggered?.Invoke(rafaleTime);
         
