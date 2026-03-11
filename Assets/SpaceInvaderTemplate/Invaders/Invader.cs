@@ -138,11 +138,13 @@ public class Invader : MonoBehaviour
     }
 
     public event Action OnTakeDamage;
+    public static event Action OnInvaderTookDamage;
 
     private void TakeDamage()
     {
         _currentLifeAmount--;
         OnTakeDamage?.Invoke();
+        OnInvaderTookDamage?.Invoke();
         StartCoroutine(DamageColorFeedback());
         if (_currentLifeAmount <= 0)
         {

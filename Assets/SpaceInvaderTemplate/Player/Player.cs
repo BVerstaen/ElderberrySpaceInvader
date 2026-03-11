@@ -103,10 +103,10 @@ public class Player : MonoBehaviour
     private void Start()
     {
         ResetPlayer();
-        Wave.OnInvaderDeath += OnInvaderDeath;
+        Invader.OnInvaderTookDamage += OnInvaderHit;
     }
 
-    private void OnInvaderDeath()
+    private void OnInvaderHit()
     {
         _lastTimeKilledEnemy = Time.time;
         if (_isInRafale) return;
