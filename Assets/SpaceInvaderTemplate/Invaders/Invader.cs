@@ -149,7 +149,7 @@ public class Invader : MonoBehaviour
         _currentLifeAmount--;
         OnTakeDamage?.Invoke();
         OnInvaderTookDamage?.Invoke(bIsRafaleBullet);
-        StartCoroutine(DamageColorFeedback());
+        if (GameFeelManager.Instance.IsFeatureActive(INVADER_DESTROY_FEATURE)) StartCoroutine(DamageColorFeedback());
         if (_currentLifeAmount <= 0)
         {
             Kill();
