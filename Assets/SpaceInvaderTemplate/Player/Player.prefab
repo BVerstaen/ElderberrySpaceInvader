@@ -264,9 +264,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 9182519034774482932}
     m_Modifications:
+    - target: {fileID: 48021918154589907, guid: f443fffe431de284fb51860b49d7089c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78381857330919260, guid: f443fffe431de284fb51860b49d7089c, type: 3}
       propertyPath: m_Name
       value: VFX_Stylized_Muzzle
+      objectReference: {fileID: 0}
+    - target: {fileID: 1457973958479068494, guid: f443fffe431de284fb51860b49d7089c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2266177932838606678, guid: f443fffe431de284fb51860b49d7089c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4401187797710018572, guid: f443fffe431de284fb51860b49d7089c, type: 3}
       propertyPath: m_LocalScale.y
@@ -314,6 +326,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4401187797710018572, guid: f443fffe431de284fb51860b49d7089c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4914262066264867459, guid: f443fffe431de284fb51860b49d7089c, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5103012034987707229, guid: f443fffe431de284fb51860b49d7089c, type: 3}
+      propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
