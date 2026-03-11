@@ -72,7 +72,7 @@ Material:
     - _Voronoi_Scale: 7.6
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Water_Edge_Color: {r: 0.6743273, g: 1.2460732, b: 2, a: 1}
-    - _Water_base_color: {r: 0.23137255, g: 0.5764706, b: 1, a: 1}
+    - _Water_Edge_Color: {r: 2, g: 0.7056973, b: 0.6806283, a: 1}
+    - _Water_base_color: {r: 1, g: 0.23137254, b: 0.24569282, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
