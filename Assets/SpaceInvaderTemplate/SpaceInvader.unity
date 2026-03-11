@@ -321,7 +321,7 @@ GameObject:
   - component: {fileID: 651903196}
   - component: {fileID: 651903195}
   m_Layer: 0
-  m_Name: r
+  m_Name: SkyBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
