@@ -14,6 +14,10 @@ public class NextWaveUI : MonoBehaviour
     [SerializeField] private float _redScreenSpeed;
     [SerializeField] private float _redScreenDuration;
 
+    [Header("Fadeout")]
+    [SerializeField] private AnimationCurve _fadeoutCurve;
+    [SerializeField] private float _fadeOutDuration;
+
     private Coroutine _redScreenCoroutine;
 
     private void Awake()
@@ -50,6 +54,19 @@ public class NextWaveUI : MonoBehaviour
             redScreenColor.a = Mathf.Sin(_redScreenSpeed * timeElapsed);
             _redScreen.color = redScreenColor;
                 
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        timeElapsed = 0.0f;
+        Color oldColor = _redScreen.color;
+        while (timeElapsed < _fadeOutDuration)
+        {
+            float progression = _fadeoutCurve.Evaluate(timeElapsed / _fadeOutDuration);
+            Color redScreenColor = _redScreenColor;
+            redScreenColor.a = Mathf.Lerp(_redScreen.color.a, 0, progression);
+            _redScreen.color = redScreenColor;
+
             timeElapsed += Time.deltaTime;
             yield return null;
         }

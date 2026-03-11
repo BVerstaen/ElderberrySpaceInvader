@@ -998,8 +998,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NextWaveUI
   _redScreen: {fileID: 826675227}
   _warningText: {fileID: 2078366191}
-  _redScreenColor: {r: 1, g: 0, b: 0, a: 1}
-  _redScreenSpeed: 2
+  _redScreenColor: {r: 0.5647059, g: 0, b: 0, a: 1}
+  _redScreenSpeed: 10
   _redScreenDuration: 1
 --- !u!1 &1671297510
 GameObject:
