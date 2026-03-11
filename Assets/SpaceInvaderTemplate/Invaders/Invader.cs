@@ -70,7 +70,7 @@ public class Invader : MonoBehaviour
 
     private void OnDisable()
     {
-        GameFeelManager.Instance.OnFeatureToggled -= CheckChangeBlobAnim;
+        if (GameFeelManager.Instance != null) GameFeelManager.Instance.OnFeatureToggled -= CheckChangeBlobAnim;
     }
 
     private void CheckChangeBlobAnim(string name, bool active)
