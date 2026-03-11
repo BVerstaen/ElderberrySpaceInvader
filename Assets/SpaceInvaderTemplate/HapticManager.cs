@@ -23,7 +23,6 @@ public class HapticManager : MonoBehaviour
 
     public void StartRumble(float lowFreq, float highFreq, float duration)
     {
-        if (!GameFeelManager.Instance.IsFeatureActive("Haptics")) return;
         Gamepad pad = Gamepad.current;
         if(pad != null)
         {
