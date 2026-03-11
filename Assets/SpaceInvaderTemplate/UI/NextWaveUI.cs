@@ -1,3 +1,4 @@
+using PLIbox.Audio;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.UI;
 
 public class NextWaveUI : MonoBehaviour
 {
+    private const string NEW_WAVE_SOUND = "NewWaveAlarm";
+
     [Header("References")]
     [SerializeField] private Image _redScreen;
     [SerializeField] private TMP_Text _warningText;
@@ -39,6 +42,7 @@ public class NextWaveUI : MonoBehaviour
     [ContextMenu("Feur")]
     public void StartWaveEffect()
     {
+        AudioManager.Instance.PlaySound(NEW_WAVE_SOUND);
         _redScreenCoroutine = StartCoroutine(RedScreenWave());
     }
 

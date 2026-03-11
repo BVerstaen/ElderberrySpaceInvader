@@ -9,8 +9,6 @@ using Random = UnityEngine.Random;
 
 public class Wave : MonoBehaviour
 {
-    private const string NEW_WAVE_SOUND = "NewWaveAlarm";
-
     [Serializable]
     private struct HealthPalier
     {
@@ -85,6 +83,11 @@ public class Wave : MonoBehaviour
         CreateWave();
     }
 
+    private void Start()
+    {
+        OnNextWave?.Invoke();
+    }
+
     private void CreateWave()
     {
         //Reset variables
@@ -117,9 +120,6 @@ public class Wave : MonoBehaviour
                 invaderPerRow[j].invaders.Add(invader);
             }
         }
-
-        //Feedback
-        AudioManager.Instance.PlaySound(NEW_WAVE_SOUND);
     }
 
     void Update()
