@@ -107,10 +107,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8631359d6b5541d4f9a33b40fca4d969, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _planeSpriteRenderer: {fileID: 5384390042162633982}
   _moveInput: {fileID: -7252819961044648463, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
   _shootInput: {fileID: 8806388586919487790, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
   _rafaleRightInput: {fileID: -7437062661355851099, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
   _rafaleLeftInput: {fileID: -8697255473906523832, guid: 43d2a9b79dd78474ca9d615fe0d30aca, type: 3}
+  _normalSprite: {fileID: 21300000, guid: 663688b132133db46b894a37a6e5a406, type: 3}
+  _leftSprite: {fileID: 21300000, guid: d25a1463c83ec254895e1870a0c352b9, type: 3}
+  _rightSprite: {fileID: 21300000, guid: 49e66dcdab1bd2f4793eae9bc5b21d16, type: 3}
   deadzone: 0.2
   speed: 4
   bulletPrefab: {fileID: 7369880722360228486, guid: 42269f87d33f3eb4898473401db125ae, type: 3}

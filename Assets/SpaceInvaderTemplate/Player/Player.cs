@@ -14,11 +14,19 @@ public class Player : MonoBehaviour
 
     private const string FIRE_EFFECT_FEATURE = "FireEffect";
 
+    [Header("References")]
+    [SerializeField] private SpriteRenderer _planeSpriteRenderer;
+
     [Header("Inputs")]
     [SerializeField] private InputActionReference _moveInput;
     [SerializeField] private InputActionReference _shootInput;
     [SerializeField] private InputActionReference _rafaleRightInput;
     [SerializeField] private InputActionReference _rafaleLeftInput;
+
+    [Header("Sprites")]
+    [SerializeField] private Sprite _normalSprite;
+    [SerializeField] private Sprite _leftSprite;
+    [SerializeField] private Sprite _rightSprite;
 
     [Header("Properties")]
     [SerializeField] private float deadzone = 0.3f;
@@ -125,6 +133,8 @@ public class Player : MonoBehaviour
         Vector3 rotation = transform.localEulerAngles;
         rotation.z = currentLean;
         transform.localEulerAngles = rotation;
+
+        ChangeSprite(moveSign);
     }
 
     private void ResetPlayer()
@@ -167,6 +177,15 @@ public class Player : MonoBehaviour
         float delta = move * speed * Time.deltaTime;
         transform.position = GameManager.Instance.KeepInBounds(transform.position + Vector3.right * delta);
         return move;
+    }
+
+    private void ChangeSprite(float dir)
+    {
+        _planeSpriteRenderer.sprite = _normalSprite;
+        if (dir < 0)
+            _planeSpriteRenderer.sprite = _leftSprite;
+        else if (dir > 0)
+            _planeSpriteRenderer.sprite = _rightSprite;
     }
 
     private void UpdateActions()
@@ -237,7 +256,7 @@ public class Player : MonoBehaviour
         float clock = 0;
 
         //Haptic 
-        if(GameFeelManager.Instance.IsFeatureActive("RaffaleEffect"))
+        if(GameFeelManager.Instance.IsFeatureActive("RafaleEffect"))
         {
             HapticManager.Instance.StartRumble(100, 200, rafaleTime);
             CameraShake.Instance.StartShaking(rafaleTime);
