@@ -73,7 +73,8 @@ public class Player : MonoBehaviour
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/> OnRafaleTriggered;
-    
+    public static event Action<int> OnUpdateHealth;
+
     private bool _isShooting = false;
     private float lastShootTimestamp = Mathf.NegativeInfinity;
     private bool _isRafaleRightPressed = false;
@@ -301,6 +302,7 @@ public class Player : MonoBehaviour
         }
 
         OnTakeDamage?.Invoke();
+        OnUpdateHealth?.Invoke(_currentLife);
         //Feedback son
         AudioManager.Instance.PlaySound(HIT_SOUND);
     }

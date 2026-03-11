@@ -50,39 +50,39 @@ MonoBehaviour:
   - Name: NewWaveAlarm
     Clips:
     - Clip: {fileID: 8300000, guid: 8faa4ef5ad0d0d3428a7d8d6af2a218e, type: 3}
-      Volume: 0.5
+      Volume: 0.03
       MinPitchModifier: 0
       MaxPitchModifier: 0
   - Name: InvaderDeath
     Clips:
     - Clip: {fileID: 8300000, guid: 0b6e4f5521fff5040b5280280aa3e67b, type: 3}
-      Volume: 1
+      Volume: 0.5
       MinPitchModifier: 0.5
       MaxPitchModifier: -0.5
     - Clip: {fileID: 8300000, guid: 8fcd076eaf1ea734791a41ca80b72f64, type: 3}
-      Volume: 1
+      Volume: 0.5
       MinPitchModifier: 0.5
       MaxPitchModifier: -0.5
     - Clip: {fileID: 8300000, guid: 423783bce1c930949b5a3c1d4e164cf2, type: 3}
-      Volume: 1
+      Volume: 0.5
       MinPitchModifier: 0.5
       MaxPitchModifier: -0.5
     - Clip: {fileID: 8300000, guid: 4f1720bdee8d82440bb0b90d96e29e90, type: 3}
-      Volume: 1
+      Volume: 0.5
       MinPitchModifier: 0.5
       MaxPitchModifier: -0.5
     - Clip: {fileID: 8300000, guid: 88c9d281486da394ead587d44aa5f1c4, type: 3}
-      Volume: 1
+      Volume: 0.5
       MinPitchModifier: 0.5
       MaxPitchModifier: -0.5
     - Clip: {fileID: 8300000, guid: 255833218571d064bb99b45b8f0805f5, type: 3}
-      Volume: 1
+      Volume: 0.5
       MinPitchModifier: 0.5
       MaxPitchModifier: -0.5
   - Name: PlayerFire
     Clips:
     - Clip: {fileID: 8300000, guid: 799772959790f6641b9af756b80b8040, type: 3}
-      Volume: 1
+      Volume: 0.55
       MinPitchModifier: 0
       MaxPitchModifier: 0
   - Name: PlayerHit
@@ -90,22 +90,22 @@ MonoBehaviour:
   - Name: ShellSound
     Clips:
     - Clip: {fileID: 8300000, guid: 8f669b0545a7a6644ab7937bc898def6, type: 3}
-      Volume: 1
+      Volume: 0.6
       MinPitchModifier: 0.1
       MaxPitchModifier: -0.1
     - Clip: {fileID: 8300000, guid: 7a53d028a89bf944ea04e4e873e0c73e, type: 3}
-      Volume: 1
+      Volume: 0.6
       MinPitchModifier: 0.1
       MaxPitchModifier: -0.1
     - Clip: {fileID: 8300000, guid: ce8d945a8b6cb8d479b7525c7d415b45, type: 3}
-      Volume: 1
+      Volume: 0.6
       MinPitchModifier: 0.1
       MaxPitchModifier: -0.1
     - Clip: {fileID: 8300000, guid: d874eb54f45a1184c80bd41169c36dc7, type: 3}
-      Volume: 1
+      Volume: 0.6
       MinPitchModifier: 0.1
       MaxPitchModifier: -0.1
     - Clip: {fileID: 8300000, guid: 1b97935e46772424da615bbedd65a9af, type: 3}
-      Volume: 1
+      Volume: 0.6
       MinPitchModifier: 0.1
       MaxPitchModifier: -0.1
