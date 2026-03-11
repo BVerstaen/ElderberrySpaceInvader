@@ -9,7 +9,9 @@ Shader "DeathMonster"
 		_Dissolve( "Dissolve", Range( 0, 1 ) ) = 0.1734188
 		_Float0( "Float 0", Float ) = 0
 		_Noise_Dissolve_Offset( "Noise_Dissolve_Offset", Range( 0, 1 ) ) = 0
+		_N_X_Pam( "N_X_Pam", Float ) = 1
 		_Noise_Dissolve_Scale( "Noise_Dissolve_Scale", Range( 0, 1 ) ) = 0
+		_N_Y_Pam( "N_Y_Pam", Float ) = 1
 		_TextureSample1( "Texture Sample 1", 2D ) = "white" {}
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
@@ -183,12 +185,12 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
+			#define _SURFACE_TYPE_TRANSPARENT 1
 			#pragma shader_feature_local_fragment _RECEIVE_SHADOWS_OFF
 			#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
 			#pragma instancing_options renderinglayer
 			#pragma multi_compile _ LOD_FADE_CROSSFADE
 			#define ASE_FOG 1
-			#define _SURFACE_TYPE_TRANSPARENT 1
 			#define ASE_VERSION 19907
 			#define ASE_SRP_VERSION 170300
 
@@ -284,6 +286,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -478,7 +482,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 				float3 BakedAlbedo = 0;
 				float3 BakedEmission = 0;
@@ -562,9 +568,9 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
+			#define _SURFACE_TYPE_TRANSPARENT 1
 			#pragma multi_compile _ LOD_FADE_CROSSFADE
 			#define ASE_FOG 1
-			#define _SURFACE_TYPE_TRANSPARENT 1
 			#define ASE_VERSION 19907
 			#define ASE_SRP_VERSION 170300
 
@@ -626,6 +632,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -794,7 +802,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 
 				float Alpha = ( tex2DNode15.a * temp_output_51_0 );
@@ -841,9 +851,9 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
+			#define _SURFACE_TYPE_TRANSPARENT 1
 			#pragma multi_compile _ LOD_FADE_CROSSFADE
 			#define ASE_FOG 1
-			#define _SURFACE_TYPE_TRANSPARENT 1
 			#define ASE_VERSION 19907
 			#define ASE_SRP_VERSION 170300
 
@@ -902,6 +912,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -1050,7 +1062,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 
 				float Alpha = ( tex2DNode15.a * temp_output_51_0 );
@@ -1091,8 +1105,8 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
-			#define ASE_FOG 1
 			#define _SURFACE_TYPE_TRANSPARENT 1
+			#define ASE_FOG 1
 			#define ASE_VERSION 19907
 			#define ASE_SRP_VERSION 170300
 
@@ -1144,6 +1158,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -1294,7 +1310,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 
 				surfaceDescription.Alpha = ( tex2DNode15.a * temp_output_51_0 );
@@ -1323,8 +1341,8 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
-			#define ASE_FOG 1
 			#define _SURFACE_TYPE_TRANSPARENT 1
+			#define ASE_FOG 1
 			#define ASE_VERSION 19907
 			#define ASE_SRP_VERSION 170300
 
@@ -1381,6 +1399,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -1530,7 +1550,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 
 				surfaceDescription.Alpha = ( tex2DNode15.a * temp_output_51_0 );
@@ -1563,9 +1585,9 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
+        	#define _SURFACE_TYPE_TRANSPARENT 1
         	#pragma multi_compile _ LOD_FADE_CROSSFADE
         	#define ASE_FOG 1
-        	#define _SURFACE_TYPE_TRANSPARENT 1
         	#define ASE_VERSION 19907
         	#define ASE_SRP_VERSION 170300
 
@@ -1633,6 +1655,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -1798,7 +1822,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord1.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord1.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 
 				float Alpha = ( tex2DNode15.a * temp_output_51_0 );
@@ -1849,9 +1875,9 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
+			#define _SURFACE_TYPE_TRANSPARENT 1
 			#pragma multi_compile _ LOD_FADE_CROSSFADE
 			#define ASE_FOG 1
-			#define _SURFACE_TYPE_TRANSPARENT 1
 			#define ASE_VERSION 19907
 			#define ASE_SRP_VERSION 170300
 
@@ -1922,6 +1948,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -2020,7 +2048,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 
 				float Alpha = ( tex2DNode15.a * temp_output_51_0 );
@@ -2077,10 +2107,10 @@ Shader "DeathMonster"
 
 			HLSLPROGRAM
 
+			#define _SURFACE_TYPE_TRANSPARENT 1
 			#pragma shader_feature_local_fragment _RECEIVE_SHADOWS_OFF
 			#pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
 			#define ASE_FOG 1
-			#define _SURFACE_TYPE_TRANSPARENT 1
 			#define ASE_VERSION 19907
 			#define ASE_SRP_VERSION 170300
 
@@ -2160,6 +2190,8 @@ Shader "DeathMonster"
 			float4 _TextureSample0_ST;
 			float _Float0;
 			float _Dissolve;
+			float _N_X_Pam;
+			float _N_Y_Pam;
 			float _AlphaClip;
 			float _Cutoff;
 			#ifdef ASE_TESSELLATION
@@ -2343,7 +2375,9 @@ Shader "DeathMonster"
 				float2 texCoord41 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float _Noise_Dissolve_Scale_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Scale);
 				float _Noise_Dissolve_Offset_Instance = UNITY_ACCESS_INSTANCED_PROP(DeathMonster,_Noise_Dissolve_Offset);
-				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, (texCoord41* (1.0 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 1.0 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) ).r );
+				float4 appendResult71 = (float4(_N_X_Pam , _N_Y_Pam , 0.0 , 0.0));
+				float2 panner72 = ( 1.0 * _Time.y * appendResult71.xy + float2( 0,0 ));
+				float temp_output_51_0 = step(  (0.0 + ( ( _Dissolve + input.ase_texcoord3.z ) - 0.0 ) * ( 0.6 - 0.0 ) / ( 1.0 - 0.0 ) ) , tex2D( _TextureSample1, ( (texCoord41* (0.1 + ( _Noise_Dissolve_Scale_Instance - 0.0 ) * ( 20.0 - 0.1 ) / ( 1.0 - 0.0 ) ) +  (0.0 + ( _Noise_Dissolve_Offset_Instance - 0.0 ) * ( 15.0 - 0.0 ) / ( 1.0 - 0.0 ) )) + panner72 ) ).r );
 				
 
 				float3 Color = ( lerpResult55 * temp_output_51_0 ).rgb;
@@ -2403,22 +2437,27 @@ Shader "DeathMonster"
 }
 /*ASEBEGIN
 Version=19907
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;39;-2926.441,1349.885;Inherit;False;InstancedProperty;_Noise_Dissolve_Offset;Noise_Dissolve_Offset;3;0;Create;True;0;0;0;False;0;False;0;0.289;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;40;-3086.441,1125.885;Inherit;False;InstancedProperty;_Noise_Dissolve_Scale;Noise_Dissolve_Scale;4;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;39;-2926.441,1349.885;Inherit;False;InstancedProperty;_Noise_Dissolve_Offset;Noise_Dissolve_Offset;3;0;Create;True;0;0;0;False;0;False;0;0.189;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;40;-3086.441,1125.885;Inherit;False;InstancedProperty;_Noise_Dissolve_Scale;Noise_Dissolve_Scale;5;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;69;-2848,1840;Inherit;False;Property;_N_X_Pam;N_X_Pam;4;0;Create;True;0;0;0;False;0;False;1;0.1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;70;-2848,1936;Inherit;False;Property;_N_Y_Pam;N_Y_Pam;6;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;42;-2510.441,1253.885;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;15;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;41;-3022.441,757.8854;Inherit;True;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;43;-2750.441,1109.885;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0.1;False;4;FLOAT;20;False;1;FLOAT;0
+Node;AmplifyShaderEditor.DynamicAppendNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;71;-2624,1808;Inherit;False;FLOAT4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.TexCoordVertexDataNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;46;-2288,736;Inherit;False;0;4;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;47;-2336,592;Inherit;False;Property;_Dissolve;Dissolve;1;0;Create;True;0;0;0;False;0;False;0.1734188;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;43;-2750.441,1109.885;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;1;False;4;FLOAT;20;False;1;FLOAT;0
 Node;AmplifyShaderEditor.ScaleAndOffsetNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;44;-2286.441,1141.885;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT;1;False;2;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;18;-1168,384;Inherit;False;Property;_Float0;Float 0;2;0;Create;True;0;0;0;False;0;False;0;1.08;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;72;-2128,1312;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;18;-1168,384;Inherit;False;Property;_Float0;Float 0;2;0;Create;True;0;0;0;False;0;False;0;3;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;48;-1918.441,613.8854;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TexCoordVertexDataNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;60;-1408,240;Inherit;False;0;4;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;73;-2032,1136;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;16;-1360,48;Inherit;False;Constant;_Color0;Color 0;1;0;Create;True;0;0;0;False;0;False;1,0.2396226,0.2396226,0;0,0,0,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.TFHCRemapNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;49;-1790.441,613.8854;Inherit;False;5;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;4;FLOAT;0.6;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;15;-1104,-176;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;a1636db841092704fa6c3438f4888a5b;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;15;-1104,-176;Inherit;True;Property;_TextureSample0;Texture Sample 0;0;0;Create;True;0;0;0;False;0;False;-1;a1636db841092704fa6c3438f4888a5b;7200c588e31fbbe49b3947b040096460;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;67;-928,208;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;68;-1904,1056;Inherit;True;Property;_TextureSample1;Texture Sample 1;5;0;Create;True;0;0;0;False;0;False;-1;b179de8320580cf4b8eea92087848b34;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;68;-1904,1056;Inherit;True;Property;_TextureSample1;Texture Sample 1;7;0;Create;True;0;0;0;False;0;False;-1;b179de8320580cf4b8eea92087848b34;aca147b6773ea2646a21337f3c7a4ff4;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.StepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;51;-1358.441,741.8854;Inherit;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;55;-560,16;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
 Node;AmplifyShaderEditor.VoronoiNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;50;-1872,784;Inherit;True;0;0;1;0;1;False;1;False;False;False;4;0;FLOAT2;0,0;False;1;FLOAT;0;False;2;FLOAT;1;False;3;FLOAT;0;False;3;FLOAT;0;FLOAT2;1;FLOAT2;2
@@ -2437,18 +2476,23 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Versi
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;10;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;MotionVectors;0;10;MotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;False;False;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;11;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;XRMotionVectors;0;11;XRMotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;True;1;False;;255;False;;1;False;;7;False;;3;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;1;LightMode=XRMotionVectors;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;12;0,0;Float;False;False;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;1;New Amplify Shader;2992e84f91cbeb14eab234972e07ea9d;True;GBuffer;0;12;GBuffer;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalGBuffer;False;True;12;d3d11;gles;metal;vulkan;xboxone;xboxseries;playstation;ps4;ps5;switch;switch2;webgpu;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;1;224,304;Float;False;True;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;15;DeathMonster;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;10;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalForwardOnly;False;False;0;;0;0;Standard;30;Surface;1;639087514252182243;  Keep Alpha;0;0;  Blend;0;639087514418958004;Two Sided;1;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Forward Only;0;0;Cast Shadows;1;0;Receive Shadows;2;0;Receive SSAO;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;0;13;False;True;True;True;False;False;True;True;True;False;True;False;True;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;1;224,304;Float;False;True;-1;3;UnityEditor.ShaderGraphUnlitGUI;0;6;DeathMonster;2992e84f91cbeb14eab234972e07ea9d;True;Forward;0;1;Forward;10;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Unlit;True;5;True;14;all;0;False;True;1;5;False;;10;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalForwardOnly;False;False;0;;0;0;Standard;30;Surface;1;639087514252182243;  Keep Alpha;0;0;  Blend;0;639087514418958004;Two Sided;1;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Forward Only;0;0;Cast Shadows;1;0;Receive Shadows;2;0;Receive SSAO;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;Meta Pass;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;0;13;False;True;True;True;False;False;True;True;True;False;True;False;True;False;;False;0
 WireConnection;42;0;39;0
 WireConnection;43;0;40;0
+WireConnection;71;0;69;0
+WireConnection;71;1;70;0
 WireConnection;44;0;41;0
 WireConnection;44;1;43;0
 WireConnection;44;2;42;0
+WireConnection;72;2;71;0
 WireConnection;48;0;47;0
 WireConnection;48;1;46;3
+WireConnection;73;0;44;0
+WireConnection;73;1;72;0
 WireConnection;49;0;48;0
 WireConnection;67;0;60;4
 WireConnection;67;1;18;0
-WireConnection;68;1;44;0
+WireConnection;68;1;73;0
 WireConnection;51;0;49;0
 WireConnection;51;1;68;1
 WireConnection;55;0;16;0
@@ -2461,4 +2505,4 @@ WireConnection;58;1;51;0
 WireConnection;1;2;37;0
 WireConnection;1;3;58;0
 ASEEND*/
-//CHKSM=394EC6E1E478C20175211920291F55CE780B64E0
+//CHKSM=674CF41331FA9418D5471FCC31650DEC2DBC6444
