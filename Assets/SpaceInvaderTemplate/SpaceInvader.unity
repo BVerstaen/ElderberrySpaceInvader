@@ -1219,6 +1219,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _leanMaxAngle
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _rafaleCharge
       value: 50
       objectReference: {fileID: 0}
