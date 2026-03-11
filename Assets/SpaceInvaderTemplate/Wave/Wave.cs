@@ -86,11 +86,12 @@ public class Wave : MonoBehaviour
     {
         _defaultLocation = transform.position;
         _currentWave = 0;
-        CreateWave();
+        
     }
 
-    private void Start()
+    public void StartGame()
     {
+        CreateWave();
         OnNextWave?.Invoke();
     }
 

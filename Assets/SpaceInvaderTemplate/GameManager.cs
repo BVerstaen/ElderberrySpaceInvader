@@ -4,17 +4,21 @@ using UnityEngine;
 [DefaultExecutionOrder(-100)]
 public class GameManager : MonoBehaviour
 {
+    private const string PLAYER_SCORE_PREF_KEY = "Highscore";
     public enum DIRECTION { Right = 0, Up = 1, Left = 2, Down = 3 }
 
     public static GameManager Instance = null;
 
+    [Header("Game references")]
+    [SerializeField] private GameObject _gameCanvasObject;
+    [SerializeField] private Player _playerObject;
+    [SerializeField] private Wave _waveObject;
+    [Space(10)]
+    [SerializeField] private float gameOverHeight;
     [SerializeField] private Vector2 bounds;
     private Bounds Bounds => new Bounds(transform.position, new Vector3(bounds.x, bounds.y, 1000f));
 
-    [SerializeField] private float gameOverHeight;
-
     private int _playerScore;
-
     public int PlayerScore { get => _playerScore; }
 
     public Action<int> OnUpdateScore;
@@ -76,6 +80,13 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public void StartGame()
+    {
+        _gameCanvasObject.SetActive(true);
+        _playerObject.gameObject.SetActive(true);
+        _waveObject.StartGame();
+    }
+
     public void AddScore(int scoreToAdd)
     {
         _playerScore += scoreToAdd;
@@ -86,6 +97,21 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Game Over");
         Time.timeScale = 0f;
+
+        //Save highscore
+        if(PlayerPrefs.HasKey(PLAYER_SCORE_PREF_KEY))
+        {
+            if(PlayerPrefs.GetInt(PLAYER_SCORE_PREF_KEY) < _playerScore)
+            {
+                PlayerPrefs.SetInt(PLAYER_SCORE_PREF_KEY, PlayerScore);
+                PlayerPrefs.Save();
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetInt(PLAYER_SCORE_PREF_KEY, PlayerScore);
+            PlayerPrefs.Save();
+        }
     }
 
     public void OnDrawGizmos()

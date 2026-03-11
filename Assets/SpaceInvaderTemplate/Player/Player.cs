@@ -73,6 +73,11 @@ public class Player : MonoBehaviour
     [SerializeField] private float _leanSpeed;
     [SerializeField] private float _leanMaxAngle;
 
+    [Header("Player Ascending")]
+    [SerializeField] private AnimationCurve _playerAscendingCurve;
+    [SerializeField] private Vector2 _startAscendingPosition;
+    [SerializeField] private float _playerAscendingDuration;
+
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/> OnRafaleTriggered;
     public static event Action<int> OnUpdateHealth;
@@ -82,31 +87,66 @@ public class Player : MonoBehaviour
     private bool _isRafaleRightPressed = false;
     private bool _isRafaleLeftPressed = false;
     private bool _isInRafale = false;
+    private float _lastTimeEnemyHit = 0;
 
     private float currentLean = 0f;
+    private bool _controlsBinded = false;
 
-    private float _lastTimeEnemyHit = 0;
+    private Vector2 _defaultLocation;
 
     private void OnEnable()
     {
-        _shootInput.action.started += InputShootStarted;
-        _shootInput.action.canceled += InputShootCanceled;
-        _rafaleLeftInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, false)); };
-        _rafaleLeftInput.action.canceled += context => { InputRafaleCanceled(context, false); };
-        _rafaleRightInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, true)); };
-        _rafaleRightInput.action.canceled += context => { InputRafaleCanceled(context, true); };
-    }
-
-    private void OnDisable()
-    {
-        _shootInput.action.started -= InputShootStarted;
-        _shootInput.action.canceled -= InputShootCanceled;
+        BindControls();
     }
 
     private void Start()
     {
         ResetPlayer();
         Invader.OnInvaderTookDamage += OnInvaderHit;
+        _defaultLocation = transform.position;
+        StartCoroutine(PlayerAscendingAnimation());
+    }
+
+    private void OnDisable()
+    {
+        if(_controlsBinded)
+        {
+            _shootInput.action.started -= InputShootStarted;
+            _shootInput.action.canceled -= InputShootCanceled;
+            _rafaleLeftInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, false)); };
+            _rafaleLeftInput.action.canceled -= context => { InputRafaleCanceled(context, false); };
+            _rafaleRightInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, true)); };
+            _rafaleRightInput.action.canceled -= context => { InputRafaleCanceled(context, true); };
+        }
+    }
+
+    private IEnumerator PlayerAscendingAnimation()
+    {
+        float timeElapsed = 0.0f;
+        while (timeElapsed < _playerAscendingDuration)
+        {
+            float progression = _playerAscendingCurve.Evaluate(timeElapsed / _playerAscendingDuration);
+            Vector2 newPlayerPosition = Vector2.Lerp(_startAscendingPosition, _defaultLocation, progression);
+            transform.position = new Vector3(newPlayerPosition.x, newPlayerPosition.y, transform.position.z);
+
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = _defaultLocation;
+        BindControls();
+    }
+
+    private void BindControls()
+    {
+        _controlsBinded = true;
+
+        _shootInput.action.started += InputShootStarted;
+        _shootInput.action.canceled += InputShootCanceled;
+        _rafaleLeftInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, false)); };
+        _rafaleLeftInput.action.canceled += context => { InputRafaleCanceled(context, false); };
+        _rafaleRightInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, true)); };
+        _rafaleRightInput.action.canceled += context => { InputRafaleCanceled(context, true); };
     }
 
     private void OnInvaderHit(bool bIsRafaleBullet)
