@@ -921,12 +921,12 @@ MonoBehaviour:
   _brokenGlassPalier:
   - Tex: {fileID: 2800000, guid: db403ac1861909a44b26b58a3d7d3d0a, type: 3}
     Power: 0.01
-  - Tex: {fileID: 2800000, guid: 5ddf5d333d32a1e4b8fb4a75ea9ccff6, type: 3}
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
     Power: 0.2
-  - Tex: {fileID: 2800000, guid: 5ddf5d333d32a1e4b8fb4a75ea9ccff6, type: 3}
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
+    Power: 0.15
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
     Power: 0.1
-  - Tex: {fileID: 2800000, guid: 5ddf5d333d32a1e4b8fb4a75ea9ccff6, type: 3}
-    Power: 0.01
 --- !u!1 &1262483787
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1034,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NextWaveUI
   _redScreen: {fileID: 826675227}
   _warningText: {fileID: 2078366191}
-  _redScreenColor: {r: 0.5647059, g: 0, b: 0, a: 1}
+  _redScreenColor: {r: 0.5647059, g: 0, b: 0, a: 0.7058824}
   _redScreenSpeed: 10
   _redScreenDuration: 3
   _fadeoutCurve:
