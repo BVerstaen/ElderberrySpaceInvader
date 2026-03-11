@@ -125,12 +125,13 @@ namespace PLIbox.Audio
 
             //Find an unused sound object
             AudioSource sourceToPlay = FindUnusedAudioSource();
-            if (group != null)
-                sourceToPlay.outputAudioMixerGroup = group;
 
             //Check if found object are correct
             if (!AssertSound(soundName, soundToPlay, sourceToPlay))
                 return null;
+
+            if (group != null)
+                sourceToPlay.outputAudioMixerGroup = group;
 
             SetupNewSound(sourceToPlay, soundToPlay, soundVolume, randomPitch, isLooping);
 
