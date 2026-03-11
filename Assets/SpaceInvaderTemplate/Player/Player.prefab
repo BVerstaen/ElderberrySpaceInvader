@@ -139,6 +139,7 @@ MonoBehaviour:
   - {fileID: 3082344001368674497}
   _rafaleFireParticles:
   - {fileID: 835281525793616494}
+  _bulletShellPrefab: {fileID: 8362031821015536842, guid: c39a73f3ff121e2448da7632a2550ea6, type: 3}
   _leanCurve:
     serializedVersion: 2
     m_Curve:
