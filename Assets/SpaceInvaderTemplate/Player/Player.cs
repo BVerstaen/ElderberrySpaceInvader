@@ -87,6 +87,9 @@ public class Player : MonoBehaviour
     [SerializeField] private string _exposedMusic;
     [SerializeField] private string _exposedBullet;
 
+    [Header("VFX")]
+    [SerializeField] private List<GameObject> _smokeParticles;
+
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
     public static event Action<int> OnUpdateHealth;
@@ -368,7 +371,12 @@ public class Player : MonoBehaviour
 
         OnTakeDamage?.Invoke();
         OnUpdateHealth?.Invoke(_currentLife);
+
         //Feedback son
         AudioManager.Instance.PlaySound(HIT_SOUND);
+
+        //Feedback smoke
+        if(_currentLife > 0)
+            _smokeParticles[_currentLife - 1].SetActive(true);
     }
 }
