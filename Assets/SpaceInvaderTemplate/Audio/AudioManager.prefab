@@ -86,7 +86,11 @@ MonoBehaviour:
       MinPitchModifier: -0.5
       MaxPitchModifier: 0.5
   - Name: PlayerHit
-    Clips: []
+    Clips:
+    - Clip: {fileID: 8300000, guid: 78145b2068797ea45b21d3ff7a2a7875, type: 3}
+      Volume: 1
+      MinPitchModifier: -0.1
+      MaxPitchModifier: 0.1
   - Name: ShellSound
     Clips:
     - Clip: {fileID: 8300000, guid: 8f669b0545a7a6644ab7937bc898def6, type: 3}
