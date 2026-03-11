@@ -118,6 +118,7 @@ MonoBehaviour:
   deadzone: 0.2
   speed: 4
   bulletPrefab: {fileID: 7369880722360228486, guid: 42269f87d33f3eb4898473401db125ae, type: 3}
+  rafaleBulletPrefab: {fileID: 7369880722360228486, guid: 8773e4526bc304c4fa06361414070f89, type: 3}
   shootAt: {fileID: 9182519034774482932}
   shootCooldown: 0.3
   collideWithTag: Untagged
@@ -197,7 +198,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.3
+  m_Radius: 4
 --- !u!114 &2933324507707683081
 MonoBehaviour:
   m_ObjectHideFlags: 0

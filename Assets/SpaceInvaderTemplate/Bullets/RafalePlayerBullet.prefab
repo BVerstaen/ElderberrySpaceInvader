@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6745623824337545215}
   - component: {fileID: 1844121203717192961}
   m_Layer: 0
-  m_Name: PlayerBullet
+  m_Name: RafalePlayerBullet
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: d888e65d64cc09f4ab0af0d7a83e36c9, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.64564735, b: 0.53396225, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -107,9 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e251aa7e0b6e62e49a24748fdef08eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startVelocity: {x: 0, y: 7, z: 0}
+  startVelocity: {x: 0, y: 10, z: 0}
   _lifeTime: 3
-  _featureName: FireEffect
+  _featureName: BulletTrail
   _trail: {fileID: 1844121203717192961}
 --- !u!58 &7187537139655989992
 CircleCollider2D:
@@ -254,7 +254,7 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.8113208, g: 0.6571006, b: 0.2028302, a: 1}
+      key0: {r: 1, g: 0.04754325, b: 0, a: 1}
       key1: {r: 1, g: 1, b: 1, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
