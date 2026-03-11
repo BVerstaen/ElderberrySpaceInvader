@@ -32,7 +32,7 @@ public class CameraShake : MonoBehaviour
     public void TestShake() => StartShaking(2);
     public void StartShaking(float duration)
     {
-        if (!GameFeelManager.Instance.IsFeatureActive("ScreenShake")) return;
+        if (!GameFeelManager.Instance.IsFeatureActive("RafaleEffect")) return;
         if(_shakeCoroutine != null)
         {
             Debug.LogWarning("a shake is already starting");
