@@ -127,6 +127,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 884244693}
     m_Modifications:
+    - target: {fileID: 103872147126705510, guid: b3405aba000337d4e8a50f280d465925, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 819097374054422384, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -691,6 +695,9 @@ MonoBehaviour:
   - IsActive: 1
     Name: RafaleChargeSliderAnimation
     ActivationKey: 100
+  - IsActive: 1
+    Name: PlayerHit
+    ActivationKey: 101
 --- !u!1 &884244689
 GameObject:
   m_ObjectHideFlags: 0
