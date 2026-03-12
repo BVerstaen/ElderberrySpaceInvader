@@ -35,7 +35,8 @@ public class Bullet : MonoBehaviour
 
     private void OnDisable()
     {
-        GameFeelManager.Instance.OnFeatureToggled -= ToggleTrail;
+        if(GameFeelManager.Instance)
+            GameFeelManager.Instance.OnFeatureToggled -= ToggleTrail;
     }
 
     public Vector3 GetStartVelocity() => startVelocity;

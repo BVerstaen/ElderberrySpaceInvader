@@ -260,7 +260,14 @@ public class Player : MonoBehaviour
     {
         foreach(var smoke in _smokeParticles)
         {
-            smoke.particle.gameObject.transform.localPosition = dir > 0 ? smoke.rightPosition : dir < 0 ? smoke.leftPosition : smoke.centerPosition;
+            if (GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
+            {
+                if (smoke.particle.isStopped)
+                    smoke.particle.Play();
+                smoke.particle.gameObject.transform.localPosition = dir > 0 ? smoke.rightPosition : dir < 0 ? smoke.leftPosition : smoke.centerPosition;
+            }
+            else if (!smoke.particle.isStopped)
+                smoke.particle.Stop();
         }
     }
 
