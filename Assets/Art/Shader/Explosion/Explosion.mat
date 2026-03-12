@@ -49,13 +49,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Border: 0.916
+    - _Border: 0
     - _Dissolve: 0
     - _Float0: 0
     - _Float1: 0.5
     - _Float2: 0.8
     - _Float3: 1
-    - _HDR: 1
+    - _HDR: 3
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
