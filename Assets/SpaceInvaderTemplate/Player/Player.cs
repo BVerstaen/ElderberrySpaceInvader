@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float rafaleBulletCooldown = 0.05f;
     //X Offset of bullets velocity
     [SerializeField] private float rafaleBulletXOffset = 1f;
+    [SerializeField] private AudioSource rafaleLoopAudioSource;
     private float _rafaleCharge = 0f;
     private bool _hasRafaleMaxBoost = false;
 
@@ -322,7 +323,7 @@ public class Player : MonoBehaviour
         CameraShake.Instance.StartShaking(_hitShakeDuration);
 
         //Feedback sound
-        AudioManager.Instance.PlaySound(FIRE_SOUND);
+        if (!bIsRafale) AudioManager.Instance.PlaySound(FIRE_SOUND);
         StartCoroutine(DifferedShellSound());
 
         foreach (var fire in bIsRafale ? _rafaleFireParticles : _fireParticles)
@@ -339,6 +340,7 @@ public class Player : MonoBehaviour
         _isRafaleLeftPressed = false;
         _isRafaleRightPressed = false;
         _hasRafaleMaxBoost = Mathf.Approximately(_rafaleCharge, rafaleMaximalCharge);
+        rafaleLoopAudioSource.Play();
         
         float rafaleTime = _rafaleCharge * rafaleTimeMultiplier + (_hasRafaleMaxBoost ? rafaleMaxChargeTimeBoost : 0);
         float clock = 0;
@@ -369,6 +371,7 @@ public class Player : MonoBehaviour
         }
         Debug.Log("Stop Rafale");
         _isInRafale = false;
+        rafaleLoopAudioSource.Stop();
 
         //Reset sound
         _audioMixer.audioMixer.SetFloat(_exposedMusic, 0);
