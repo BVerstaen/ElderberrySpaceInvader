@@ -728,7 +728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c6107598aacb8439fccb5a76b1234f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PLIbox.Audio.AudioPlaySound
-  _soundName: InvaderDeath
+  _soundName: UI_Accept
   _audioDataIndex: -1
   _playOnEnable: 0
 --- !u!1 &3953839417551944341
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65c6107598aacb8439fccb5a76b1234f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PLIbox.Audio.AudioPlaySound
-  _soundName: InvaderDeath
+  _soundName: UI_Accept
   _audioDataIndex: -1
   _playOnEnable: 0
 --- !u!1 &7329108895142613899

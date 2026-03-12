@@ -177,3 +177,5 @@ MonoBehaviour:
       Volume: 1
       MinPitchModifier: 0
       MaxPitchModifier: 0
+  - Name: UI_Accept
+    Clips: []
