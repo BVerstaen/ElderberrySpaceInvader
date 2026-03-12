@@ -1,9 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
+    [Header("Color")]
+    [SerializeField] private Image _textImage;
+    [SerializeField] private Color _hoverColor;
+
     [Header("Rotation")]
     [SerializeField] private float _rotationSpeed;
     [SerializeField] private float _rotationAmplitude;
@@ -14,7 +19,7 @@ public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
     private bool _isGrowing;
     private RectTransform _rect => GetComponent<RectTransform>();
-
+    
     Coroutine growRoutine;
     Coroutine degrowRoutine;
 
@@ -45,6 +50,7 @@ public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
             StopCoroutine(degrowRoutine);
         growRoutine = StartCoroutine(Grow());
         _isGrowing = true;
+        _textImage.color = _hoverColor;
     }
 
     private void OnDeHover()
@@ -55,6 +61,8 @@ public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         _isGrowing = false;
         _rect.localEulerAngles = Vector3.zero;
+        _textImage.color = Color.white;
+
     }
 
     IEnumerator Grow()
