@@ -98,6 +98,7 @@ public class Player : MonoBehaviour
 
     [Header("VFX")]
     [SerializeField] private List<SmokeEffect> _smokeParticles;
+    [SerializeField] private float _hitShakeDuration;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
@@ -317,6 +318,8 @@ public class Player : MonoBehaviour
     {
         if (!GameFeelManager.Instance.IsFeatureActive(bIsRafale ? "RafaleEffect" : FIRE_EFFECT_FEATURE))
             return;
+
+        CameraShake.Instance.StartShaking(_hitShakeDuration);
 
         //Feedback sound
         AudioManager.Instance.PlaySound(FIRE_SOUND);
