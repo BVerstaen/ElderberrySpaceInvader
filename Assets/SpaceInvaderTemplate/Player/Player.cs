@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private const string FIRE_SOUND = "PlayerFire";
     private const string HIT_SOUND = "PlayerHit";
     private const string SHELL_SOUND = "ShellSound";
+    private const string EXPLOSION_SOUND = "PlayerMort";
 
     private const string VL_DAMAGE_SOUND = "VL_Damage";
     private const string VL_RAFALE_SOUND = "VL_ActiveBonus";
@@ -414,7 +415,10 @@ public class Player : MonoBehaviour
             //Feedback
             _planeSpriteRenderer.enabled = false;
             if (GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
+            {
                 _explostionEffect.SetActive(true);
+                AudioManager.Instance.PlaySound(EXPLOSION_SOUND);
+            }
 
             UnbindControls();
             OnPlayerDeath?.Invoke();
