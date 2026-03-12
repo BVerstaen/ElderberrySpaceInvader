@@ -10,7 +10,7 @@ public class NextWaveUI : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Image _redScreen;
-    [SerializeField] private TMP_Text _warningText;
+    [SerializeField] private Image _warningText;
 
     [Header("Screen")]
     [SerializeField] private Color _redScreenColor;

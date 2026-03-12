@@ -49,11 +49,12 @@ public class GameOverStampEffect : MonoBehaviour
             if(timeElapsed < _fadeOutDuration)
             {
                 Color fadeOutColor = _fadeOutImage.color;
-                fadeOutColor.a = Mathf.Lerp(1, 0, progress);
+                fadeOutColor.a = Mathf.Lerp(0, 1, progress);
                 _fadeOutImage.color = fadeOutColor;
             }
             else
             {
+                _fadeOutImage.color = new Color(0, 0, 0, 1);
                 float lerpedScale = Mathf.Lerp(_startScale, _endScale, progress);
                 _stampImage.transform.localScale = new Vector3(progress, progress, progress);
             }
