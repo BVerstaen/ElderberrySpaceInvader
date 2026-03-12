@@ -5046,6 +5046,7 @@ MonoBehaviour:
   _playerAscendingDuration: 2
   _audioMixer: {fileID: 24300002, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
   _rafaleVolume: 6
+  _volumeFadeDuration: 1
   _exposedMusic: MusicVolume
   _exposedBullet: BulletVolume
   _smokeParticles:
