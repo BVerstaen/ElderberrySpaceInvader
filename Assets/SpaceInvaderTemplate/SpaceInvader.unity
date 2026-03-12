@@ -1074,20 +1074,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BrokenGlassEffect
   _brokenGlassMat: {fileID: 2100000, guid: e78493c2df815874a8abda0a08ceae21, type: 2}
   _baseTex: {fileID: 2800000, guid: bdb42c87b8801e94e886c5c0d60b3014, type: 3}
-  _baseTexDraw: {fileID: 2800000, guid: bdb42c87b8801e94e886c5c0d60b3014, type: 3}
-  _basePower: 0.1
+  _basePower: 0
   _brokenGlassPalier:
-  - Tex: {fileID: 2800000, guid: af7ea90b3443c894b8881bb7f8a7b450, type: 3}
-    TexDraw: {fileID: 2800000, guid: 34f0457e6cbd6c04b8cce35bc29b2871, type: 3}
-    Power: 0.1
-  - Tex: {fileID: 2800000, guid: af7ea90b3443c894b8881bb7f8a7b450, type: 3}
-    TexDraw: {fileID: 2800000, guid: 34f0457e6cbd6c04b8cce35bc29b2871, type: 3}
-    Power: 0.1
-  - Tex: {fileID: 2800000, guid: af7ea90b3443c894b8881bb7f8a7b450, type: 3}
-    TexDraw: {fileID: 2800000, guid: 34f0457e6cbd6c04b8cce35bc29b2871, type: 3}
-    Power: 0.1
-  - Tex: {fileID: 2800000, guid: af7ea90b3443c894b8881bb7f8a7b450, type: 3}
-    TexDraw: {fileID: 2800000, guid: 34f0457e6cbd6c04b8cce35bc29b2871, type: 3}
+  - Tex: {fileID: 2800000, guid: db403ac1861909a44b26b58a3d7d3d0a, type: 3}
+    Power: 0.01
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
+    Power: 0.2
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
+    Power: 0.15
+  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
     Power: 0.1
 --- !u!1 &1262483787
 GameObject:
