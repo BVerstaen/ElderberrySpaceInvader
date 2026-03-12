@@ -1160,15 +1160,15 @@ MonoBehaviour:
   _brokenGlassPalier:
   - Tex: {fileID: 2800000, guid: db403ac1861909a44b26b58a3d7d3d0a, type: 3}
     TexDraw: {fileID: 0}
-    Power: 0.01
-  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
-    TexDraw: {fileID: 0}
-    Power: 0.2
-  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
-    TexDraw: {fileID: 0}
-    Power: 0.15
-  - Tex: {fileID: 2800000, guid: 9514087ae30e9124ca296fe1307bbe89, type: 3}
-    TexDraw: {fileID: 0}
+    Power: 0.1
+  - Tex: {fileID: 2800000, guid: 8289279a605368b4ab227c480d53ef49, type: 3}
+    TexDraw: {fileID: 2800000, guid: 2d9169da767c0364380ad0f48609db6d, type: 3}
+    Power: 0.1
+  - Tex: {fileID: 2800000, guid: 89eba027839dcbd418d19f1dabf98324, type: 3}
+    TexDraw: {fileID: 2800000, guid: bdf2461c48bfe4f4f9e7a8a86b88e6fa, type: 3}
+    Power: 0.1
+  - Tex: {fileID: 2800000, guid: 5f5d80051110d504cb1c204caca230cf, type: 3}
+    TexDraw: {fileID: 2800000, guid: 34f0457e6cbd6c04b8cce35bc29b2871, type: 3}
     Power: 0.1
 --- !u!1 &987193688
 GameObject:
