@@ -692,7 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f321ee24e66616c40946f40b955d9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverButtonScript
-  _textImage: {fileID: 4213657537325834064}
+  _textImage: {fileID: 5865817811497252085}
   _hoverColor: {r: 0, g: 0.7610062, b: 0.046229318, a: 1}
   _rotationSpeed: 50
   _rotationAmplitude: 10
@@ -872,7 +872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f321ee24e66616c40946f40b955d9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverButtonScript
-  _textImage: {fileID: 5360563415902891495}
+  _textImage: {fileID: 2725604261369825765}
   _hoverColor: {r: 0, g: 0.7610062, b: 0.046229318, a: 1}
   _rotationSpeed: 50
   _rotationAmplitude: 10

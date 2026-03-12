@@ -1850,6 +1850,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: TitleScreenCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 2725604261369825765, guid: fb7a27c5f7bb3d143bc73aa2c9a34747, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2725604261369825765, guid: fb7a27c5f7bb3d143bc73aa2c9a34747, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2725604261369825765, guid: fb7a27c5f7bb3d143bc73aa2c9a34747, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
