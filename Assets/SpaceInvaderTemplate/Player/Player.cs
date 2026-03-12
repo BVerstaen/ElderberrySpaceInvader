@@ -117,11 +117,6 @@ public class Player : MonoBehaviour
 
     private Vector2 _defaultLocation;
 
-    private void OnEnable()
-    {
-        BindControls();
-    }
-
     private void Start()
     {
         ResetPlayer();
