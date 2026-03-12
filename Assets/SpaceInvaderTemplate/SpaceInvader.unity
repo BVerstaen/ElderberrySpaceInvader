@@ -1217,7 +1217,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverStampEffect
   _stampImage: {fileID: 1165821425}
   _fadeOutImage: {fileID: 536921188}
-  _scoreObject: {fileID: 0}
   _animationCurve:
     serializedVersion: 2
     m_Curve:
@@ -1232,19 +1231,19 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: -1.1904771
-      outSlope: -1.1904771
+      value: 0.95
+      inSlope: -0.633218
+      outSlope: -0.633218
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.06666666
+      inWeight: 0.1388889
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   _animationDuration: 1
-  _startScale: 5
-  _endScale: 0.9
+  _startScale: 7
+  _endScale: 0.5
   _fadeOutDuration: 0.5
   _fadeOutCurve:
     serializedVersion: 2

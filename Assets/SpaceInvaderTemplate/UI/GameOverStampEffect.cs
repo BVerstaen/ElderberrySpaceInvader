@@ -7,7 +7,6 @@ public class GameOverStampEffect : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject _stampImage;
     [SerializeField] private Image _fadeOutImage;
-    [SerializeField] private Transform _scoreObject;
 
     [Header("Animation")]
     [SerializeField] private AnimationCurve _animationCurve;
@@ -63,6 +62,5 @@ public class GameOverStampEffect : MonoBehaviour
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-        _stampImage.transform.localScale = new Vector3(_endScale, _endScale, _endScale);
     }
 }
