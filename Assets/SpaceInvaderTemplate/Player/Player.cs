@@ -319,8 +319,6 @@ public class Player : MonoBehaviour
         if (!GameFeelManager.Instance.IsFeatureActive(bIsRafale ? "RafaleEffect" : FIRE_EFFECT_FEATURE))
             return;
 
-        CameraShake.Instance.StartShaking(_hitShakeDuration);
-
         //Feedback sound
         AudioManager.Instance.PlaySound(FIRE_SOUND);
         StartCoroutine(DifferedShellSound());
@@ -401,10 +399,15 @@ public class Player : MonoBehaviour
         OnUpdateHealth?.Invoke(_currentLife);
 
         //Feedback son
-        AudioManager.Instance.PlaySound(HIT_SOUND);
+
+        if(GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
+        {
+            AudioManager.Instance.PlaySound(HIT_SOUND);
+            CameraShake.Instance.StartShaking(_hitShakeDuration);
+        }
 
         //Feedback smoke
-        if(_currentLife > 0)
+        if (_currentLife > 0)
             _smokeParticles[_currentLife - 1].particle.gameObject.SetActive(true);
     }
 }
