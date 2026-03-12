@@ -106,6 +106,7 @@ public class Player : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private List<SmokeEffect> _smokeParticles;
     [SerializeField] private float _hitShakeDuration;
+    [SerializeField] private GameObject _explostionEffect;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
@@ -423,6 +424,7 @@ public class Player : MonoBehaviour
 
         if(GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
         {
+            _explostionEffect.SetActive(true);
             AudioManager.Instance.PlaySound(HIT_SOUND);
             AudioManager.Instance.PlaySound(VL_DAMAGE_SOUND);
             CameraShake.Instance.StartShaking(_hitShakeDuration);
