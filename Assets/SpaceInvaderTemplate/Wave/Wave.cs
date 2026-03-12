@@ -157,6 +157,9 @@ public class Wave : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsGameOver)
+            return;
+
         UpdateMovement();
         UpdateShoot();
     }

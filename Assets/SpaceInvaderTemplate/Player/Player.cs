@@ -128,14 +128,7 @@ public class Player : MonoBehaviour
     private void OnDisable()
     {
         if(_controlsBinded)
-        {
-            _shootInput.action.started -= InputShootStarted;
-            _shootInput.action.canceled -= InputShootCanceled;
-            _rafaleLeftInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, false)); };
-            _rafaleLeftInput.action.canceled -= context => { InputRafaleCanceled(context, false); };
-            _rafaleRightInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, true)); };
-            _rafaleRightInput.action.canceled -= context => { InputRafaleCanceled(context, true); };
-        }
+            UnbindControls();
     }
 
     private IEnumerator PlayerAscendingAnimation()
@@ -165,6 +158,17 @@ public class Player : MonoBehaviour
         _rafaleLeftInput.action.canceled += context => { InputRafaleCanceled(context, false); };
         _rafaleRightInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, true)); };
         _rafaleRightInput.action.canceled += context => { InputRafaleCanceled(context, true); };
+    }
+
+    private void UnbindControls()
+    {
+        _shootInput.action.started -= InputShootStarted;
+        _shootInput.action.canceled -= InputShootCanceled;
+        _rafaleLeftInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, false)); };
+        _rafaleLeftInput.action.canceled -= context => { InputRafaleCanceled(context, false); };
+        _rafaleRightInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, true)); };
+        _rafaleRightInput.action.canceled -= context => { InputRafaleCanceled(context, true); };
+        _controlsBinded = false;
     }
 
     private void OnInvaderHit(bool bIsRafaleBullet)
@@ -232,6 +236,9 @@ public class Player : MonoBehaviour
 
     private float UpdateMovement()
     {
+        if (!_controlsBinded)
+            return 0.0f;
+
         float move = _moveInput.action.ReadValue<float>();
         if (Mathf.Abs(move) < deadzone) { return 0; }
 
@@ -389,6 +396,7 @@ public class Player : MonoBehaviour
         if (_currentLife <= 0)
         {
             GameManager.Instance.PlayGameOver();
+            UnbindControls();
             OnPlayerDeath?.Invoke();
             return;
         }
