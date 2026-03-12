@@ -3,6 +3,7 @@ using System.Collections;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class TitleScreenUI : MonoBehaviour
@@ -10,6 +11,7 @@ public class TitleScreenUI : MonoBehaviour
     private const string PLAYER_SCORE_PREF_KEY = "Highscore";
 
     [Header("Reference")]
+    [SerializeField] private Selectable _defaultSelectedButton;
     [SerializeField] private TMP_Text _highscoreText;
     [SerializeField] private Image _fadeInImage;
 
@@ -28,6 +30,8 @@ public class TitleScreenUI : MonoBehaviour
 
     private void Start()
     {
+        EventSystem.current.SetSelectedGameObject(_defaultSelectedButton.gameObject);
+
         if (PlayerPrefs.HasKey(PLAYER_SCORE_PREF_KEY))
         {
             string highscoreText = PlayerPrefs.GetInt(PLAYER_SCORE_PREF_KEY).ToString();

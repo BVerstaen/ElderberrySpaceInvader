@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
 {
     [Header("Rotation")]
     [SerializeField] private float _rotationSpeed;
@@ -28,18 +28,26 @@ public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
         _rect.localEulerAngles = newRotation;
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnSelect(BaseEventData eventData) => OnHover();
+
+    public void OnDeselect(BaseEventData eventData) => OnDeHover();
+
+    public void OnPointerEnter(PointerEventData eventData) => OnHover();
+
+    public void OnPointerExit(PointerEventData eventData) => OnDeHover();
+
+    private void OnHover()
     {
         if (!GameFeelManager.Instance.IsFeatureActive("MainMenuAnimation"))
             return;
 
-        if(degrowRoutine != null)
+        if (degrowRoutine != null)
             StopCoroutine(degrowRoutine);
         growRoutine = StartCoroutine(Grow());
         _isGrowing = true;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    private void OnDeHover()
     {
         if (growRoutine != null)
             StopCoroutine(growRoutine);

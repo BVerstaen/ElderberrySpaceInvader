@@ -194,6 +194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 031bd9ad73b75a74b826bde549e08684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TitleScreenUI
+  _defaultSelectedButton: {fileID: 7119336153793386720}
   _highscoreText: {fileID: 3537962065984360207}
   _fadeInImage: {fileID: 8168681220634072196}
   _highTextSpeed: 40
