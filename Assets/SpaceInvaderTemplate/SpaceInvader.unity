@@ -2537,12 +2537,36 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[1].time
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[2].value
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _playerAscendingCurve.m_Curve.Array.data[0].inSlope
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _playerAscendingCurve.m_Curve.Array.data[1].inSlope
-      value: 0
+      value: 0.006064582
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[2].inSlope
+      value: 0.115991674
       objectReference: {fileID: 0}
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _playerAscendingCurve.m_Curve.Array.data[0].outSlope
@@ -2550,15 +2574,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _playerAscendingCurve.m_Curve.Array.data[1].inWeight
-      value: 0
+      value: 0.33333334
       objectReference: {fileID: 0}
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _playerAscendingCurve.m_Curve.Array.data[1].outSlope
-      value: 0
+      value: 0.006064582
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[2].inWeight
+      value: 0.5069444
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[2].outSlope
+      value: 0.115991674
       objectReference: {fileID: 0}
     - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
       propertyPath: _playerAscendingCurve.m_Curve.Array.data[0].outWeight
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077861791762801549, guid: d0d4d260654efc04f9be787cb97d669e, type: 3}
+      propertyPath: _playerAscendingCurve.m_Curve.Array.data[1].outWeight
+      value: 0.5069447
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -151,7 +151,7 @@ public class Player : MonoBehaviour
         while (timeElapsed < _playerAscendingDuration)
         {
             float progression = _playerAscendingCurve.Evaluate(timeElapsed / _playerAscendingDuration);
-            Vector2 newPlayerPosition = Vector2.Lerp(_startAscendingPosition, _defaultLocation, progression);
+            Vector2 newPlayerPosition = Vector2.Lerp(_startAscendingPosition, new Vector2(0,-1.2f), progression);
             transform.position = new Vector3(newPlayerPosition.x, newPlayerPosition.y, transform.position.z);
 
             timeElapsed += Time.deltaTime;
