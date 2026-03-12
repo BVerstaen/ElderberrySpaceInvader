@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Sky_V3
-  m_Shader: {fileID: 4800000, guid: 65bff09f55827c74a8154ba2a55a87ba, type: 3}
+  m_Name: Explosion
+  m_Shader: {fileID: 4800000, guid: 1351a3b09f1ab564db4d960e4393ef7a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,8 +23,16 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _Texture2:
-        m_Texture: {fileID: 2800000, guid: deb75dd87253c9c4bacffc279777dff9, type: 3}
+    - _TextureSample0:
+        m_Texture: {fileID: 2800000, guid: cb722177ecf9f854cbb151ab06d075d5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureSample1:
+        m_Texture: {fileID: 2800000, guid: 98cd36bd0ad2fac4186a90718ab6bbf8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _texcoord:
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -41,35 +49,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _EnvironmentReflections: 1
-    - _Inetnsity_Max: 3.12
-    - _Inetnsity_Min: -0.43
-    - _Intensity_Brillance: 1.5
-    - _Lerp_Intensity: 1.15
-    - _LightingEdge: 1.86
-    - _LightingMax: 0
-    - _LightingMin: 1.07
-    - _LightingPower: 0
-    - _MaxHeinght: 42.7
-    - _Met: 0
-    - _MinHeinght: 39.6
-    - _Normal_Strenght: 2
+    - _Border: 0.916
+    - _Dissolve: 0
+    - _Float0: 0
+    - _Float1: 0.5
+    - _Float2: 0.8
+    - _Float3: 1
+    - _HDR: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smooth: 0.5
-    - _SpecularHighlights: 1
-    - _Vertex_Position: 0.05
-    - _X_Pan: 0.5
-    - _X_Pan_Cloud: 0.5
-    - _X_Tille: 3
-    - _Y_Pan1: 0
-    - _Y_Pan_Cloud: 0
-    - _Y_Tille: 2
     m_Colors:
-    - _Center: {r: 0, g: 0, b: 0, a: 0}
-    - _Clouds: {r: 1.4126501, g: 1.0969471, b: 1.465153, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Sky: {r: 0.01640032, g: 0.01887142, b: 0.022005493, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

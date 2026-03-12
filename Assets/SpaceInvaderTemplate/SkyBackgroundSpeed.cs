@@ -37,6 +37,9 @@ public class SkyBackgroundSpeed : MonoBehaviour
     private void ChangeSpeed(float N_X, float texture2)
     {
         _skyBackgroundMat.SetFloat("_X_Pan", N_X);
+        _skyBackgroundMat.SetFloat("_X_Pan_Cloud", N_X);
+
         _skyBackgroundMat.SetFloat("_Y_Pan1", texture2);
+        _skyBackgroundMat.SetFloat("_Y_Pan_Cloud", texture2);
     }
 }

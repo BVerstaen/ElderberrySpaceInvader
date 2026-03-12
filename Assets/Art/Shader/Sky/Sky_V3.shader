@@ -7,6 +7,8 @@ Shader "Sky_V3"
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
 		_Center( "Center", Vector ) = ( 0, 0, 0, 0 )
 		_MinHeinght( "Min Heinght", Float ) = 39
+		_Y_Pan_Cloud( "Y_Pan_Cloud", Float ) = 0.1
+		_X_Pan_Cloud( "X_Pan_Cloud", Float ) = 0.1
 		_MaxHeinght( "Max Heinght", Float ) = 44
 		_Texture2( "Texture 1", 2D ) = "white" {}
 		[HDR] _Clouds( "Clouds", Color ) = ( 1, 1, 1, 0 )
@@ -18,11 +20,14 @@ Shader "Sky_V3"
 		_X_Pan( "X_Pan", Float ) = 0.1
 		_Y_Pan1( "Y_Pan", Float ) = 0.1
 		_Vertex_Position( "Vertex_Position", Float ) = 0.05
-		_Intensity_Brillance( "Intensity_Brillance", Float ) = 1
+		_Intensity_Brillance( "Intensity_Brillance", Float ) = 3.51
 		_Met( "Met", Float ) = 0
 		_Smooth( "Smooth", Float ) = 0.5
 		_Inetnsity_Min( "Inetnsity_Min", Float ) = 0.01
 		_Inetnsity_Max( "Inetnsity_Max", Float ) = 1
+		_LightingMin( "LightingMin", Float ) = 0
+		_LightingEdge( "LightingEdge", Float ) = 0
+		_LightingPower( "LightingPower", Range( 0, 1 ) ) = 0
 
 
 		//_TransmissionShadow( "Transmission Shadow", Range( 0, 1 ) ) = 0.5
@@ -341,13 +346,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -607,45 +617,47 @@ Shader "Sky_V3"
 					BitangentWS = cross(NormalWS, -TangentWS);
 				#endif
 
-				float4 temp_output_494_0 = ( _Clouds * _Intensity_Brillance );
+				float4 temp_output_494_0 = ( _Sky * _Intensity_Brillance );
 				float4 appendResult474 = (float4(_X_Pan , _Y_Pan1 , 0.0 , 0.0));
 				float2 texCoord477 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				float4 appendResult471 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
 				float2 panner480 = ( 1.0 * _Time.y * appendResult474.xy + ((texCoord477*1.0 + 0.0)*appendResult471.xy + 0.0));
 				float smoothstepResult367 = smoothstep( 0.0 , _Lerp_Intensity , tex2D( _Texture2, panner480 ).r);
 				float smoothstepResult481 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , smoothstepResult367);
-				float4 lerpResult366 = lerp( _Sky , temp_output_494_0 , smoothstepResult481);
-				float4 appendResult31_g307 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g307 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g307 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_46_0_g298 = ( 0.0 + _Vertex_Position );
-				float2 panner25_g307 = ( 1.0 * _Time.y * appendResult31_g307.xy + ((texCoord5_g307*appendResult26_g307.xy + ( temp_output_46_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult1_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g307 ).r ) * 100.0 ) , 0.0 , 0.1);
-				float4 appendResult31_g299 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g299 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g299 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_3_0_g298 = ( temp_output_46_0_g298 + _Vertex_Position );
-				float2 panner25_g299 = ( 1.0 * _Time.y * appendResult31_g299.xy + ((texCoord5_g299*appendResult26_g299.xy + ( temp_output_3_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult4_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g299 ).r ) * 1.0 ) , 0.0 , 0.2);
-				float4 appendResult31_g308 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g308 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g308 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_6_0_g298 = ( temp_output_3_0_g298 + _Vertex_Position );
-				float2 panner25_g308 = ( 1.0 * _Time.y * appendResult31_g308.xy + ((texCoord5_g308*appendResult26_g308.xy + ( temp_output_6_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult7_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g308 ).r ) * 1.0 ) , 0.0 , 0.3);
-				float4 appendResult31_g300 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g300 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g300 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_8_0_g298 = ( temp_output_6_0_g298 + _Vertex_Position );
-				float2 panner25_g300 = ( 1.0 * _Time.y * appendResult31_g300.xy + ((texCoord5_g300*appendResult26_g300.xy + ( temp_output_8_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult9_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g300 ).r ) * 1.0 ) , 0.0 , 0.4);
-				float4 appendResult31_g306 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g306 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g306 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_11_0_g298 = ( temp_output_8_0_g298 + _Vertex_Position );
-				float2 panner25_g306 = ( 1.0 * _Time.y * appendResult31_g306.xy + ((texCoord5_g306*appendResult26_g306.xy + ( temp_output_11_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult12_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g306 ).r ) * 1.0 ) , 0.0 , 0.5);
-				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , ( lerpResult1_g298 * ( lerpResult4_g298 * ( lerpResult7_g298 * ( lerpResult9_g298 * ( lerpResult12_g298 * lerpResult12_g298 ) ) ) ) ));
+				float4 lerpResult366 = lerp( _Clouds , temp_output_494_0 , smoothstepResult481);
+				float4 appendResult31_g476 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g476 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g476 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_46_0_g468 = ( 0.0 + _Vertex_Position );
+				float2 panner25_g476 = ( 1.0 * _Time.y * appendResult31_g476.xy + ((texCoord5_g476*appendResult26_g476.xy + ( temp_output_46_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult1_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g476 ).r ) * 100.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g478 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g478 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g478 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_3_0_g468 = ( temp_output_46_0_g468 + _Vertex_Position );
+				float2 panner25_g478 = ( 1.0 * _Time.y * appendResult31_g478.xy + ((texCoord5_g478*appendResult26_g478.xy + ( temp_output_3_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult4_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g478 ).r ) * 1.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g477 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g477 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g477 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_6_0_g468 = ( temp_output_3_0_g468 + _Vertex_Position );
+				float2 panner25_g477 = ( 1.0 * _Time.y * appendResult31_g477.xy + ((texCoord5_g477*appendResult26_g477.xy + ( temp_output_6_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult7_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g477 ).r ) * 1.0 ) , 0.0 , 0.2);
+				float4 appendResult31_g469 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g469 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g469 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_8_0_g468 = ( temp_output_6_0_g468 + _Vertex_Position );
+				float2 panner25_g469 = ( 1.0 * _Time.y * appendResult31_g469.xy + ((texCoord5_g469*appendResult26_g469.xy + ( temp_output_8_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult9_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g469 ).r ) * 1.0 ) , 0.0 , 0.6);
+				float4 appendResult31_g475 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g475 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g475 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_11_0_g468 = ( temp_output_8_0_g468 + _Vertex_Position );
+				float2 panner25_g475 = ( 1.0 * _Time.y * appendResult31_g475.xy + ((texCoord5_g475*appendResult26_g475.xy + ( temp_output_11_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult12_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g475 ).r ) * 1.0 ) , 0.0 , 0.3);
+				float temp_output_611_0 = ( lerpResult1_g468 * ( lerpResult4_g468 * ( lerpResult7_g468 * ( lerpResult9_g468 * ( lerpResult12_g468 * lerpResult12_g468 ) ) ) ) );
+				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , temp_output_611_0);
+				float smoothstepResult554 = smoothstep( _LightingMin , ( _LightingMin + _LightingEdge ) , temp_output_611_0);
 				
 				float2 temp_output_2_0_g5 = panner480;
 				float2 break6_g5 = temp_output_2_0_g5;
@@ -659,7 +671,7 @@ Shader "Sky_V3"
 				float3 normalizeResult22_g5 = normalize( cross( appendResult13_g5 , appendResult16_g5 ) );
 				
 
-				float3 BaseColor = ( lerpResult366 * smoothstepResult486 ).rgb;
+				float3 BaseColor = ( ( lerpResult366 * smoothstepResult486 ) + ( smoothstepResult554 * _LightingPower ) ).rgb;
 				float3 Normal = normalizeResult22_g5;
 				float3 Specular = 0.5;
 				float Metallic = _Met;
@@ -1005,13 +1017,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -1325,13 +1342,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -1619,13 +1641,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -1821,48 +1848,50 @@ Shader "Sky_V3"
 				float3 PositionRWS = GetCameraRelativePositionWS( input.positionWS );
 				float4 ShadowCoord = shadowCoord;
 
-				float4 temp_output_494_0 = ( _Clouds * _Intensity_Brillance );
+				float4 temp_output_494_0 = ( _Sky * _Intensity_Brillance );
 				float4 appendResult474 = (float4(_X_Pan , _Y_Pan1 , 0.0 , 0.0));
 				float2 texCoord477 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
 				float4 appendResult471 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
 				float2 panner480 = ( 1.0 * _Time.y * appendResult474.xy + ((texCoord477*1.0 + 0.0)*appendResult471.xy + 0.0));
 				float smoothstepResult367 = smoothstep( 0.0 , _Lerp_Intensity , tex2D( _Texture2, panner480 ).r);
 				float smoothstepResult481 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , smoothstepResult367);
-				float4 lerpResult366 = lerp( _Sky , temp_output_494_0 , smoothstepResult481);
-				float4 appendResult31_g307 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g307 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g307 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_46_0_g298 = ( 0.0 + _Vertex_Position );
-				float2 panner25_g307 = ( 1.0 * _Time.y * appendResult31_g307.xy + ((texCoord5_g307*appendResult26_g307.xy + ( temp_output_46_0_g298 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult1_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g307 ).r ) * 100.0 ) , 0.0 , 0.1);
-				float4 appendResult31_g299 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g299 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g299 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_3_0_g298 = ( temp_output_46_0_g298 + _Vertex_Position );
-				float2 panner25_g299 = ( 1.0 * _Time.y * appendResult31_g299.xy + ((texCoord5_g299*appendResult26_g299.xy + ( temp_output_3_0_g298 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult4_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g299 ).r ) * 1.0 ) , 0.0 , 0.2);
-				float4 appendResult31_g308 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g308 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g308 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_6_0_g298 = ( temp_output_3_0_g298 + _Vertex_Position );
-				float2 panner25_g308 = ( 1.0 * _Time.y * appendResult31_g308.xy + ((texCoord5_g308*appendResult26_g308.xy + ( temp_output_6_0_g298 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult7_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g308 ).r ) * 1.0 ) , 0.0 , 0.3);
-				float4 appendResult31_g300 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g300 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g300 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_8_0_g298 = ( temp_output_6_0_g298 + _Vertex_Position );
-				float2 panner25_g300 = ( 1.0 * _Time.y * appendResult31_g300.xy + ((texCoord5_g300*appendResult26_g300.xy + ( temp_output_8_0_g298 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult9_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g300 ).r ) * 1.0 ) , 0.0 , 0.4);
-				float4 appendResult31_g306 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g306 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g306 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_11_0_g298 = ( temp_output_8_0_g298 + _Vertex_Position );
-				float2 panner25_g306 = ( 1.0 * _Time.y * appendResult31_g306.xy + ((texCoord5_g306*appendResult26_g306.xy + ( temp_output_11_0_g298 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult12_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g306 ).r ) * 1.0 ) , 0.0 , 0.5);
-				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , ( lerpResult1_g298 * ( lerpResult4_g298 * ( lerpResult7_g298 * ( lerpResult9_g298 * ( lerpResult12_g298 * lerpResult12_g298 ) ) ) ) ));
+				float4 lerpResult366 = lerp( _Clouds , temp_output_494_0 , smoothstepResult481);
+				float4 appendResult31_g476 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g476 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g476 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_46_0_g468 = ( 0.0 + _Vertex_Position );
+				float2 panner25_g476 = ( 1.0 * _Time.y * appendResult31_g476.xy + ((texCoord5_g476*appendResult26_g476.xy + ( temp_output_46_0_g468 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult1_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g476 ).r ) * 100.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g478 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g478 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g478 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_3_0_g468 = ( temp_output_46_0_g468 + _Vertex_Position );
+				float2 panner25_g478 = ( 1.0 * _Time.y * appendResult31_g478.xy + ((texCoord5_g478*appendResult26_g478.xy + ( temp_output_3_0_g468 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult4_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g478 ).r ) * 1.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g477 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g477 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g477 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_6_0_g468 = ( temp_output_3_0_g468 + _Vertex_Position );
+				float2 panner25_g477 = ( 1.0 * _Time.y * appendResult31_g477.xy + ((texCoord5_g477*appendResult26_g477.xy + ( temp_output_6_0_g468 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult7_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g477 ).r ) * 1.0 ) , 0.0 , 0.2);
+				float4 appendResult31_g469 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g469 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g469 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_8_0_g468 = ( temp_output_6_0_g468 + _Vertex_Position );
+				float2 panner25_g469 = ( 1.0 * _Time.y * appendResult31_g469.xy + ((texCoord5_g469*appendResult26_g469.xy + ( temp_output_8_0_g468 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult9_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g469 ).r ) * 1.0 ) , 0.0 , 0.6);
+				float4 appendResult31_g475 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g475 = input.ase_texcoord3.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g475 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_11_0_g468 = ( temp_output_8_0_g468 + _Vertex_Position );
+				float2 panner25_g475 = ( 1.0 * _Time.y * appendResult31_g475.xy + ((texCoord5_g475*appendResult26_g475.xy + ( temp_output_11_0_g468 *  (0.0 + ( length( ( input.ase_texcoord4.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult12_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g475 ).r ) * 1.0 ) , 0.0 , 0.3);
+				float temp_output_611_0 = ( lerpResult1_g468 * ( lerpResult4_g468 * ( lerpResult7_g468 * ( lerpResult9_g468 * ( lerpResult12_g468 * lerpResult12_g468 ) ) ) ) );
+				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , temp_output_611_0);
+				float smoothstepResult554 = smoothstep( _LightingMin , ( _LightingMin + _LightingEdge ) , temp_output_611_0);
 				
 
-				float3 BaseColor = ( lerpResult366 * smoothstepResult486 ).rgb;
+				float3 BaseColor = ( ( lerpResult366 * smoothstepResult486 ) + ( smoothstepResult554 * _LightingPower ) ).rgb;
 				float3 Emission = ( temp_output_494_0 * smoothstepResult481 ).rgb;
 				float Alpha = 1;
 				#if defined( _ALPHATEST_ON )
@@ -1961,13 +1990,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -2149,48 +2183,50 @@ Shader "Sky_V3"
 				float3 PositionRWS = GetCameraRelativePositionWS( input.positionWS );
 				float4 ShadowCoord = shadowCoord;
 
-				float4 temp_output_494_0 = ( _Clouds * _Intensity_Brillance );
+				float4 temp_output_494_0 = ( _Sky * _Intensity_Brillance );
 				float4 appendResult474 = (float4(_X_Pan , _Y_Pan1 , 0.0 , 0.0));
 				float2 texCoord477 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
 				float4 appendResult471 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
 				float2 panner480 = ( 1.0 * _Time.y * appendResult474.xy + ((texCoord477*1.0 + 0.0)*appendResult471.xy + 0.0));
 				float smoothstepResult367 = smoothstep( 0.0 , _Lerp_Intensity , tex2D( _Texture2, panner480 ).r);
 				float smoothstepResult481 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , smoothstepResult367);
-				float4 lerpResult366 = lerp( _Sky , temp_output_494_0 , smoothstepResult481);
-				float4 appendResult31_g307 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g307 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g307 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_46_0_g298 = ( 0.0 + _Vertex_Position );
-				float2 panner25_g307 = ( 1.0 * _Time.y * appendResult31_g307.xy + ((texCoord5_g307*appendResult26_g307.xy + ( temp_output_46_0_g298 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult1_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g307 ).r ) * 100.0 ) , 0.0 , 0.1);
-				float4 appendResult31_g299 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g299 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g299 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_3_0_g298 = ( temp_output_46_0_g298 + _Vertex_Position );
-				float2 panner25_g299 = ( 1.0 * _Time.y * appendResult31_g299.xy + ((texCoord5_g299*appendResult26_g299.xy + ( temp_output_3_0_g298 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult4_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g299 ).r ) * 1.0 ) , 0.0 , 0.2);
-				float4 appendResult31_g308 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g308 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g308 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_6_0_g298 = ( temp_output_3_0_g298 + _Vertex_Position );
-				float2 panner25_g308 = ( 1.0 * _Time.y * appendResult31_g308.xy + ((texCoord5_g308*appendResult26_g308.xy + ( temp_output_6_0_g298 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult7_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g308 ).r ) * 1.0 ) , 0.0 , 0.3);
-				float4 appendResult31_g300 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g300 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g300 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_8_0_g298 = ( temp_output_6_0_g298 + _Vertex_Position );
-				float2 panner25_g300 = ( 1.0 * _Time.y * appendResult31_g300.xy + ((texCoord5_g300*appendResult26_g300.xy + ( temp_output_8_0_g298 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult9_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g300 ).r ) * 1.0 ) , 0.0 , 0.4);
-				float4 appendResult31_g306 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g306 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g306 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_11_0_g298 = ( temp_output_8_0_g298 + _Vertex_Position );
-				float2 panner25_g306 = ( 1.0 * _Time.y * appendResult31_g306.xy + ((texCoord5_g306*appendResult26_g306.xy + ( temp_output_11_0_g298 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult12_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g306 ).r ) * 1.0 ) , 0.0 , 0.5);
-				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , ( lerpResult1_g298 * ( lerpResult4_g298 * ( lerpResult7_g298 * ( lerpResult9_g298 * ( lerpResult12_g298 * lerpResult12_g298 ) ) ) ) ));
+				float4 lerpResult366 = lerp( _Clouds , temp_output_494_0 , smoothstepResult481);
+				float4 appendResult31_g476 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g476 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g476 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_46_0_g468 = ( 0.0 + _Vertex_Position );
+				float2 panner25_g476 = ( 1.0 * _Time.y * appendResult31_g476.xy + ((texCoord5_g476*appendResult26_g476.xy + ( temp_output_46_0_g468 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult1_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g476 ).r ) * 100.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g478 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g478 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g478 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_3_0_g468 = ( temp_output_46_0_g468 + _Vertex_Position );
+				float2 panner25_g478 = ( 1.0 * _Time.y * appendResult31_g478.xy + ((texCoord5_g478*appendResult26_g478.xy + ( temp_output_3_0_g468 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult4_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g478 ).r ) * 1.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g477 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g477 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g477 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_6_0_g468 = ( temp_output_3_0_g468 + _Vertex_Position );
+				float2 panner25_g477 = ( 1.0 * _Time.y * appendResult31_g477.xy + ((texCoord5_g477*appendResult26_g477.xy + ( temp_output_6_0_g468 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult7_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g477 ).r ) * 1.0 ) , 0.0 , 0.2);
+				float4 appendResult31_g469 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g469 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g469 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_8_0_g468 = ( temp_output_6_0_g468 + _Vertex_Position );
+				float2 panner25_g469 = ( 1.0 * _Time.y * appendResult31_g469.xy + ((texCoord5_g469*appendResult26_g469.xy + ( temp_output_8_0_g468 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult9_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g469 ).r ) * 1.0 ) , 0.0 , 0.6);
+				float4 appendResult31_g475 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g475 = input.ase_texcoord1.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g475 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_11_0_g468 = ( temp_output_8_0_g468 + _Vertex_Position );
+				float2 panner25_g475 = ( 1.0 * _Time.y * appendResult31_g475.xy + ((texCoord5_g475*appendResult26_g475.xy + ( temp_output_11_0_g468 *  (0.0 + ( length( ( input.ase_texcoord2.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult12_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g475 ).r ) * 1.0 ) , 0.0 , 0.3);
+				float temp_output_611_0 = ( lerpResult1_g468 * ( lerpResult4_g468 * ( lerpResult7_g468 * ( lerpResult9_g468 * ( lerpResult12_g468 * lerpResult12_g468 ) ) ) ) );
+				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , temp_output_611_0);
+				float smoothstepResult554 = smoothstep( _LightingMin , ( _LightingMin + _LightingEdge ) , temp_output_611_0);
 				
 
-				float3 BaseColor = ( lerpResult366 * smoothstepResult486 ).rgb;
+				float3 BaseColor = ( ( lerpResult366 * smoothstepResult486 ) + ( smoothstepResult554 * _LightingPower ) ).rgb;
 				float Alpha = 1;
 				#if defined( _ALPHATEST_ON )
 					float AlphaClipThreshold = _Cutoff;
@@ -2302,13 +2338,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -2734,13 +2775,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -2993,45 +3039,47 @@ Shader "Sky_V3"
 					BitangentWS = cross(NormalWS, -TangentWS);
 				#endif
 
-				float4 temp_output_494_0 = ( _Clouds * _Intensity_Brillance );
+				float4 temp_output_494_0 = ( _Sky * _Intensity_Brillance );
 				float4 appendResult474 = (float4(_X_Pan , _Y_Pan1 , 0.0 , 0.0));
 				float2 texCoord477 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
 				float4 appendResult471 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
 				float2 panner480 = ( 1.0 * _Time.y * appendResult474.xy + ((texCoord477*1.0 + 0.0)*appendResult471.xy + 0.0));
 				float smoothstepResult367 = smoothstep( 0.0 , _Lerp_Intensity , tex2D( _Texture2, panner480 ).r);
 				float smoothstepResult481 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , smoothstepResult367);
-				float4 lerpResult366 = lerp( _Sky , temp_output_494_0 , smoothstepResult481);
-				float4 appendResult31_g307 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g307 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g307 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_46_0_g298 = ( 0.0 + _Vertex_Position );
-				float2 panner25_g307 = ( 1.0 * _Time.y * appendResult31_g307.xy + ((texCoord5_g307*appendResult26_g307.xy + ( temp_output_46_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult1_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g307 ).r ) * 100.0 ) , 0.0 , 0.1);
-				float4 appendResult31_g299 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g299 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g299 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_3_0_g298 = ( temp_output_46_0_g298 + _Vertex_Position );
-				float2 panner25_g299 = ( 1.0 * _Time.y * appendResult31_g299.xy + ((texCoord5_g299*appendResult26_g299.xy + ( temp_output_3_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult4_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g299 ).r ) * 1.0 ) , 0.0 , 0.2);
-				float4 appendResult31_g308 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g308 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g308 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_6_0_g298 = ( temp_output_3_0_g298 + _Vertex_Position );
-				float2 panner25_g308 = ( 1.0 * _Time.y * appendResult31_g308.xy + ((texCoord5_g308*appendResult26_g308.xy + ( temp_output_6_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult7_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g308 ).r ) * 1.0 ) , 0.0 , 0.3);
-				float4 appendResult31_g300 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g300 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g300 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_8_0_g298 = ( temp_output_6_0_g298 + _Vertex_Position );
-				float2 panner25_g300 = ( 1.0 * _Time.y * appendResult31_g300.xy + ((texCoord5_g300*appendResult26_g300.xy + ( temp_output_8_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult9_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g300 ).r ) * 1.0 ) , 0.0 , 0.4);
-				float4 appendResult31_g306 = (float4(0.1 , 0.1 , 0.0 , 0.0));
-				float2 texCoord5_g306 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
-				float4 appendResult26_g306 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
-				float temp_output_11_0_g298 = ( temp_output_8_0_g298 + _Vertex_Position );
-				float2 panner25_g306 = ( 1.0 * _Time.y * appendResult31_g306.xy + ((texCoord5_g306*appendResult26_g306.xy + ( temp_output_11_0_g298 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
-				float lerpResult12_g298 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g306 ).r ) * 1.0 ) , 0.0 , 0.5);
-				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , ( lerpResult1_g298 * ( lerpResult4_g298 * ( lerpResult7_g298 * ( lerpResult9_g298 * ( lerpResult12_g298 * lerpResult12_g298 ) ) ) ) ));
+				float4 lerpResult366 = lerp( _Clouds , temp_output_494_0 , smoothstepResult481);
+				float4 appendResult31_g476 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g476 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g476 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_46_0_g468 = ( 0.0 + _Vertex_Position );
+				float2 panner25_g476 = ( 1.0 * _Time.y * appendResult31_g476.xy + ((texCoord5_g476*appendResult26_g476.xy + ( temp_output_46_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult1_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g476 ).r ) * 100.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g478 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g478 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g478 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_3_0_g468 = ( temp_output_46_0_g468 + _Vertex_Position );
+				float2 panner25_g478 = ( 1.0 * _Time.y * appendResult31_g478.xy + ((texCoord5_g478*appendResult26_g478.xy + ( temp_output_3_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult4_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g478 ).r ) * 1.0 ) , 0.0 , 0.1);
+				float4 appendResult31_g477 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g477 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g477 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_6_0_g468 = ( temp_output_3_0_g468 + _Vertex_Position );
+				float2 panner25_g477 = ( 1.0 * _Time.y * appendResult31_g477.xy + ((texCoord5_g477*appendResult26_g477.xy + ( temp_output_6_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult7_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g477 ).r ) * 1.0 ) , 0.0 , 0.2);
+				float4 appendResult31_g469 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g469 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g469 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_8_0_g468 = ( temp_output_6_0_g468 + _Vertex_Position );
+				float2 panner25_g469 = ( 1.0 * _Time.y * appendResult31_g469.xy + ((texCoord5_g469*appendResult26_g469.xy + ( temp_output_8_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult9_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g469 ).r ) * 1.0 ) , 0.0 , 0.6);
+				float4 appendResult31_g475 = (float4(_X_Pan_Cloud , _Y_Pan_Cloud , 0.0 , 0.0));
+				float2 texCoord5_g475 = input.ase_texcoord7.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 appendResult26_g475 = (float4(_X_Tille , _Y_Tille , 0.0 , 0.0));
+				float temp_output_11_0_g468 = ( temp_output_8_0_g468 + _Vertex_Position );
+				float2 panner25_g475 = ( 1.0 * _Time.y * appendResult31_g475.xy + ((texCoord5_g475*appendResult26_g475.xy + ( temp_output_11_0_g468 *  (0.0 + ( length( ( input.ase_texcoord8.xyz - _Center ) ) - _MinHeinght ) * ( 1.0 - 0.0 ) / ( _MaxHeinght - _MinHeinght ) ) ))*1.0 + 0.0));
+				float lerpResult12_g468 = lerp( ( ( 1.0 - tex2D( _Texture2, panner25_g475 ).r ) * 1.0 ) , 0.0 , 0.3);
+				float temp_output_611_0 = ( lerpResult1_g468 * ( lerpResult4_g468 * ( lerpResult7_g468 * ( lerpResult9_g468 * ( lerpResult12_g468 * lerpResult12_g468 ) ) ) ) );
+				float smoothstepResult486 = smoothstep( _Inetnsity_Min , _Inetnsity_Max , temp_output_611_0);
+				float smoothstepResult554 = smoothstep( _LightingMin , ( _LightingMin + _LightingEdge ) , temp_output_611_0);
 				
 				float2 temp_output_2_0_g5 = panner480;
 				float2 break6_g5 = temp_output_2_0_g5;
@@ -3045,7 +3093,7 @@ Shader "Sky_V3"
 				float3 normalizeResult22_g5 = normalize( cross( appendResult13_g5 , appendResult16_g5 ) );
 				
 
-				float3 BaseColor = ( lerpResult366 * smoothstepResult486 ).rgb;
+				float3 BaseColor = ( ( lerpResult366 * smoothstepResult486 ) + ( smoothstepResult554 * _LightingPower ) ).rgb;
 				float3 Normal = normalizeResult22_g5;
 				float3 Specular = 0.5;
 				float Metallic = _Met;
@@ -3263,13 +3311,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -3555,13 +3608,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -3856,13 +3914,18 @@ Shader "Sky_V3"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _Sky;
 			float4 _Clouds;
+			float4 _Sky;
 			float3 _Center;
 			float _Normal_Strenght;
+			float _LightingPower;
+			float _LightingEdge;
+			float _LightingMin;
 			float _MaxHeinght;
 			float _MinHeinght;
 			float _Vertex_Position;
+			float _Y_Pan_Cloud;
+			float _X_Pan_Cloud;
 			float _Y_Tille;
 			float _X_Tille;
 			float _Y_Pan1;
@@ -4084,48 +4147,58 @@ Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;271;-1104,4880;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;277;-1040,5328;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;240;-1216,4576;Inherit;False;Constant;_Float7;Float 0;9;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;189;-3184,4016;Inherit;False;Property;_Vertex_Position;Vertex_Position;18;0;Create;True;0;0;0;False;0;False;0.05;0.1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;189;-3184,4016;Inherit;False;Property;_Vertex_Position;Vertex_Position;19;0;Create;True;0;0;0;False;0;False;0.05;0.05;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;279;-928,5520;Inherit;False;Constant;_Float19;Float 10;9;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;126;-1904,-352;Inherit;True;Property;_TextureSample0;Texture Sample 0;13;0;Create;True;0;0;0;False;0;False;-1;8da0af78edbc5644fb83eb18119d110d;8da0af78edbc5644fb83eb18119d110d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;367;-1536,-352;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;116;-1408,272;Inherit;False;Property;_Normal_Strenght;Normal_Strenght;10;0;Create;True;0;0;0;False;0;False;31.1;2;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;119;-1632,-848;Inherit;False;Property;_Sky;Sky;9;1;[HDR];Create;True;0;0;0;False;0;False;0.07075471,0.1465086,1,1;0.2783019,0.3373299,1,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;128;-1696,-32;Inherit;False;Property;_Lerp_Intensity;Lerp_Intensity;11;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;472;-2880,752;Inherit;False;Property;_Y_Tille;Y_Tille;14;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;473;-2880,640;Inherit;False;Property;_X_Tille;X_Tille;15;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;116;-1408,272;Inherit;False;Property;_Normal_Strenght;Normal_Strenght;11;0;Create;True;0;0;0;False;0;False;31.1;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;119;-1632,-848;Inherit;False;Property;_Sky;Sky;10;1;[HDR];Create;True;0;0;0;False;0;False;0.07075471,0.1465086,1,1;0.01640032,0.01887142,0.02200549,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.TexturePropertyNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;186;-2784,-304;Inherit;True;Property;_Texture2;Texture 1;8;0;Create;True;0;0;0;False;0;False;deb75dd87253c9c4bacffc279777dff9;deb75dd87253c9c4bacffc279777dff9;False;white;Auto;Texture2D;False;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;114;-864,-64;Inherit;True;NormalCreate;13;;5;e12f7ae19d416b942820e3932b56220f;0;4;1;SAMPLER2D;;False;2;FLOAT2;0,0;False;3;FLOAT;0.5;False;4;FLOAT;2;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;490;48,-176;Inherit;False;Property;_Met;Met;103;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;491;48,-80;Inherit;False;Property;_Smooth;Smooth;104;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;368;-1616,-640;Inherit;False;Property;_Clouds;Clouds;9;1;[HDR];Create;True;0;0;0;False;0;False;1,1,1,0;1.41265,1.096947,1.465153,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.DynamicAppendNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;474;-2144,496;Inherit;False;FLOAT4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;475;-2464,512;Inherit;False;Property;_X_Pan;X_Pan;16;0;Create;True;0;0;0;False;0;False;0.1;0.1;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;476;-2400,720;Inherit;False;Property;_Y_Pan1;Y_Pan;17;0;Create;True;0;0;0;False;0;False;0.1;0.1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;475;-2464,512;Inherit;False;Property;_X_Pan;X_Pan;17;0;Create;True;0;0;0;False;0;False;0.1;0.1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;476;-2400,720;Inherit;False;Property;_Y_Pan1;Y_Pan;18;0;Create;True;0;0;0;False;0;False;0.1;0.1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;480;-2320,288;Inherit;True;3;0;FLOAT2;0,0;False;2;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;472;-2880,752;Inherit;False;Property;_Y_Tille;Y_Tille;15;0;Create;True;0;0;0;False;0;False;1;3;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;473;-2880,640;Inherit;False;Property;_X_Tille;X_Tille;16;0;Create;True;0;0;0;False;0;False;1;3;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;477;-3200,256;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ScaleAndOffsetNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;478;-2896,272;Inherit;False;3;0;FLOAT2;0,0;False;1;FLOAT;1;False;2;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.ScaleAndOffsetNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;479;-2608,272;Inherit;True;3;0;FLOAT2;0,0;False;1;FLOAT2;1,0;False;2;FLOAT;0;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.PannerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;480;-2320,288;Inherit;True;3;0;FLOAT2;0,0;False;2;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT2;0
-Node;AmplifyShaderEditor.TexturePropertyNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;186;-2784,-304;Inherit;True;Property;_Texture2;Texture 1;7;0;Create;True;0;0;0;False;0;False;85cb9d31fe3e6bc4f8d515609bc89ab2;8da0af78edbc5644fb83eb18119d110d;False;white;Auto;Texture2D;False;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.DynamicAppendNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;471;-2672,640;Inherit;False;FLOAT4;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;114;-864,-64;Inherit;True;NormalCreate;12;;5;e12f7ae19d416b942820e3932b56220f;0;4;1;SAMPLER2D;;False;2;FLOAT2;0,0;False;3;FLOAT;0.5;False;4;FLOAT;2;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;366;-208,-672;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;486;-1872,80;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0.1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;489;-1888,-96;Inherit;False;Property;_Inetnsity_Max;Inetnsity_Max;95;0;Create;True;0;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;488;-1136,-224;Inherit;False;Property;_Inetnsity_Min;Inetnsity_Min;94;0;Create;True;0;0;0;False;0;False;0.01;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;490;48,-176;Inherit;False;Property;_Met;Met;92;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;491;48,-80;Inherit;False;Property;_Smooth;Smooth;93;0;Create;True;0;0;0;False;0;False;0.5;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;481;-880,-512;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0.1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;368;-1616,-640;Inherit;False;Property;_Clouds;Clouds;8;1;[HDR];Create;True;0;0;0;False;0;False;1,1,1,0;1,1,1,0;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;494;-1120,-688;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;495;-576,-560;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;497;-1504,1968;Inherit;True;CLoud;0;;288;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;498;-1504,2400;Inherit;True;CLoud;0;;289;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;499;-1504,2848;Inherit;True;CLoud;0;;290;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;500;-1504,3280;Inherit;True;CLoud;0;;291;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;501;-1520,3584;Inherit;True;CLoud;0;;292;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;502;-1520,3952;Inherit;True;CLoud;0;;293;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;503;-1520,4400;Inherit;True;CLoud;0;;294;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;504;-1488,4864;Inherit;True;CLoud;0;;295;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;505;-1440,5312;Inherit;True;CLoud;0;;296;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;506;-1584,1504;Inherit;True;CLoud;0;;297;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;507;-2256,80;Inherit;False;Profonder;19;;298;2d942f535593d5f4b992c2f1ac7d170c;0;1;99;SAMPLER2D;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;365;16,-432;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;493;-1317.402,-465.1644;Inherit;False;Property;_Intensity_Brillance;Intensity_Brillance;91;0;Create;True;0;0;0;False;0;False;1;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;493;-1392,-464;Inherit;False;Property;_Intensity_Brillance;Intensity_Brillance;102;0;Create;True;0;0;0;False;0;False;3.51;1.5;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;488;-1184,-208;Inherit;False;Property;_Inetnsity_Min;Inetnsity_Min;105;0;Create;True;0;0;0;False;0;False;0.01;-0.43;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;494;-736,-640;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;495;-464,-400;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;126;-1920,-416;Inherit;True;Property;_TextureSample0;Texture Sample 0;13;0;Create;True;0;0;0;False;0;False;-1;8da0af78edbc5644fb83eb18119d110d;8da0af78edbc5644fb83eb18119d110d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;False;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;489;-1920,-112;Inherit;False;Property;_Inetnsity_Max;Inetnsity_Max;106;0;Create;True;0;0;0;False;0;False;1;3.12;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;128;-1776,-224;Inherit;False;Property;_Lerp_Intensity;Lerp_Intensity;12;0;Create;True;0;0;0;False;0;False;1;1.15;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;486;-1712,-64;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0.1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleTimeNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;562;-1101.47,496.4087;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SinOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;559;-864,512;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMaxOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;560;-704,496;Inherit;True;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;481;-912,-384;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0.1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;556;240,-464;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;558;-272,96;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;557;-544,320;Inherit;False;Property;_LightingPower;LightingPower;109;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.LerpOp, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;366;-320,-672;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;365;-32,-512;Inherit;True;2;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SmoothstepOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;554;-512,48;Inherit;True;3;0;FLOAT;0;False;1;FLOAT;0.11;False;2;FLOAT;0.33;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;563;-944,176;Inherit;False;Property;_LightingMin;LightingMin;107;0;Create;True;0;0;0;False;0;False;0;0.06;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;566;-704,208;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;565;-912,272;Inherit;False;Property;_LightingEdge;LightingEdge;108;0;Create;True;0;0;0;False;0;False;0;0.04;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;601;-1504,1968;Inherit;True;CLoud;0;;458;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;602;-1504,2400;Inherit;True;CLoud;0;;459;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;603;-1504,2848;Inherit;True;CLoud;0;;460;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;604;-1504,3280;Inherit;True;CLoud;0;;461;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;605;-1520,3584;Inherit;True;CLoud;0;;462;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;606;-1520,3952;Inherit;True;CLoud;0;;463;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;607;-1520,4400;Inherit;True;CLoud;0;;464;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;608;-1488,4864;Inherit;True;CLoud;0;;465;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;609;-1440,5312;Inherit;True;CLoud;0;;466;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;610;-1584,1504;Inherit;True;CLoud;0;;467;4c5ceb006d1a8ee4095ab42f4b824abc;0;2;8;SAMPLER2D;0,0,0,0;False;9;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FunctionNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;611;-2224,64;Inherit;False;Profonder;20;;468;2d942f535593d5f4b992c2f1ac7d170c;0;1;99;SAMPLER2D;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;155;416,-144;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;6;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;157;416,-144;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;158;416,-144;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -4137,7 +4210,7 @@ Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Versi
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;164;416,-144;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ScenePickingPass;0;9;ScenePickingPass;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=Picking;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;165;416,-144;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;MotionVectors;0;10;MotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;False;False;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;True;1;LightMode=MotionVectors;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;166;416,-144;Float;False;False;-1;3;UnityEditor.ShaderGraphLitGUI;0;1;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;XRMotionVectors;0;11;XRMotionVectors;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;True;1;False;;255;False;;1;False;;7;False;;3;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;False;False;False;False;True;1;LightMode=XRMotionVectors;False;False;0;;0;0;Standard;0;False;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;156;288,-352;Float;False;True;-1;3;UnityEditor.ShaderGraphLitGUI;0;12;Sky_V3;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;True;1;1;False;;0;False;;1;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;51;Category;0;0;  Instanced Terrain Normals;1;0;Lighting Model;0;0;Workflow;1;0;Surface;0;0;  Keep Alpha;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Fragment Normal Space;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;Receive Shadows;2;0;Specular Highlights;2;0;Environment Reflections;2;0;Receive SSAO;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;Debug Display;1;0;Clear Coat;0;0;0;12;False;True;True;True;True;True;True;True;True;True;True;False;False;;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;156;496,-320;Float;False;True;-1;3;UnityEditor.ShaderGraphLitGUI;0;14;Sky_V3;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;21;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;14;all;0;False;True;1;1;False;;0;False;;1;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;False;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;51;Category;0;0;  Instanced Terrain Normals;1;0;Lighting Model;0;0;Workflow;1;0;Surface;0;0;  Keep Alpha;0;0;  Refraction Model;0;0;  Blend;0;0;Two Sided;1;0;Alpha Clipping;0;0;  Use Shadow Threshold;0;0;Fragment Normal Space;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;Receive Shadows;2;0;Specular Highlights;2;0;Environment Reflections;2;0;Receive SSAO;1;0;Motion Vectors;1;0;  Add Precomputed Velocity;0;0;  XR Motion Vectors;0;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position;1;0;Debug Display;1;0;Clear Coat;0;0;0;12;False;True;True;True;True;True;True;True;True;True;True;False;False;;False;0
 WireConnection;194;0;196;0
 WireConnection;194;2;253;0
 WireConnection;201;0;193;0
@@ -4195,72 +4268,83 @@ WireConnection;270;2;273;0
 WireConnection;262;0;226;0
 WireConnection;262;1;261;0
 WireConnection;193;1;189;0
-WireConnection;196;0;506;0
+WireConnection;196;0;610;0
 WireConnection;196;1;198;0
-WireConnection;203;0;497;0
+WireConnection;203;0;601;0
 WireConnection;203;1;204;0
-WireConnection;209;0;498;0
+WireConnection;209;0;602;0
 WireConnection;209;1;210;0
-WireConnection;215;0;499;0
+WireConnection;215;0;603;0
 WireConnection;215;1;216;0
-WireConnection;221;0;500;0
+WireConnection;221;0;604;0
 WireConnection;221;1;222;0
-WireConnection;227;0;501;0
+WireConnection;227;0;605;0
 WireConnection;227;1;228;0
-WireConnection;233;0;502;0
+WireConnection;233;0;606;0
 WireConnection;233;1;234;0
-WireConnection;239;0;503;0
+WireConnection;239;0;607;0
 WireConnection;239;1;240;0
-WireConnection;271;0;504;0
+WireConnection;271;0;608;0
 WireConnection;271;1;272;0
-WireConnection;277;0;505;0
+WireConnection;277;0;609;0
 WireConnection;277;1;278;0
-WireConnection;126;0;186;0
-WireConnection;126;1;480;0
 WireConnection;367;0;126;1
 WireConnection;367;2;128;0
-WireConnection;474;0;475;0
-WireConnection;474;1;476;0
-WireConnection;478;0;477;0
-WireConnection;479;0;478;0
-WireConnection;479;1;471;0
-WireConnection;480;0;479;0
-WireConnection;480;2;474;0
-WireConnection;471;0;473;0
-WireConnection;471;1;472;0
 WireConnection;114;1;186;0
 WireConnection;114;2;480;0
 WireConnection;114;4;116;0
-WireConnection;366;0;119;0
-WireConnection;366;1;494;0
-WireConnection;366;2;481;0
-WireConnection;486;0;507;0
-WireConnection;486;1;488;0
-WireConnection;486;2;489;0
-WireConnection;481;0;367;0
-WireConnection;481;1;488;0
-WireConnection;481;2;489;0
-WireConnection;494;0;368;0
+WireConnection;474;0;475;0
+WireConnection;474;1;476;0
+WireConnection;480;0;479;0
+WireConnection;480;2;474;0
+WireConnection;478;0;477;0
+WireConnection;479;0;478;0
+WireConnection;479;1;471;0
+WireConnection;471;0;473;0
+WireConnection;471;1;472;0
+WireConnection;494;0;119;0
 WireConnection;494;1;493;0
 WireConnection;495;0;494;0
 WireConnection;495;1;481;0
-WireConnection;497;9;201;0
-WireConnection;498;9;207;0
-WireConnection;499;9;213;0
-WireConnection;500;9;219;0
-WireConnection;501;9;225;0
-WireConnection;502;9;231;0
-WireConnection;503;9;237;0
-WireConnection;504;9;269;0
-WireConnection;505;9;275;0
-WireConnection;506;9;193;0
-WireConnection;507;99;186;0
+WireConnection;126;0;186;0
+WireConnection;126;1;480;0
+WireConnection;486;0;611;0
+WireConnection;486;1;488;0
+WireConnection;486;2;489;0
+WireConnection;559;0;562;0
+WireConnection;560;0;559;0
+WireConnection;481;0;367;0
+WireConnection;481;1;488;0
+WireConnection;481;2;489;0
+WireConnection;556;0;365;0
+WireConnection;556;1;558;0
+WireConnection;558;0;554;0
+WireConnection;558;1;557;0
+WireConnection;366;0;368;0
+WireConnection;366;1;494;0
+WireConnection;366;2;481;0
 WireConnection;365;0;366;0
 WireConnection;365;1;486;0
-WireConnection;156;0;365;0
+WireConnection;554;0;611;0
+WireConnection;554;1;563;0
+WireConnection;554;2;566;0
+WireConnection;566;0;563;0
+WireConnection;566;1;565;0
+WireConnection;601;9;201;0
+WireConnection;602;9;207;0
+WireConnection;603;9;213;0
+WireConnection;604;9;219;0
+WireConnection;605;9;225;0
+WireConnection;606;9;231;0
+WireConnection;607;9;237;0
+WireConnection;608;9;269;0
+WireConnection;609;9;275;0
+WireConnection;610;9;193;0
+WireConnection;611;99;186;0
+WireConnection;156;0;556;0
 WireConnection;156;1;114;0
 WireConnection;156;3;490;0
 WireConnection;156;4;491;0
 WireConnection;156;2;495;0
 ASEEND*/
-//CHKSM=613DEDDB537A30F3D3BA2AD6986A465B9A37BEEF
+//CHKSM=1989ED1ADEE1C8969586DBBED787A918F407567E
