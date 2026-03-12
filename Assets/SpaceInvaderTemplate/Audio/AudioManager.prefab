@@ -127,3 +127,53 @@ MonoBehaviour:
       Volume: 0.6
       MinPitchModifier: 0.1
       MaxPitchModifier: -0.1
+  - Name: VL_Damage
+    Clips:
+    - Clip: {fileID: 8300000, guid: 4ec3d6c1bf46e7f4bac10dbd30b5ff96, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 0.6
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+    - Clip: {fileID: 8300000, guid: 727250466e3a54149b2e73ce73979836, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 0.6
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+  - Name: VL_NextWave
+    Clips:
+    - Clip: {fileID: 8300000, guid: 25b6e6a3595cbda4094d115264d74202, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 0.6
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+  - Name: VL_ActiveBonus
+    Clips:
+    - Clip: {fileID: 8300000, guid: 77462f9b14437b14ebce4deb23e4d344, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 0.6
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+    - Clip: {fileID: 8300000, guid: 3e8a5c95fc5e96e41b11c1aa74faf394, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 0.6
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+  - Name: VL_Begin
+    Clips:
+    - Clip: {fileID: 8300000, guid: f6589446303f87845a4819a34298b6f0, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 0.6
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+    - Clip: {fileID: 8300000, guid: 6bc2c0e91413a3c49bf831509f10a3fe, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 0.6
+      MinPitchModifier: 0.1
+      MaxPitchModifier: -0.1
+  - Name: PlayerMort
+    Clips:
+    - Clip: {fileID: 8300000, guid: d1b1891900f52ea4c99a4dae4eec8a53, type: 3}
+      MixerGroup: {fileID: -2941076783826172581, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 1
+      MinPitchModifier: 0
+      MaxPitchModifier: 0
