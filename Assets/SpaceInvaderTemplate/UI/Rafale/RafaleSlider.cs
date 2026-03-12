@@ -22,6 +22,15 @@ public class RafaleSlider : MonoBehaviour
     {
         Player.OnRafaleChargeChanged += RafaleChargedChanged;
         Player.OnRafaleTriggered += RafaleTriggered;
+        GameFeelManager.Instance.OnFeatureToggled += OnFeatureToggled;
+    }
+
+    private void OnFeatureToggled(string feature, bool isActive)
+    {
+        if (feature == "RafaleChargeSliderAnimation")
+        {
+            fillBar.material.SetFloat("_FullValue", Mathf.Approximately(_rafaleValueTarget, 1) ? 1 : isActive ? 0 : 1);
+        }
     }
 
     private void Update()
@@ -69,6 +78,7 @@ public class RafaleSlider : MonoBehaviour
         if (_isInRafale) return;
         _rafaleValueTarget = value;
         fillBar.color = fillBarColor.Evaluate(value);
+        fillBar.material.SetFloat("_FullValue", Mathf.Approximately(value, 1) ? 1 : GameFeelManager.Instance.IsFeatureActive("RafaleChargeSliderAnimation") ? 0 : 1);
         //Calculate sliderSpeed according to difference of value
         _sliderSpeed = sliderValueSpeed * Mathf.Max(Mathf.Abs(value - slider.value), 0.2f);
     }
