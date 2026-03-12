@@ -43,8 +43,8 @@ Material:
     m_Floats:
     - _Frequency: 3
     - _Size: 7.5
-    - _Speed: 4
-    - _Strength: 0.1
+    - _Speed: 6
+    - _Strength: 0.2
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _Offset: {r: -4, g: -4, b: 0, a: 0}

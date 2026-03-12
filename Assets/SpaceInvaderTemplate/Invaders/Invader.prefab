@@ -356,7 +356,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 7369880722360228486, guid: 47d2029f071079c4a98ac35325b21f24, type: 3}
   shootAt: {fileID: 8808591723042360307}
-  collideWithTag: []
+  collideWithTag:
+  - Player
+  - Bullet
+  - RafaleBullet
   _eyeParticlesPrefab: {fileID: 8580916035640684435, guid: 5a160a5aae3908548a74c472a4525fc1, type: 3}
   _splashFXPrefab: {fileID: 4218853187458582951, guid: 9f1d376462f12fe42b825381923fc351, type: 3}
   _splashFXPositon: {fileID: 1691826822913498574}
@@ -464,6 +467,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2792557106913924442}
   - component: {fileID: 3685982124939516052}
+  - component: {fileID: 5964253450379151929}
   m_Layer: 0
   m_Name: Blob
   m_TagString: Untagged
@@ -546,3 +550,17 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &5964253450379151929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9209030745878527793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15821c551609a7c43a7a3190c031d932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShadowCast
+  _localPosition: {x: 1, y: 1, z: 2}
+  _shadowColor: {r: 0, g: 0, b: 0, a: 0.3137255}

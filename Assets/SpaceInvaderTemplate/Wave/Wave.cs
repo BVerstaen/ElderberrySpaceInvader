@@ -92,7 +92,6 @@ public class Wave : MonoBehaviour
     public void StartGame()
     {
         CreateWave();
-        OnNextWave?.Invoke();
     }
 
     private void CreateWave()
@@ -103,8 +102,8 @@ public class Wave : MonoBehaviour
             return;
         }
 
-            //Reset variables
-            transform.position = _defaultLocation;
+        //Reset variables
+        transform.position = _defaultLocation;
         _moveDirection = Move.Right;
         _moveCount = 0;
         _distance = 0f;
@@ -134,7 +133,6 @@ public class Wave : MonoBehaviour
             }
         }
 
-
         if(_waveDescendingCoroutine != null)
         {
             StopCoroutine(_waveDescendingCoroutine);
@@ -159,6 +157,9 @@ public class Wave : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsGameOver)
+            return;
+
         UpdateMovement();
         UpdateShoot();
     }

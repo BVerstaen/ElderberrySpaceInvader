@@ -13,6 +13,12 @@ public class Player : MonoBehaviour
     private const string HIT_SOUND = "PlayerHit";
     private const string SHELL_SOUND = "ShellSound";
 
+    private const string VL_DAMAGE_SOUND = "VL_Damage";
+    private const string VL_RAFALE_SOUND = "VL_ActiveBonus";
+    private const string VL_BEGIN_SOUND = "VL_Begin";
+    private const string VL_NEXTWAVE_SOUND = "VL_NextWave";
+
+
     private const string FIRE_EFFECT_FEATURE = "FireEffect";
     private const string MOVE_EFFECT_FEATURE = "PlayerMovement";
 
@@ -68,6 +74,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float rafaleBulletCooldown = 0.05f;
     //X Offset of bullets velocity
     [SerializeField] private float rafaleBulletXOffset = 1f;
+    [SerializeField] private AudioSource rafaleLoopAudioSource;
     private float _rafaleCharge = 0f;
     private bool _hasRafaleMaxBoost = false;
 
@@ -99,6 +106,7 @@ public class Player : MonoBehaviour
     [Header("VFX")]
     [SerializeField] private List<SmokeEffect> _smokeParticles;
     [SerializeField] private float _hitShakeDuration;
+    [SerializeField] private GameObject _explostionEffect;
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
@@ -114,32 +122,26 @@ public class Player : MonoBehaviour
     private float currentLean = 0f;
     private bool _controlsBinded = false;
 
+    private AudioSource _lastUsedVLSource;
     private Vector2 _defaultLocation;
-
-    private void OnEnable()
-    {
-        BindControls();
-    }
 
     private void Start()
     {
         ResetPlayer();
         Invader.OnInvaderTookDamage += OnInvaderHit;
+        Wave.OnNextWave += PlayNextWaveSound;
         _defaultLocation = transform.position;
+
+        AudioManager.Instance.PlaySound(VL_BEGIN_SOUND);
         StartCoroutine(PlayerAscendingAnimation());
     }
 
     private void OnDisable()
     {
         if(_controlsBinded)
-        {
-            _shootInput.action.started -= InputShootStarted;
-            _shootInput.action.canceled -= InputShootCanceled;
-            _rafaleLeftInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, false)); };
-            _rafaleLeftInput.action.canceled -= context => { InputRafaleCanceled(context, false); };
-            _rafaleRightInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, true)); };
-            _rafaleRightInput.action.canceled -= context => { InputRafaleCanceled(context, true); };
-        }
+            UnbindControls();
+        Invader.OnInvaderTookDamage -= OnInvaderHit;
+        Wave.OnNextWave -= PlayNextWaveSound;
     }
 
     private IEnumerator PlayerAscendingAnimation()
@@ -169,6 +171,17 @@ public class Player : MonoBehaviour
         _rafaleLeftInput.action.canceled += context => { InputRafaleCanceled(context, false); };
         _rafaleRightInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, true)); };
         _rafaleRightInput.action.canceled += context => { InputRafaleCanceled(context, true); };
+    }
+
+    private void UnbindControls()
+    {
+        _shootInput.action.started -= InputShootStarted;
+        _shootInput.action.canceled -= InputShootCanceled;
+        _rafaleLeftInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, false)); };
+        _rafaleLeftInput.action.canceled -= context => { InputRafaleCanceled(context, false); };
+        _rafaleRightInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, true)); };
+        _rafaleRightInput.action.canceled -= context => { InputRafaleCanceled(context, true); };
+        _controlsBinded = false;
     }
 
     private void OnInvaderHit(bool bIsRafaleBullet)
@@ -236,6 +249,9 @@ public class Player : MonoBehaviour
 
     private float UpdateMovement()
     {
+        if (!_controlsBinded)
+            return 0.0f;
+
         float move = _moveInput.action.ReadValue<float>();
         if (Mathf.Abs(move) < deadzone) { return 0; }
 
@@ -320,7 +336,7 @@ public class Player : MonoBehaviour
             return;
 
         //Feedback sound
-        AudioManager.Instance.PlaySound(FIRE_SOUND);
+        if (!bIsRafale) AudioManager.Instance.PlaySound(FIRE_SOUND);
         StartCoroutine(DifferedShellSound());
 
         foreach (var fire in bIsRafale ? _rafaleFireParticles : _fireParticles)
@@ -337,6 +353,7 @@ public class Player : MonoBehaviour
         _isRafaleLeftPressed = false;
         _isRafaleRightPressed = false;
         _hasRafaleMaxBoost = Mathf.Approximately(_rafaleCharge, rafaleMaximalCharge);
+        rafaleLoopAudioSource.Play();
         
         float rafaleTime = _rafaleCharge * rafaleTimeMultiplier + (_hasRafaleMaxBoost ? rafaleMaxChargeTimeBoost : 0);
         float clock = 0;
@@ -350,8 +367,9 @@ public class Player : MonoBehaviour
         {
             HapticManager.Instance.StartRumble(100, 200, rafaleTime);
             CameraShake.Instance.StartShaking(rafaleTime);
+            AudioManager.Instance.PlaySound(VL_RAFALE_SOUND);
         }
-        
+
         OnRafaleTriggered?.Invoke(rafaleTime, _rafaleCharge / rafaleMaximalCharge);
         
         //Reset Rafale Charge 
@@ -367,6 +385,7 @@ public class Player : MonoBehaviour
         }
         Debug.Log("Stop Rafale");
         _isInRafale = false;
+        rafaleLoopAudioSource.Stop();
 
         //Reset sound
         _audioMixer.audioMixer.SetFloat(_exposedMusic, 0);
@@ -391,9 +410,17 @@ public class Player : MonoBehaviour
         if (_currentLife <= 0)
         {
             GameManager.Instance.PlayGameOver();
+
+            //Feedback
+            _planeSpriteRenderer.enabled = false;
+            if (GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
+                _explostionEffect.SetActive(true);
+
+            UnbindControls();
             OnPlayerDeath?.Invoke();
             return;
         }
+
 
         OnTakeDamage?.Invoke();
         OnUpdateHealth?.Invoke(_currentLife);
@@ -403,11 +430,17 @@ public class Player : MonoBehaviour
         if(GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
         {
             AudioManager.Instance.PlaySound(HIT_SOUND);
+            AudioManager.Instance.PlaySound(VL_DAMAGE_SOUND);
             CameraShake.Instance.StartShaking(_hitShakeDuration);
         }
 
         //Feedback smoke
         if (_currentLife > 0)
             _smokeParticles[_currentLife - 1].particle.gameObject.SetActive(true);
+    }
+
+    private void PlayNextWaveSound()
+    {
+        AudioManager.Instance.PlaySound(VL_NEXTWAVE_SOUND);
     }
 }

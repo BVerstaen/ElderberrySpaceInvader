@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7369880722360228486}
   - component: {fileID: 7187537139655989992}
   - component: {fileID: 6745623824337545215}
+  - component: {fileID: 4478963093707479755}
   m_Layer: 0
   m_Name: EnemyBullet
   m_TagString: Untagged
@@ -173,3 +174,17 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &4478963093707479755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8901371870798798308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15821c551609a7c43a7a3190c031d932, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShadowCast
+  _localPosition: {x: 1, y: 1, z: 2}
+  _shadowColor: {r: 0, g: 0, b: 0, a: 0.3137255}
