@@ -336,7 +336,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     BeginPosition: {x: 0, y: -180, z: 0}
-    EndPosition: {x: -1000, y: -180, z: 0}
+    EndPosition: {x: -1200, y: -180, z: 0}
     RotationCurve:
       serializedVersion: 2
       m_Curve:
@@ -402,7 +402,7 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     BeginPosition: {x: 0, y: -280, z: 0}
-    EndPosition: {x: 1000, y: -280, z: 0}
+    EndPosition: {x: 1200, y: -280, z: 0}
     RotationCurve:
       serializedVersion: 2
       m_Curve:
