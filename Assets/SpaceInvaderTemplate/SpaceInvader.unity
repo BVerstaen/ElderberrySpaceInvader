@@ -212,12 +212,20 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4185726809008210589, guid: b3405aba000337d4e8a50f280d465925, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4185726809008210589, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759526677721042844, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_Name
       value: Rafale
+      objectReference: {fileID: 0}
+    - target: {fileID: 8916148975244170372, guid: b3405aba000337d4e8a50f280d465925, type: 3}
+      propertyPath: m_Value
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
