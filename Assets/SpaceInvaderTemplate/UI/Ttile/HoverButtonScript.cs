@@ -7,6 +7,7 @@ public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 {
     [Header("Color")]
     [SerializeField] private Image _textImage;
+    [SerializeField] private Color _baseColor;
     [SerializeField] private Color _hoverColor;
 
     [Header("Rotation")]
@@ -61,7 +62,7 @@ public class HoverButtonScript : MonoBehaviour, IPointerEnterHandler, IPointerEx
 
         _isGrowing = false;
         _rect.localEulerAngles = Vector3.zero;
-        _textImage.color = Color.white;
+        _textImage.color = _baseColor;
 
     }
 
