@@ -73,8 +73,8 @@ Material:
     - _stylized_Max: 1.16
     - _stylized_Min: -0.67
     m_Colors:
-    - _Cloud_Color: {r: 0.43747774, g: 0.6465379, b: 0.8207547, a: 1}
+    - _Cloud_Color: {r: 0.22174263, g: 0.27492967, b: 0.31132078, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Water_base_color: {r: 0.055802763, g: 0.28537622, b: 0.6226415, a: 1}
+    - _Water_base_color: {r: 0.032840878, g: 0.053633425, b: 0.05660379, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
