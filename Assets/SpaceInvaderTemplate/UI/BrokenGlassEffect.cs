@@ -8,17 +8,20 @@ public class BrokenGlassEffect : MonoBehaviour
     private struct BrokenGlassHealth
     {
         public Texture2D Tex;
+        public Texture2D TexDraw;
         public float Power;
 
-        public BrokenGlassHealth(Texture2D texture, float power)
+        public BrokenGlassHealth(Texture2D texture, Texture2D textureDraw, float power)
         {
             Tex = texture;
+            TexDraw = textureDraw;
             Power = power;
         }
     }
 
     [SerializeField] private Material _brokenGlassMat;
     [SerializeField] private Texture2D _baseTex;
+    [SerializeField] private Texture2D _baseTexDraw;
     [SerializeField] private float _basePower;
 
     [SerializeField] private List<BrokenGlassHealth> _brokenGlassPalier;
@@ -27,7 +30,7 @@ public class BrokenGlassEffect : MonoBehaviour
 
     private void Awake()
     {
-        _brokenGlassPalier.Add(new BrokenGlassHealth(_baseTex, _basePower));
+        _brokenGlassPalier.Add(new BrokenGlassHealth(_baseTex, _baseTexDraw, _basePower));
         SetTobaseEffect();
     }
 
@@ -50,6 +53,7 @@ public class BrokenGlassEffect : MonoBehaviour
     {
         //Reset
         _brokenGlassMat.SetTexture("_BrokenGlass", _baseTex);
+        _brokenGlassMat.SetTexture("_BrokenGlass_Draw", _baseTexDraw);
         _brokenGlassMat.SetFloat("_Power", _basePower);
     }
 
@@ -76,6 +80,7 @@ public class BrokenGlassEffect : MonoBehaviour
     private void ChangeMaterial(BrokenGlassHealth data)
     {
         _brokenGlassMat.SetTexture("_BrokenGlass", data.Tex);
+        _brokenGlassMat.SetTexture("_BrokenGlass_Draw", data.TexDraw);
         _brokenGlassMat.SetFloat("_Power", data.Power);
     }
 }
