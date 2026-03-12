@@ -202,6 +202,8 @@ AudioMixerController:
     name: BulletVolume
   - guid: 77f365dd02057af4988dd4ef3bf2063c
     name: MusicVolume
+  - guid: 2f90cf189f0281845a93b617a9a1c38f
+    name: RafaleVolume
   m_AudioMixerGroupViews:
   - guids:
     - 739bcc82147d29546b20bcf54a15ff79

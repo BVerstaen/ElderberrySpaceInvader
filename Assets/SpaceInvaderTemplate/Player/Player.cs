@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
@@ -101,6 +102,7 @@ public class Player : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioMixerGroup _audioMixer;
     [SerializeField] private float _rafaleVolume;
+    [SerializeField] private float _volumeFadeDuration;
     [SerializeField] private string _exposedMusic;
     [SerializeField] private string _exposedBullet;
 
@@ -111,6 +113,7 @@ public class Player : MonoBehaviour
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
+    public static event Action OnRafaleStopped;
     public static event Action<int> OnUpdateHealth;
 
     private bool _isShooting = false;
@@ -123,8 +126,9 @@ public class Player : MonoBehaviour
     private float currentLean = 0f;
     private bool _controlsBinded = false;
 
-    private AudioSource _lastUsedVLSource;
     private Vector2 _defaultLocation;
+
+    private Coroutine _feurCoubehCherchePasVolo;
 
     private void Start()
     {
@@ -367,8 +371,7 @@ public class Player : MonoBehaviour
         float clock = 0;
 
         //Sound
-        _audioMixer.audioMixer.SetFloat(_exposedMusic, _rafaleVolume);
-        _audioMixer.audioMixer.SetFloat(_exposedBullet, _rafaleVolume);
+        _feurCoubehCherchePasVolo = StartCoroutine(RafaleVolumeUp());
 
         //Haptic 
         if (GameFeelManager.Instance.IsFeatureActive("RafaleEffect"))
@@ -384,20 +387,45 @@ public class Player : MonoBehaviour
         _rafaleCharge = 0;
         OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
         
-        Debug.Log("Start Rafale");
         while (clock < rafaleTime)
         {
             RafaleShoot();
             yield return new WaitForSeconds(rafaleBulletCooldown);
             clock += rafaleBulletCooldown;
         }
-        Debug.Log("Stop Rafale");
+        OnRafaleStopped?.Invoke();
         _isInRafale = false;
         rafaleLoopAudioSource.Stop();
 
         //Reset sound
+        float timeElapsed = 0.0f;
+        while (timeElapsed <= _volumeFadeDuration)
+        {
+            float volume = Mathf.Lerp(_rafaleVolume, 0, timeElapsed / _volumeFadeDuration);
+            _audioMixer.audioMixer.SetFloat(_exposedMusic, volume);
+            _audioMixer.audioMixer.SetFloat(_exposedBullet, volume);
+            
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
         _audioMixer.audioMixer.SetFloat(_exposedMusic, 0);
         _audioMixer.audioMixer.SetFloat(_exposedBullet, 0);
+    }
+
+    private IEnumerator RafaleVolumeUp()
+    {
+        float timeElapsed = 0.0f;
+        while (timeElapsed <= _volumeFadeDuration)
+        {
+            float volume = Mathf.Lerp(0, _rafaleVolume, timeElapsed / _volumeFadeDuration);
+            _audioMixer.audioMixer.SetFloat(_exposedMusic, volume);
+            _audioMixer.audioMixer.SetFloat(_exposedBullet, volume);
+
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+        _audioMixer.audioMixer.SetFloat(_exposedMusic,  _rafaleVolume);
+        _audioMixer.audioMixer.SetFloat(_exposedBullet, _rafaleVolume);
     }
 
     public void OnTriggerEnter2D(Collider2D collision)

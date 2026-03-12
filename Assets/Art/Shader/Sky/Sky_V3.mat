@@ -64,11 +64,11 @@ Material:
     - _Smooth: 0
     - _SpecularHighlights: 1
     - _Vertex_Position: 0.05
-    - _X_Pan: 0.1
-    - _X_Pan_Cloud: 0.1
+    - _X_Pan: 0.8
+    - _X_Pan_Cloud: 0.8
     - _X_Tille: 5
-    - _Y_Pan1: 0.1
-    - _Y_Pan_Cloud: 0.1
+    - _Y_Pan1: 0.5
+    - _Y_Pan_Cloud: 0.5
     - _Y_Tille: 4
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}

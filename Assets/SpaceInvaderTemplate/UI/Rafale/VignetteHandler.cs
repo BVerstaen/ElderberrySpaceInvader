@@ -28,12 +28,19 @@ public class VignetteHandler : MonoBehaviour
             Debug.LogError("No Vignette Effect found");
         }
         Player.OnRafaleTriggered += OnRafaleTriggered;
+        Player.OnRafaleStopped += OnRafaleStopped;
         GameFeelManager.Instance.OnFeatureToggled += OnFeatureToggled;
+    }
+
+    private void OnRafaleStopped()
+    {
+        _isInRafale = false;
     }
 
     private void OnDestroy()
     {
         Player.OnRafaleTriggered -= OnRafaleTriggered;
+        Player.OnRafaleStopped -= OnRafaleStopped;
         if (GameFeelManager.Instance != null) GameFeelManager.Instance.OnFeatureToggled -= OnFeatureToggled;
     }
 
@@ -51,13 +58,6 @@ public class VignetteHandler : MonoBehaviour
         _rafaleVignetteIntensity = Mathf.Lerp(minVignetteIntensity, maxVignetteIntensity, rafaleIntensity);
         _targetedVignetteIntensity = GameFeelManager.Instance.IsFeatureActive("RafaleEffect") ? _rafaleVignetteIntensity : 0;
         _isInRafale = true;
-        StartCoroutine(RafaleCoroutine(rafaleTime));
-    }
-
-    private IEnumerator RafaleCoroutine(float rafaleTime)
-    {
-        yield return new WaitForSeconds(rafaleTime);
-        _isInRafale = false;
     }
 
     // Update is called once per frame
