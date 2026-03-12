@@ -1,16 +1,22 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameOverStampEffect : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject _stampImage;
+    [SerializeField] private Image _fadeOutImage;
 
     [Header("Animation")]
     [SerializeField] private AnimationCurve _animationCurve;
     [SerializeField] private float _animationDuration;
     [SerializeField] private float _startScale;
     [SerializeField] private float _endScale;
+
+    [Header("Fade out")]
+    [SerializeField] private float _fadeOutDuration;
+    [SerializeField] private AnimationCurve _fadeOutCurve;
 
     private Coroutine _stampAnimationCoroutine;
 
@@ -24,9 +30,10 @@ public class GameOverStampEffect : MonoBehaviour
         GameManager.Instance.OnGameOver -= StartAnimation;
     }
 
-    private void StartAnimation()
+    public void StartAnimation()
     {
         _stampImage.SetActive(true);
+        _fadeOutImage.gameObject.SetActive(true);
         _stampAnimationCoroutine = StartCoroutine(StampAnimationCoroutine());
     }
 
@@ -38,8 +45,18 @@ public class GameOverStampEffect : MonoBehaviour
         while (timeElapsed < _animationDuration)
         {
             float progress = _animationCurve.Evaluate(timeElapsed / _animationDuration);
-            float lerpedScale = Mathf.Lerp(_startScale, _endScale, progress);
-            _stampImage.transform.localScale = new Vector3(progress, progress, progress);
+
+            if(timeElapsed < _fadeOutDuration)
+            {
+                Color fadeOutColor = _fadeOutImage.color;
+                fadeOutColor.a = Mathf.Lerp(1, 0, progress);
+                _fadeOutImage.color = fadeOutColor;
+            }
+            else
+            {
+                float lerpedScale = Mathf.Lerp(_startScale, _endScale, progress);
+                _stampImage.transform.localScale = new Vector3(progress, progress, progress);
+            }
 
             timeElapsed += Time.deltaTime;
             yield return null;

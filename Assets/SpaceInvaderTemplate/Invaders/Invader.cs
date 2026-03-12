@@ -135,7 +135,7 @@ public class Invader : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collideWithTag.Contains(collision.gameObject.tag)) { return; }
+        if (!collideWithTag.Contains(collision.gameObject.tag)) { return; }
 
         TakeDamage(collision.gameObject.CompareTag("RafaleBullet"));
         Destroy(collision.gameObject);
