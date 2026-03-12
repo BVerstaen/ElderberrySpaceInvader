@@ -167,22 +167,29 @@ public class Player : MonoBehaviour
 
         _shootInput.action.started += InputShootStarted;
         _shootInput.action.canceled += InputShootCanceled;
-        _rafaleLeftInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, false)); };
-        _rafaleLeftInput.action.canceled += context => { InputRafaleCanceled(context, false); };
-        _rafaleRightInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, true)); };
-        _rafaleRightInput.action.canceled += context => { InputRafaleCanceled(context, true); };
+        _rafaleLeftInput.action.started += OnRafaleLeftInputStarted;
+        _rafaleLeftInput.action.canceled += OnRafaleLeftInputCanceled;
+        _rafaleRightInput.action.started += OnRafaleRightInputStarted;
+        _rafaleRightInput.action.canceled += OnRafaleRightInputCanceled;
     }
+
+    private void OnRafaleLeftInputStarted(InputAction.CallbackContext context) => StartCoroutine(InputRafaleStarted(context, false));
+    private void OnRafaleRightInputStarted(InputAction.CallbackContext context) => StartCoroutine(InputRafaleStarted(context, true));
+    private void OnRafaleLeftInputCanceled(InputAction.CallbackContext context) => InputRafaleCanceled(context, false);
+    private void OnRafaleRightInputCanceled(InputAction.CallbackContext context) => InputRafaleCanceled(context, true);
 
     private void UnbindControls()
     {
         _shootInput.action.started -= InputShootStarted;
         _shootInput.action.canceled -= InputShootCanceled;
-        _rafaleLeftInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, false)); };
-        _rafaleLeftInput.action.canceled -= context => { InputRafaleCanceled(context, false); };
-        _rafaleRightInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, true)); };
-        _rafaleRightInput.action.canceled -= context => { InputRafaleCanceled(context, true); };
+        _rafaleLeftInput.action.started -= OnRafaleLeftInputStarted;
+        _rafaleLeftInput.action.canceled -= OnRafaleLeftInputCanceled;
+        _rafaleRightInput.action.started -= OnRafaleRightInputStarted;
+        _rafaleRightInput.action.canceled -= OnRafaleRightInputCanceled;
         _controlsBinded = false;
     }
+    
+    
 
     private void OnInvaderHit(bool bIsRafaleBullet)
     {
