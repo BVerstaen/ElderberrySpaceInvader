@@ -2101,8 +2101,9 @@ MonoBehaviour:
     scoreMultiplier: 1.5
     scoreScaleMultiplier: 1.1
     newTextMaterial: {fileID: 2100000, guid: 50795168b4faa8b46a88e0d4818a21f4, type: 2}
-    probaOfVoicelineToPlay: 0
-    voicelinesToPlay: []
+    probaOfVoicelineToPlay: 0.5
+    voicelinesToPlay:
+    - Multi_02
   - atPalier: 4
     scoreMultiplier: 1.7
     scoreScaleMultiplier: 1.2
