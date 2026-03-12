@@ -111,6 +111,7 @@ public class Player : MonoBehaviour
 
     public static event Action<float /*RafaleAmount*/> OnRafaleChargeChanged;
     public static event Action<float /*RafaleDuration*/, float /*Intensity*/> OnRafaleTriggered;
+    public static event Action OnRafaleStopped;
     public static event Action<int> OnUpdateHealth;
 
     private bool _isShooting = false;
@@ -384,14 +385,13 @@ public class Player : MonoBehaviour
         _rafaleCharge = 0;
         OnRafaleChargeChanged?.Invoke(_rafaleCharge / rafaleMaximalCharge);
         
-        Debug.Log("Start Rafale");
         while (clock < rafaleTime)
         {
             RafaleShoot();
             yield return new WaitForSeconds(rafaleBulletCooldown);
             clock += rafaleBulletCooldown;
         }
-        Debug.Log("Stop Rafale");
+        OnRafaleStopped?.Invoke();
         _isInRafale = false;
         rafaleLoopAudioSource.Stop();
 
