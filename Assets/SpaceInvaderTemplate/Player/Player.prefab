@@ -5053,7 +5053,7 @@ MonoBehaviour:
     centerPosition: {x: 0.88, y: 2.26}
     rightPosition: {x: 1.76, y: 2.26}
   _hitShakeDuration: 1
-  _explostionEffect: {fileID: 0}
+  _explostionEffect: {fileID: 9148608329306440136}
 --- !u!58 &61714824157334343
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -15226,5 +15226,10 @@ PrefabInstance:
 --- !u!4 &7812253299752075850 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1178785550412253036, guid: b0881b257128f3a43a2f97cead03323b, type: 3}
+  m_PrefabInstance: {fileID: 8949023863756752166}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9148608329306440136 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 200184816229582062, guid: b0881b257128f3a43a2f97cead03323b, type: 3}
   m_PrefabInstance: {fileID: 8949023863756752166}
   m_PrefabAsset: {fileID: 0}

@@ -410,12 +410,17 @@ public class Player : MonoBehaviour
         if (_currentLife <= 0)
         {
             GameManager.Instance.PlayGameOver();
+
+            //Feedback
+            _planeSpriteRenderer.enabled = false;
+            if (GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
+                _explostionEffect.SetActive(true);
+
             UnbindControls();
             OnPlayerDeath?.Invoke();
             return;
         }
 
-        _planeSpriteRenderer.enabled = false;
 
         OnTakeDamage?.Invoke();
         OnUpdateHealth?.Invoke(_currentLife);
@@ -424,7 +429,6 @@ public class Player : MonoBehaviour
 
         if(GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
         {
-            _explostionEffect.SetActive(true);
             AudioManager.Instance.PlaySound(HIT_SOUND);
             AudioManager.Instance.PlaySound(VL_DAMAGE_SOUND);
             CameraShake.Instance.StartShaking(_hitShakeDuration);
