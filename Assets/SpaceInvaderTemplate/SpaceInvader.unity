@@ -217,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4185726809008210589, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759526677721042844, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_Name
@@ -1049,7 +1049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &884244690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1217,7 +1217,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameOverStampEffect
   _stampImage: {fileID: 1165821425}
   _fadeOutImage: {fileID: 536921188}
-  _scoreObject: {fileID: 0}
   _animationCurve:
     serializedVersion: 2
     m_Curve:
@@ -1232,19 +1231,19 @@ MonoBehaviour:
       outWeight: 0
     - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: -1.1904771
-      outSlope: -1.1904771
+      value: 0.95
+      inSlope: -0.633218
+      outSlope: -0.633218
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.06666666
+      inWeight: 0.1388889
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   _animationDuration: 1
-  _startScale: 5
-  _endScale: 0.9
+  _startScale: 7
+  _endScale: 0.5
   _fadeOutDuration: 0.5
   _fadeOutCurve:
     serializedVersion: 2
@@ -1790,6 +1789,10 @@ PrefabInstance:
       propertyPath: _hoverColor.r
       value: 0.64705884
       objectReference: {fileID: 0}
+    - target: {fileID: 218156866919542417, guid: fb7a27c5f7bb3d143bc73aa2c9a34747, type: 3}
+      propertyPath: _rotationAmplitude
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 411200037379481126, guid: fb7a27c5f7bb3d143bc73aa2c9a34747, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1921,6 +1924,10 @@ PrefabInstance:
     - target: {fileID: 7396654352565615850, guid: fb7a27c5f7bb3d143bc73aa2c9a34747, type: 3}
       propertyPath: _hoverColor.r
       value: 0.64705884
+      objectReference: {fileID: 0}
+    - target: {fileID: 7396654352565615850, guid: fb7a27c5f7bb3d143bc73aa2c9a34747, type: 3}
+      propertyPath: _rotationAmplitude
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

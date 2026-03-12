@@ -7,7 +7,6 @@ public class GameOverStampEffect : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject _stampImage;
     [SerializeField] private Image _fadeOutImage;
-    [SerializeField] private Transform _scoreObject;
 
     [Header("Animation")]
     [SerializeField] private AnimationCurve _animationCurve;
@@ -45,11 +44,11 @@ public class GameOverStampEffect : MonoBehaviour
         while (timeElapsed < _animationDuration)
         {
             float progress = _animationCurve.Evaluate(timeElapsed / _animationDuration);
-
+           float fadeOutProgress = _animationCurve.Evaluate(timeElapsed / _fadeOutDuration);
             if(timeElapsed < _fadeOutDuration)
             {
                 Color fadeOutColor = _fadeOutImage.color;
-                fadeOutColor.a = Mathf.Lerp(0, 1, progress);
+                fadeOutColor.a = Mathf.Lerp(0, 1, fadeOutProgress);
                 _fadeOutImage.color = fadeOutColor;
             }
             else
@@ -57,12 +56,11 @@ public class GameOverStampEffect : MonoBehaviour
                 _stampImage.SetActive(true);
                 _fadeOutImage.color = new Color(0, 0, 0, 1);
                 float lerpedScale = Mathf.Lerp(_startScale, _endScale, progress);
-                _stampImage.transform.localScale = new Vector3(progress, progress, progress);
+                _stampImage.transform.localScale = new Vector3(lerpedScale, lerpedScale, lerpedScale);
             }
 
             timeElapsed += Time.deltaTime;
             yield return null;
         }
-        _stampImage.transform.localScale = new Vector3(_endScale, _endScale, _endScale);
     }
 }

@@ -411,6 +411,11 @@ public class Player : MonoBehaviour
     public event Action OnTakeDamage;
     public event Action OnPlayerDeath;
 
+    [ContextMenu("DIe")]
+    public void Kill()
+    {
+        TakeDamage(); TakeDamage(); TakeDamage(); TakeDamage();
+    }
 
     private void TakeDamage()
     {
