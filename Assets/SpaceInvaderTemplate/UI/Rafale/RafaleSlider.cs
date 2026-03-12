@@ -86,6 +86,7 @@ public class RafaleSlider : MonoBehaviour
     private void RafaleTriggered(float rafaleTime, float rafaleIntensity)
     {
         if (!GameFeelManager.Instance.IsFeatureActive("RafaleChargeSliderAnimation")) return;
+        fillBar.material.SetFloat("_FullValue", 0);
         _isInRafale = true;
         _rafaleTime = rafaleTime;
         fillBar.color = rafaleColor;

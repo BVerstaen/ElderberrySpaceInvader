@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -28,6 +29,12 @@ public class VignetteHandler : MonoBehaviour
         }
         Player.OnRafaleTriggered += OnRafaleTriggered;
         GameFeelManager.Instance.OnFeatureToggled += OnFeatureToggled;
+    }
+
+    private void OnDestroy()
+    {
+        Player.OnRafaleTriggered -= OnRafaleTriggered;
+        if (GameFeelManager.Instance != null) GameFeelManager.Instance.OnFeatureToggled -= OnFeatureToggled;
     }
 
     private void OnFeatureToggled(string feature, bool bIsActive)

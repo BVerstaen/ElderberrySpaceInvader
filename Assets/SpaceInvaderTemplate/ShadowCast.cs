@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ShadowCast : MonoBehaviour
@@ -17,6 +18,22 @@ public class ShadowCast : MonoBehaviour
         _shadowSprite = shadowObject.AddComponent<SpriteRenderer>();
         _shadowSprite.material = _spriteRenderer.material;
         _shadowSprite.color = _shadowColor;
+
+        if (GameFeelManager.Instance != null)
+        {
+            _shadowSprite.gameObject.SetActive(GameFeelManager.Instance.IsFeatureActive("EnnemyBlobAnimation"));
+            GameFeelManager.Instance.OnFeatureToggled += OnFeatureToggled;
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (GameFeelManager.Instance != null) GameFeelManager.Instance.OnFeatureToggled -= OnFeatureToggled;
+    }
+
+    private void OnFeatureToggled(string feature, bool IsActive)
+    {
+        if (feature == "EnnemyBlobAnimation") _shadowSprite.gameObject.SetActive(IsActive);
     }
 
     private void Update()

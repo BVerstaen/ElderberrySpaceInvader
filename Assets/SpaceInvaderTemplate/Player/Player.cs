@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     private const string FIRE_SOUND = "PlayerFire";
     private const string HIT_SOUND = "PlayerHit";
     private const string SHELL_SOUND = "ShellSound";
+    private const string EXPLOSION_SOUND = "PlayerMort";
 
     private const string VL_DAMAGE_SOUND = "VL_Damage";
     private const string VL_RAFALE_SOUND = "VL_ActiveBonus";
@@ -150,7 +151,7 @@ public class Player : MonoBehaviour
         while (timeElapsed < _playerAscendingDuration)
         {
             float progression = _playerAscendingCurve.Evaluate(timeElapsed / _playerAscendingDuration);
-            Vector2 newPlayerPosition = Vector2.Lerp(_startAscendingPosition, _defaultLocation, progression);
+            Vector2 newPlayerPosition = Vector2.Lerp(_startAscendingPosition, new Vector2(0,-1.2f), progression);
             transform.position = new Vector3(newPlayerPosition.x, newPlayerPosition.y, transform.position.z);
 
             timeElapsed += Time.deltaTime;
@@ -167,22 +168,29 @@ public class Player : MonoBehaviour
 
         _shootInput.action.started += InputShootStarted;
         _shootInput.action.canceled += InputShootCanceled;
-        _rafaleLeftInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, false)); };
-        _rafaleLeftInput.action.canceled += context => { InputRafaleCanceled(context, false); };
-        _rafaleRightInput.action.started += context => { StartCoroutine(InputRafaleStarted(context, true)); };
-        _rafaleRightInput.action.canceled += context => { InputRafaleCanceled(context, true); };
+        _rafaleLeftInput.action.started += OnRafaleLeftInputStarted;
+        _rafaleLeftInput.action.canceled += OnRafaleLeftInputCanceled;
+        _rafaleRightInput.action.started += OnRafaleRightInputStarted;
+        _rafaleRightInput.action.canceled += OnRafaleRightInputCanceled;
     }
+
+    private void OnRafaleLeftInputStarted(InputAction.CallbackContext context) => StartCoroutine(InputRafaleStarted(context, false));
+    private void OnRafaleRightInputStarted(InputAction.CallbackContext context) => StartCoroutine(InputRafaleStarted(context, true));
+    private void OnRafaleLeftInputCanceled(InputAction.CallbackContext context) => InputRafaleCanceled(context, false);
+    private void OnRafaleRightInputCanceled(InputAction.CallbackContext context) => InputRafaleCanceled(context, true);
 
     private void UnbindControls()
     {
         _shootInput.action.started -= InputShootStarted;
         _shootInput.action.canceled -= InputShootCanceled;
-        _rafaleLeftInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, false)); };
-        _rafaleLeftInput.action.canceled -= context => { InputRafaleCanceled(context, false); };
-        _rafaleRightInput.action.started -= context => { StartCoroutine(InputRafaleStarted(context, true)); };
-        _rafaleRightInput.action.canceled -= context => { InputRafaleCanceled(context, true); };
+        _rafaleLeftInput.action.started -= OnRafaleLeftInputStarted;
+        _rafaleLeftInput.action.canceled -= OnRafaleLeftInputCanceled;
+        _rafaleRightInput.action.started -= OnRafaleRightInputStarted;
+        _rafaleRightInput.action.canceled -= OnRafaleRightInputCanceled;
         _controlsBinded = false;
     }
+    
+    
 
     private void OnInvaderHit(bool bIsRafaleBullet)
     {
@@ -414,7 +422,10 @@ public class Player : MonoBehaviour
             //Feedback
             _planeSpriteRenderer.enabled = false;
             if (GameFeelManager.Instance.IsFeatureActive("PlayerHit"))
+            {
                 _explostionEffect.SetActive(true);
+                AudioManager.Instance.PlaySound(EXPLOSION_SOUND);
+            }
 
             UnbindControls();
             OnPlayerDeath?.Invoke();
