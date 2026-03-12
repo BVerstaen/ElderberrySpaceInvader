@@ -523,9 +523,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 9ed9cff28980a5442b48102f2afdd0d6, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -546,6 +546,7 @@ GameObject:
   - component: {fileID: 4213657537325834064}
   - component: {fileID: 7119336153793386720}
   - component: {fileID: 7396654352565615850}
+  - component: {fileID: 5012136076023177141}
   m_Layer: 5
   m_Name: StartButton
   m_TagString: Untagged
@@ -667,6 +668,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5012136076023177141}
+        m_TargetAssemblyTypeName: PLIbox.Audio.AudioPlaySound, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7396654352565615850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -679,10 +692,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f321ee24e66616c40946f40b955d9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverButtonScript
+  _textImage: {fileID: 4213657537325834064}
+  _hoverColor: {r: 0, g: 0.7610062, b: 0.046229318, a: 1}
   _rotationSpeed: 50
   _rotationAmplitude: 10
   _growScale: 1.5
   _duration: 0.1
+--- !u!114 &5012136076023177141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2626550884232352530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c6107598aacb8439fccb5a76b1234f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PLIbox.Audio.AudioPlaySound
+  _soundName: InvaderDeath
+  _audioDataIndex: -1
+  _playOnEnable: 0
 --- !u!1 &3953839417551944341
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,6 +726,7 @@ GameObject:
   - component: {fileID: 5360563415902891495}
   - component: {fileID: 9069934454456035716}
   - component: {fileID: 218156866919542417}
+  - component: {fileID: 8247739704120846193}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -817,6 +848,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 8247739704120846193}
+        m_TargetAssemblyTypeName: PLIbox.Audio.AudioPlaySound, Assembly-CSharp
+        m_MethodName: PlaySound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &218156866919542417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,10 +872,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f321ee24e66616c40946f40b955d9889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HoverButtonScript
+  _textImage: {fileID: 5360563415902891495}
+  _hoverColor: {r: 0, g: 0.7610062, b: 0.046229318, a: 1}
   _rotationSpeed: 50
   _rotationAmplitude: 10
   _growScale: 1.5
   _duration: 0.1
+--- !u!114 &8247739704120846193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3953839417551944341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65c6107598aacb8439fccb5a76b1234f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PLIbox.Audio.AudioPlaySound
+  _soundName: InvaderDeath
+  _audioDataIndex: -1
+  _playOnEnable: 0
 --- !u!1 &7329108895142613899
 GameObject:
   m_ObjectHideFlags: 0
