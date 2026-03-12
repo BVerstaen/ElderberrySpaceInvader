@@ -7,6 +7,7 @@ public class GameOverStampEffect : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject _stampImage;
     [SerializeField] private Image _fadeOutImage;
+    [SerializeField] private Transform _scoreObject;
 
     [Header("Animation")]
     [SerializeField] private AnimationCurve _animationCurve;
