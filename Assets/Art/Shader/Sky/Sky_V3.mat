@@ -53,7 +53,7 @@ Material:
     - _LightingEdge: 1.86
     - _LightingMax: 0
     - _LightingMin: 1.07
-    - _LightingPower: 0
+    - _LightingPower: 0.387
     - _MaxHeinght: 42.7
     - _Met: 0
     - _MinHeinght: 38.7
