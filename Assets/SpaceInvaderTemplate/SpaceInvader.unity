@@ -667,11 +667,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3bbbc3da1dc29448f4ab920cc5b9f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkyBackgroundSpeed
-  _skyBackgroundMat: {fileID: 2100000, guid: 79fba98155c7a3d4f97fa14f65c61eb1, type: 2}
+  _skyBackgroundMat: {fileID: 2100000, guid: 5d90b35a03ec21b4eab6028c6fda4bad, type: 2}
   _N_X_Pam_Menu: 0.1
-  _Texture2_N_X_Pam_Menu: 0.2
+  _Texture2_N_X_Pam_Menu: 0.1
   _N_X_Pam_Game: 0.5
-  _Texture2_N_X_Pam_Game: 0.6
+  _Texture2_N_X_Pam_Game: 0
 --- !u!1 &805531689
 GameObject:
   m_ObjectHideFlags: 0
