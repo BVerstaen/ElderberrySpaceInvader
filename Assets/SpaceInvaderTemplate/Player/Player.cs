@@ -236,6 +236,9 @@ public class Player : MonoBehaviour
 
     private float UpdateMovement()
     {
+        if (!_controlsBinded)
+            return 0.0f;
+
         float move = _moveInput.action.ReadValue<float>();
         if (Mathf.Abs(move) < deadzone) { return 0; }
 

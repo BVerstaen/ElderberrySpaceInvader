@@ -129,7 +129,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 103872147126705510, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 819097374054422384, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_Pivot.x
@@ -217,7 +217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4185726809008210589, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4759526677721042844, guid: b3405aba000337d4e8a50f280d465925, type: 3}
       propertyPath: m_Name
@@ -974,7 +974,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &884244690
 MonoBehaviour:
   m_ObjectHideFlags: 0
