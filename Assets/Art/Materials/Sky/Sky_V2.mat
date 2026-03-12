@@ -57,7 +57,7 @@ Material:
     - _HDR: 0.93
     - _N_Max: 2.27
     - _N_Min: -0.39
-    - _N_X_Pam: 0.5
+    - _N_X_Pam: 0.1
     - _N_X_Tile: 2
     - _N_Y_Pam: 0
     - _N_Y_Tile: 2
