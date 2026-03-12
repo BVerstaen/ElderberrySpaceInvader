@@ -53,23 +53,23 @@ Material:
     - _LightingEdge: 1.86
     - _LightingMax: 0
     - _LightingMin: 1.07
-    - _LightingPower: 0.387
-    - _MaxHeinght: 42.7
+    - _LightingPower: 1
+    - _MaxHeinght: 55
     - _Met: 0
-    - _MinHeinght: 38.7
-    - _Normal_Strenght: 50
+    - _MinHeinght: 49.3
+    - _Normal_Strenght: 40
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smooth: 0
     - _SpecularHighlights: 1
     - _Vertex_Position: 0.05
-    - _X_Pan: 0.5
-    - _X_Pan_Cloud: 0.5
-    - _X_Tille: 3
-    - _Y_Pan1: 0.5
-    - _Y_Pan_Cloud: 0.5
-    - _Y_Tille: 2
+    - _X_Pan: 0.1
+    - _X_Pan_Cloud: 0.1
+    - _X_Tille: 5
+    - _Y_Pan1: 0.1
+    - _Y_Pan_Cloud: 0.1
+    - _Y_Tille: 4
     m_Colors:
     - _Center: {r: 0, g: 0, b: 0, a: 0}
     - _Clouds: {r: 0.20215712, g: 0.20479544, b: 0.22182874, a: 0}
