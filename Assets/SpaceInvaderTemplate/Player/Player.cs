@@ -414,6 +414,8 @@ public class Player : MonoBehaviour
             return;
         }
 
+        _planeSpriteRenderer.enabled = false;
+
         OnTakeDamage?.Invoke();
         OnUpdateHealth?.Invoke(_currentLife);
 
