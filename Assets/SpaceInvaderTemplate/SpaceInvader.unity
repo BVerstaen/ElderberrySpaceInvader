@@ -1125,10 +1125,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1671297511}
   - {fileID: 90321937}
-  - {fileID: 1289228807}
   - {fileID: 1111561869}
+  - {fileID: 1671297511}
+  - {fileID: 1289228807}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1242,8 +1242,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _animationDuration: 1
-  _startScale: 1.7
-  _endScale: 1
+  _startScale: 5
+  _endScale: 0.9
   _fadeOutDuration: 0.5
   _fadeOutCurve:
     serializedVersion: 2
