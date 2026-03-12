@@ -32,7 +32,6 @@ public class GameOverStampEffect : MonoBehaviour
 
     public void StartAnimation()
     {
-        _stampImage.SetActive(true);
         _fadeOutImage.gameObject.SetActive(true);
         _stampAnimationCoroutine = StartCoroutine(StampAnimationCoroutine());
     }
@@ -54,6 +53,7 @@ public class GameOverStampEffect : MonoBehaviour
             }
             else
             {
+                _stampImage.SetActive(true);
                 _fadeOutImage.color = new Color(0, 0, 0, 1);
                 float lerpedScale = Mathf.Lerp(_startScale, _endScale, progress);
                 _stampImage.transform.localScale = new Vector3(progress, progress, progress);
