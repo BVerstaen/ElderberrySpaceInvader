@@ -48,7 +48,7 @@ Material:
     - _EnvironmentReflections: 1
     - _Inetnsity_Max: 3.12
     - _Inetnsity_Min: -0.43
-    - _Intensity_Brillance: 1.5
+    - _Intensity_Brillance: 3.37
     - _Lerp_Intensity: 1.15
     - _LightingEdge: 1.86
     - _LightingMax: 0
@@ -67,7 +67,7 @@ Material:
     - _X_Pan: 1
     - _X_Pan_Cloud: 0.2
     - _X_Tille: 2
-    - _Y_Pan1: 0.9
+    - _Y_Pan1: 0.5
     - _Y_Pan_Cloud: 0.1
     - _Y_Tille: 3
     m_Colors:
