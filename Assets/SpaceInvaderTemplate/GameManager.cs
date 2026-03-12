@@ -23,9 +23,12 @@ public class GameManager : MonoBehaviour
     private Bounds Bounds => new Bounds(transform.position, new Vector3(bounds.x, bounds.y, 1000f));
 
     private int _playerScore;
+    private bool _isGameOver = false;
     public int PlayerScore { get => _playerScore; }
+    public bool IsGameOver { get => _isGameOver; }
 
     public Action OnStartGame;
+    public Action OnGameOver;
     public Action<int> OnUpdateScore;
 
     void Awake()
@@ -80,7 +83,7 @@ public class GameManager : MonoBehaviour
     }
 
     public bool IsBelowGameOver(float position)
-    {        
+    {
         return position < transform.position.y + (gameOverHeight - bounds.y * 0.5f);
     }
     #endregion
@@ -102,12 +105,14 @@ public class GameManager : MonoBehaviour
 
     public void PlayGameOver()
     {
-        Debug.Log("Game Over");
+        if (_isGameOver)
+            return;
+        _isGameOver = true;
 
         //Save highscore
-        if(PlayerPrefs.HasKey(PLAYER_SCORE_PREF_KEY))
+        if (PlayerPrefs.HasKey(PLAYER_SCORE_PREF_KEY))
         {
-            if(PlayerPrefs.GetInt(PLAYER_SCORE_PREF_KEY) < _playerScore)
+            if (PlayerPrefs.GetInt(PLAYER_SCORE_PREF_KEY) < _playerScore)
             {
                 PlayerPrefs.SetInt(PLAYER_SCORE_PREF_KEY, PlayerScore);
                 PlayerPrefs.Save();
@@ -119,6 +124,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.Save();
         }
 
+        OnGameOver?.Invoke();
         StartCoroutine(WaitGameOver());
     }
     private IEnumerator WaitGameOver()
