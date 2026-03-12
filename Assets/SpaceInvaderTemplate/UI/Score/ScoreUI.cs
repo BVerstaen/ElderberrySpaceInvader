@@ -17,17 +17,21 @@ public class ScoreUI : MonoBehaviour
     [SerializeField, Tooltip("Temps d'attente entre l'ajout progressif du score")] private float _addDuration;
     [Space(10)]
     [SerializeField] private AnimationCurve _scoreAddingCurve;
+    [SerializeField] private AnimationCurve _scoreScaleCurve;
+    [SerializeField] private float _scaleForce = 1.3f;
     [SerializeField] private int _batchSize;
 
     private int _currentScore = 0;
     private int _scoreToReach = 0;
     private Coroutine _scoreAddingRoutine = null;
+    private Vector3 _defaultScale;
 
     private void Start()
     {
         _scoreToReach = 0;
         _currentScore = 0;
         WriteScore();
+        _defaultScale = transform.localScale;
     }
 
     private void OnEnable()
@@ -77,6 +81,7 @@ public class ScoreUI : MonoBehaviour
             WriteScore();
 
             float curveProgression = _scoreAddingCurve.Evaluate((float)diff / _scoreToReach);
+            transform.localScale = Vector3.Lerp(_defaultScale, _defaultScale * _scaleForce, _scoreScaleCurve.Evaluate((float)diff / _scoreToReach));
             yield return new WaitForSeconds((1 - curveProgression) * _addDuration);
         }
 

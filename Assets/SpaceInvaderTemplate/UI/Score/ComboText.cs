@@ -59,7 +59,7 @@ public class ComboText : MonoBehaviour
         while (timeElapsed < _animationDuration)
         {
             float progression = _animationCurve.Evaluate(timeElapsed / _animationDuration);
-            _rect.anchoredPosition = Vector2.Lerp(_startPosition, _endPosition, progression);
+            _rect.anchoredPosition = Vector2.Lerp(_startPosition, _endPosition, progression);   
 
             timeElapsed += Time.deltaTime;
             yield return null;
