@@ -1308,8 +1308,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.059999093, b: 0, a: 1}
-        key1: {r: 1, g: 0.82714546, b: 0, a: 0.19607843}
+        key0: {r: 1, g: 0.9844841, b: 0, a: 1}
+        key1: {r: 1, g: 0, b: 0.016462326, a: 0.19607843}
         key2: {r: 0, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 1}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -1317,7 +1317,7 @@ ParticleSystem:
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 16834
+        ctime1: 39321
         ctime2: 65535
         ctime3: 0
         ctime4: 0
@@ -6549,8 +6549,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.059999093, b: 0, a: 1}
-        key1: {r: 1, g: 0.82714546, b: 0, a: 0.19607843}
+        key0: {r: 1, g: 0.9844841, b: 0, a: 1}
+        key1: {r: 1, g: 0, b: 0.016462326, a: 0.19607843}
         key2: {r: 0, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 1}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -6558,7 +6558,7 @@ ParticleSystem:
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 16834
+        ctime1: 39321
         ctime2: 65535
         ctime3: 0
         ctime4: 0
@@ -11385,8 +11385,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0.059999093, b: 0, a: 1}
-        key1: {r: 1, g: 0.82714546, b: 0, a: 0.19607843}
+        key0: {r: 1, g: 0.9844841, b: 0, a: 1}
+        key1: {r: 1, g: 0, b: 0.016462326, a: 0.19607843}
         key2: {r: 0, g: 0, b: 0, a: 1}
         key3: {r: 0, g: 0, b: 0, a: 1}
         key4: {r: 0, g: 0, b: 0, a: 0}
@@ -11394,7 +11394,7 @@ ParticleSystem:
         key6: {r: 0, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 0, b: 0, a: 0}
         ctime0: 0
-        ctime1: 16834
+        ctime1: 39321
         ctime2: 65535
         ctime3: 0
         ctime4: 0
