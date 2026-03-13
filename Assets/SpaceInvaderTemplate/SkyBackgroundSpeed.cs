@@ -1,45 +1,102 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class SkyBackgroundSpeed : MonoBehaviour
 {
     [SerializeField] private Material _skyBackgroundMat;
+    [SerializeField] private ParticleSystem _rainSystem;
 
     [Header("Menu")]
-    [SerializeField] private float _N_X_Pam_Menu;
-    [SerializeField] private float _Texture2_N_X_Pam_Menu;
+    [SerializeField] private float _X_Pam_Menu;
+    [SerializeField] private float _X_Pam_Cloud_Menu;
+    [SerializeField] private float _Y_Pam_Menu;
+    [SerializeField] private float _Y_Pam_Cloud_Menu;
 
     [Header("Game")]
-    [SerializeField] private float _N_X_Pam_Game;
-    [SerializeField] private float _Texture2_N_X_Pam_Game;
+    [SerializeField] private float _X_Pam_Game;
+    [SerializeField] private float _X_Pam_Cloud_Game;
+    [SerializeField] private float _Y_Pam_Game;
+    [SerializeField] private float _Y_Pam_Cloud_Game;
+
+    [SerializeField] private float _duration;
+
+    private bool _isInMenu = true; 
 
     private void Awake()
     {
-        ChangeSpeed(_N_X_Pam_Menu, _Texture2_N_X_Pam_Menu);
+        _skyBackgroundMat.SetFloat("_X_Pan", _X_Pam_Menu);
+        _skyBackgroundMat.SetFloat("_X_Pan_Cloud", _X_Pam_Cloud_Menu);
+
+        _skyBackgroundMat.SetFloat("_Y_Pan1", _Y_Pam_Menu);
+        _skyBackgroundMat.SetFloat("_Y_Pan_Cloud", _Y_Pam_Cloud_Menu);
     }
 
     private void OnEnable()
     {
         GameManager.Instance.OnStartGame += GoToGame;
+        GameFeelManager.Instance.OnFeatureToggled += QueRIDER;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnStartGame -= GoToGame;
+        GameFeelManager.Instance.OnFeatureToggled -= QueRIDER;
+    }
+
+    private void QueRIDER(string feature, bool toggle)
+    {
+        if(feature == "PlayerMovement")
+        {
+            if(toggle)
+            {
+                _skyBackgroundMat.SetFloat("_X_Pan", _isInMenu ? _X_Pam_Menu: _X_Pam_Game);
+                _skyBackgroundMat.SetFloat("_X_Pan_Cloud", _isInMenu ? _X_Pam_Cloud_Menu : _X_Pam_Cloud_Game);
+
+                _skyBackgroundMat.SetFloat("_Y_Pan1", _isInMenu ? _Y_Pam_Menu : _Y_Pam_Game);
+                _skyBackgroundMat.SetFloat("_Y_Pan_Cloud", _isInMenu ? _Y_Pam_Cloud_Menu : _Y_Pam_Cloud_Game);
+                
+                _rainSystem.Play();
+            }
+            else
+            {
+                _skyBackgroundMat.SetFloat("_X_Pan", 0);
+                _skyBackgroundMat.SetFloat("_X_Pan_Cloud", 0);
+
+                _skyBackgroundMat.SetFloat("_Y_Pan1", 0);
+                _skyBackgroundMat.SetFloat("_Y_Pan_Cloud", 0);
+
+                _rainSystem.Stop();
+            }
+        }
     }
 
     private void GoToGame()
     {
-        ChangeSpeed(_N_X_Pam_Game, _Texture2_N_X_Pam_Game);
-
+        _isInMenu = false;
+        StartCoroutine(TransitionVOlo());
     }
 
-    private void ChangeSpeed(float N_X, float texture2)
+    private IEnumerator TransitionVOlo()
     {
-        _skyBackgroundMat.SetFloat("_X_Pan", N_X);
-        _skyBackgroundMat.SetFloat("_X_Pan_Cloud", N_X);
+        float timeElasped = 0.0f;
+        while (timeElasped < _duration)
+        {
+            float progress = timeElasped / _duration;
 
-        _skyBackgroundMat.SetFloat("_Y_Pan1", texture2);
-        _skyBackgroundMat.SetFloat("_Y_Pan_Cloud", texture2);
+            _skyBackgroundMat.SetFloat("_X_Pan", Mathf.Lerp(_X_Pam_Menu, _X_Pam_Game, progress));
+            _skyBackgroundMat.SetFloat("_Y_Pan1", Mathf.Lerp(_Y_Pam_Menu, _Y_Pam_Game, progress));
+
+            _skyBackgroundMat.SetFloat("_X_Pan_Cloud", Mathf.Lerp(_X_Pam_Cloud_Menu, _X_Pam_Cloud_Game, progress));
+            _skyBackgroundMat.SetFloat("_Y_Pan_Cloud", Mathf.Lerp(_Y_Pam_Cloud_Menu, _Y_Pam_Cloud_Game, progress));
+
+            timeElasped += Time.deltaTime;
+            yield return null;
+        }
+        _skyBackgroundMat.SetFloat("_X_Pan", _X_Pam_Game);
+        _skyBackgroundMat.SetFloat("_X_Pan_Cloud", _X_Pam_Cloud_Game);
+
+        _skyBackgroundMat.SetFloat("_Y_Pan1", _Y_Pam_Game);
+        _skyBackgroundMat.SetFloat("_Y_Pan_Cloud", _Y_Pam_Cloud_Game);
     }
 }

@@ -174,11 +174,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a3bbbc3da1dc29448f4ab920cc5b9f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SkyBackgroundSpeed
-  _skyBackgroundMat: {fileID: 2100000, guid: 5d90b35a03ec21b4eab6028c6fda4bad, type: 2}
-  _N_X_Pam_Menu: 0.8
-  _Texture2_N_X_Pam_Menu: 0.5
-  _N_X_Pam_Game: 0.8
-  _Texture2_N_X_Pam_Game: 0.5
+  _skyBackgroundMat: {fileID: 2100000, guid: 5b48af4919897074d8aeb5730ec2208a, type: 2}
+  _rainSystem: {fileID: 128854788}
+  _X_Pam_Menu: 0.2
+  _X_Pam_Cloud_Menu: 0.2
+  _Y_Pam_Menu: 0.1
+  _Y_Pam_Cloud_Menu: 0.1
+  _X_Pam_Game: 0.8
+  _X_Pam_Cloud_Game: 0.2
+  _Y_Pam_Game: 0.5
+  _Y_Pam_Cloud_Game: 0.1
+  _duration: 5
 --- !u!64 &84754292
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -390,6 +396,11 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 819097374054422384, guid: b3405aba000337d4e8a50f280d465925, type: 3}
   m_PrefabInstance: {fileID: 90321936}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &128854788 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198913305880061536, guid: 18d653ec6ac008e43a69363f42d8c371, type: 3}
+  m_PrefabInstance: {fileID: 351963200}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &351963200
 PrefabInstance:

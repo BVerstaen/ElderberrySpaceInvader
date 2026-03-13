@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PLIbox.Audio.AudioManager
   _soundPrefab: {fileID: 228958404722708413, guid: 25e8a8a185352a64488b862257246b59, type: 3}
-  _maxNumberOfSounds: 20
+  _maxNumberOfSounds: 40
   _soundList:
   - Name: NewWaveAlarm
     Clips:
@@ -148,14 +148,9 @@ MonoBehaviour:
       MaxPitchModifier: -0.1
   - Name: VL_ActiveBonus
     Clips:
-    - Clip: {fileID: 8300000, guid: 77462f9b14437b14ebce4deb23e4d344, type: 3}
-      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
-      Volume: 0.6
-      MinPitchModifier: 0.1
-      MaxPitchModifier: -0.1
     - Clip: {fileID: 8300000, guid: 3e8a5c95fc5e96e41b11c1aa74faf394, type: 3}
       MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
-      Volume: 0.6
+      Volume: 0.8
       MinPitchModifier: 0.1
       MaxPitchModifier: -0.1
   - Name: VL_Begin
@@ -173,7 +168,7 @@ MonoBehaviour:
   - Name: PlayerMort
     Clips:
     - Clip: {fileID: 8300000, guid: d1b1891900f52ea4c99a4dae4eec8a53, type: 3}
-      MixerGroup: {fileID: -2941076783826172581, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      MixerGroup: {fileID: -6522157784514681025, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
       Volume: 1
       MinPitchModifier: 0
       MaxPitchModifier: 0
