@@ -179,8 +179,22 @@ MonoBehaviour:
       MaxPitchModifier: 0
   - Name: UI_Accept
     Clips:
-    - Clip: {fileID: 8300000, guid: b65b9cc8098c60c44a724c44f49cd03c, type: 3}
+    - Clip: {fileID: 8300000, guid: d1b1891900f52ea4c99a4dae4eec8a53, type: 3}
       MixerGroup: {fileID: -2941076783826172581, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 1
+      MinPitchModifier: 0
+      MaxPitchModifier: 0
+  - Name: Multi_02
+    Clips:
+    - Clip: {fileID: 8300000, guid: c35873ae13bb572449a2ae9d86995aea, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
+      Volume: 1
+      MinPitchModifier: 0
+      MaxPitchModifier: 0
+  - Name: Multi_01
+    Clips:
+    - Clip: {fileID: 8300000, guid: 61f0b03fe0f77734fac676d0af2202b3, type: 3}
+      MixerGroup: {fileID: -347072551353779719, guid: 9d713fac268a646488d2e3f4876b177f, type: 2}
       Volume: 1
       MinPitchModifier: 0
       MaxPitchModifier: 0

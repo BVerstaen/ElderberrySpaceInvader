@@ -31,7 +31,7 @@ public class ComboManager : MonoBehaviour
         [Space(5)]
         [Header("Voicelines")]
         public float probaOfVoicelineToPlay;
-        public List<string> voicelinesToPlay;
+        public List<AudioClip> voicelinesToPlay;
     }
 
     [Header("Score")]
@@ -50,6 +50,9 @@ public class ComboManager : MonoBehaviour
     [SerializeField] private float _scaleMin;
     [SerializeField] private float _scaleMax;
     [SerializeField] private AnimationCurve _scaleCurve;
+
+    [Space(20)]
+    [SerializeField] private AudioSource _vlSource;
 
     private ComboText _currentComboText = null;
 
@@ -94,7 +97,7 @@ public class ComboManager : MonoBehaviour
         int score = _baseScore;
         scoreColor = _baseColorMaterial;
         scaleMultiplier = 1f;
-        string currentSoundToPlay = "";
+        AudioClip currentSoundToPlay = null;
         foreach (ScorePalier scorePalier in _scorePalierList)
         {
             if (_currentPalier >= scorePalier.atPalier)
@@ -103,18 +106,25 @@ public class ComboManager : MonoBehaviour
                 scoreColor = scorePalier.newTextMaterial;
                 scaleMultiplier = scorePalier.scoreScaleMultiplier;
 
-                if (Random.Range(0, 100) <= scorePalier.probaOfVoicelineToPlay && scorePalier.voicelinesToPlay.Count > 0)
-                    currentSoundToPlay = scorePalier.voicelinesToPlay.GetRandomItem();
-                else
-                    currentSoundToPlay = "";
+                if(scorePalier.voicelinesToPlay.Count > 0)
+                {
+                    if (Random.value <= scorePalier.probaOfVoicelineToPlay)
+                        currentSoundToPlay = scorePalier.voicelinesToPlay.GetRandomItem();
+                    else
+                        currentSoundToPlay = null;
+                }
             }
             else
                 break;
         }
 
         //Feedback
-        if(currentSoundToPlay != "")
-            AudioManager.Instance.PlaySound(currentSoundToPlay);
+        if(!_vlSource.isPlaying && currentSoundToPlay != null)
+        {
+            _vlSource.clip = currentSoundToPlay;
+            _vlSource.loop = false;
+            _vlSource.Play();
+        }
 
         return score;
     }
