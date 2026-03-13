@@ -21,6 +21,7 @@ public class SkyBackgroundSpeed : MonoBehaviour
 
     [SerializeField] private float _duration;
 
+    private Coroutine _coroutine;
     private bool _isInMenu = true; 
 
     private void Awake()
@@ -75,9 +76,19 @@ public class SkyBackgroundSpeed : MonoBehaviour
 
     private void GoToGame()
     {
+        if (!_isInMenu)
+            return;
+
         _isInMenu = false;
         if(GameFeelManager.Instance.IsFeatureActive("PlayerMovement"))
-            StartCoroutine(TransitionVOlo());
+        {
+            if(_coroutine != null)
+            {
+                StopCoroutine(_coroutine);
+                _coroutine = null;
+            }
+            _coroutine = StartCoroutine(TransitionVOlo());
+        }
     }
 
     private IEnumerator TransitionVOlo()
