@@ -184,7 +184,7 @@ MonoBehaviour:
   _X_Pam_Cloud_Game: 0.2
   _Y_Pam_Game: 0.5
   _Y_Pam_Cloud_Game: 0.1
-  _duration: 5
+  _duration: 3
 --- !u!64 &84754292
 MeshCollider:
   m_ObjectHideFlags: 0
