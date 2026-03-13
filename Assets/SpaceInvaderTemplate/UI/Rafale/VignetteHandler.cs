@@ -9,6 +9,7 @@ public class VignetteHandler : MonoBehaviour
 {
     private Volume _volume;
     private Vignette _vignette;
+    private Bloom _bloom;
 
     [Header("Rafale Vignette Effect")]
     [SerializeField] private float minVignetteIntensity = 0.3f;
@@ -26,6 +27,10 @@ public class VignetteHandler : MonoBehaviour
         if (!_volume.profile.TryGet(out _vignette))
         {
             Debug.LogError("No Vignette Effect found");
+        }
+        if (!_volume.profile.TryGet(out _bloom))
+        {
+            Debug.LogError("No Bloom Effect found");
         }
         Player.OnRafaleTriggered += OnRafaleTriggered;
         Player.OnRafaleStopped += OnRafaleStopped;
@@ -49,6 +54,10 @@ public class VignetteHandler : MonoBehaviour
         if (feature == "RafaleEffect")
         {
             _targetedVignetteIntensity = bIsActive ? _rafaleVignetteIntensity : 0;
+        }
+        else if (feature == "Bloom")
+        {
+            _bloom.active = bIsActive;
         }
     }
 
