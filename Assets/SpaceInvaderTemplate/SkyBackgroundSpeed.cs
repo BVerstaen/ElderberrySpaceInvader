@@ -41,7 +41,9 @@ public class SkyBackgroundSpeed : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Instance.OnStartGame -= GoToGame;
-        GameFeelManager.Instance.OnFeatureToggled -= QueRIDER;
+        
+        if(GameFeelManager.Instance)
+            GameFeelManager.Instance.OnFeatureToggled -= QueRIDER;
     }
 
     private void QueRIDER(string feature, bool toggle)
@@ -74,7 +76,8 @@ public class SkyBackgroundSpeed : MonoBehaviour
     private void GoToGame()
     {
         _isInMenu = false;
-        StartCoroutine(TransitionVOlo());
+        if(GameFeelManager.Instance.IsFeatureActive("PlayerMovement"))
+            StartCoroutine(TransitionVOlo());
     }
 
     private IEnumerator TransitionVOlo()
