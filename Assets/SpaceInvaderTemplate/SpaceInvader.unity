@@ -1144,6 +1144,9 @@ MonoBehaviour:
   - IsActive: 1
     Name: PlayerMovement
     ActivationKey: 103
+  - IsActive: 1
+    Name: Bloom
+    ActivationKey: 104
   toggleAllKey: 3
 --- !u!1 &884244689
 GameObject:
